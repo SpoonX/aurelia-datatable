@@ -1,3 +1,3 @@
 export function configure (aurelia, callback) {
-  aurelia.globalRessource('./dataTable');
+  aurelia.globalRessource('./data-table');
 }
