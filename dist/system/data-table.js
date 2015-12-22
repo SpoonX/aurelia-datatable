@@ -134,6 +134,7 @@ System.register(['aurelia-framework', 'aurelia-router', 'aurelia-templating'], f
 
           this.router = Router;
           this.element = element;
+          console.info('knkdf,qs:hd');
         }
 
         _createDecoratedClass(DataTable, [{

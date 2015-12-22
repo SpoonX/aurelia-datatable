@@ -74,6 +74,7 @@ export class DataTable {
   constructor (Router, element) {
     this.router  = Router;
     this.element = element;
+    console.info('knkdf,qs:hd')
   }
 
   /**

@@ -4,7 +4,7 @@ System.register([], function (_export) {
   _export('configure', configure);
 
   function configure(aurelia, callback) {
-    aurelia.globalRessource('./dataTable');
+    aurelia.globalRessource('./data-table');
   }
 
   return {

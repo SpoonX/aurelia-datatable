@@ -125,6 +125,7 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-templating'],
 
       this.router = Router;
       this.element = element;
+      console.info('knkdf,qs:hd');
     }
 
     _createDecoratedClass(DataTable, [{

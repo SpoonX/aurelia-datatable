@@ -6,5 +6,5 @@ Object.defineProperty(exports, '__esModule', {
 exports.configure = configure;
 
 function configure(aurelia, callback) {
-  aurelia.globalRessource('./dataTable');
+  aurelia.globalRessource('./data-table');
 }

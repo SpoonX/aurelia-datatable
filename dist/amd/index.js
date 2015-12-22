@@ -7,6 +7,6 @@ define(['exports'], function (exports) {
   exports.configure = configure;
 
   function configure(aurelia, callback) {
-    aurelia.globalRessource('./dataTable');
+    aurelia.globalRessource('./data-table');
   }
 });
