@@ -11,5 +11,29 @@
       "babel-runtime": "npm:babel-runtime@^5.8.20",
       "core-js": "npm:core-js@^1.0.0"
     }
-  }
+  },
+  "name": "aurelia-datatable",
+  "version": "0.0.1",
+  "description": "Aurelia-only data tables",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SpoonX/aurelia-datatable.git"
+  },
+  "keywords": [
+    "aurelia",
+    "data",
+    "table",
+    "datatable",
+    "spoonx"
+  ],
+  "author": "RWOverdijk <wesley@spoonx.nl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SpoonX/aurelia-datatable/issues"
+  },
+  "homepage": "https://github.com/SpoonX/aurelia-datatable#readme"
 }
