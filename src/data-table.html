@@ -14,7 +14,7 @@
 
       <!-- Columns -->
       <td repeat.for="columnLabel of columnLabels">
-        <a click.delegate="selected(row)">${row[columnLabel.column]}</a>
+        <a click.delegate="selected(row)">${displayValue(row, columnLabel.column)}</a>
       </td>
 
       <!-- Actions -->

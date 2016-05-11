@@ -1,5 +1,6 @@
 import {bindable, inject, computedFrom} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
+import {Statham} from 'json-statham';
 
 @inject(Router, Element)
 export class DataTable {
@@ -117,5 +118,15 @@ export class DataTable {
   .catch(error => {
       console.error('Something went wrong.', error);
   });
+  displayValue (row, propertyName) {
+    if (row[propertyName]) {
+      return row[propertyName];
+    }
+    let statham = new Statham(row, Statham.MODE_NESTED);
+    return statham.fetch(propertyName);
+  }
+
+  isObject (columnName) {
+    return (columnName.indexOf('.') !== -1);
   }
 }
