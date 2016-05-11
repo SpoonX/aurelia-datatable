@@ -134,6 +134,7 @@ export class DataTable {
   }
 
   triggerEvent (event, payload) {
+    payload.bubbles = true;
     return this.element.dispatchEvent(new CustomEvent(event, payload));
   }
 
