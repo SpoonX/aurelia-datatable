@@ -18,9 +18,10 @@ export class DataTable {
 
   @bindable update = null;
 
-  count = 0;
+  @bindable sortable = null;
 
-  @computedFrom('count', 'limit')
+  count = 0;
+  sortingCriteria = {};
 
   @computedFrom('columns')
   get columnLabels () {
@@ -111,13 +112,43 @@ export class DataTable {
   }
 
   load () {
-    this.repository.find({populate: false}, true)
-      .then(result => {
-    this.data = result;
-  })
-  .catch(error => {
+    let criteria = this.buildCriteria();
+    this.repository.find(criteria, true).then(result => {
+     this.data = result;
+    })
+    .catch(error => {
       console.error('Something went wrong.', error);
-  });
+    });
+  }
+
+  buildCriteria() {
+    let criteria = {};
+
+    if (this.sortable !== null && Object.keys(this.sortingCriteria).length ) {
+      let propertyName = Object.keys(this.sortingCriteria)[0];
+      if (this.sortingCriteria[propertyName]) {
+        criteria['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
+      }
+    }
+    return criteria;
+  }
+
+  doSort(columnLabel) {
+    if (this.sortable === null || this.isObject(columnLabel.column)) {
+      return;
+    }
+
+    if (this.sortingCriteria[columnLabel.column]) {
+      this.sortingCriteria[columnLabel.column] = (this.sortingCriteria[columnLabel.column] === 'asc' ? 'desc' : 'asc');
+    }
+    else {
+      this.sortingCriteria = {};
+      this.sortingCriteria[columnLabel.column] = 'asc';
+    }
+
+    this.load();
+  }
+
   displayValue (row, propertyName) {
     if (row[propertyName]) {
       return row[propertyName];

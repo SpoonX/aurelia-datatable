@@ -3,7 +3,10 @@
     <thead>
     <tr>
       <!-- Labels -->
-      <th repeat.for="columnLabel of columnLabels" t="${columnLabel.label}"></th>
+      <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
+        <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}"></span>
+        <a if.bind="sortable !== null && !isObject(columnLabel.column)">${columnLabel.label} <i class="${sortingCriteria[columnLabel.column] ? (sortingCriteria[columnLabel.column] === 'desc' ? 'fa fa-caret-down' : 'fa fa-caret-up') : 'fa fa-sort'}"></i></a>
+      </th>
 
       <!-- Actions -->
       <th if.bind="destroy != null || update != null" t="Actions"></th>
