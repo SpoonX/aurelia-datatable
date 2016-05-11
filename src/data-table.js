@@ -20,12 +20,19 @@ export class DataTable {
 
   @bindable sortable = null;
 
+  @bindable defaultColumn;
+
+  @bindable searchable = null;
+
   count = 0;
+  columnsArray = [];
   sortingCriteria = {};
+  searchCriteria = {};
 
   @computedFrom('columns')
   get columnLabels () {
-    let labelsRaw = this.columns.split(','),
+    let instance  = this,
+        labelsRaw = instance.columns.split(','),
         labels    = [];
 
     function clean (str) {
@@ -37,15 +44,33 @@ export class DataTable {
     }
 
     labelsRaw.forEach(function (label) {
-      let aliased = label.split(' as ');
+      if(!label) {
+        return;
+      }
+      let aliased = label.split(' as '),
+          cleanedLabel = clean(aliased[0]);
+
+      if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
+        instance.columnsArray.push(cleanedLabel);
+      }
 
       labels.push({
-        column: clean(aliased[0]),
+        column: cleanedLabel,
         label : ucfirst(clean(aliased[1] || aliased[0]))
       });
     });
 
+    this.checkDefaultColumn();
+
     return labels;
+  }
+
+  checkDefaultColumn() {
+    let hasNameColumn = (this.columnsArray.indexOf('name') !== -1);
+
+    if (!this.defaultColumn || (this.defaultColumn && this.columnsArray.indexOf(this.defaultColumn) === -1)) {
+      this.defaultColumn = (hasNameColumn ? 'name' : (this.columnsArray[0] || null));
+    }
   }
 
   constructor (Router, element) {
@@ -124,6 +149,14 @@ export class DataTable {
   buildCriteria() {
     let criteria = {};
 
+    if (this.searchable !== null && Object.keys(this.searchCriteria).length ) {
+      let propertyName = Object.keys(this.searchCriteria)[0];
+      if (this.searchCriteria[propertyName]) {
+        criteria['where'] = {};
+        criteria['where'][propertyName] = {};
+        criteria['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+      }
+    }
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length ) {
       let propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[propertyName]) {
@@ -146,6 +179,18 @@ export class DataTable {
       this.sortingCriteria[columnLabel.column] = 'asc';
     }
 
+    this.load();
+  }
+
+  doSearch(searchInput) {
+    if (this.searchable === null) {
+      return;
+    }
+
+    if (!(this.defaultColumn in this.searchCriteria)) {
+      this.searchCriteria = {};
+    }
+    this.searchCriteria[this.defaultColumn] = searchInput;
     this.load();
   }
 
