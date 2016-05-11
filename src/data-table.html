@@ -30,17 +30,4 @@
     </tr>
     </tbody>
   </table>
-  <ul class="pagination pull-right" if.bind="pageCount > 1">
-    <li class="paginate_button previous ${page==1 ? 'disabled' : ''}" disabled.bind="page==1">
-      <a href="#" click.delegate="loadPrevious()" t="Previous"></a>
-    </li>
-
-    <li class="paginate_button ${page == index + 1 ? 'active' : ''}" repeat.for="index of pageCount">
-      <a href="#" click.delegate="load(index+1)">${index+1}</a>
-    </li>
-
-    <li class="paginate_button next ${page==pageCount ? 'disabled' : ''}" disabled.bind="page==pageCount">
-      <a href="#" click.delegate="loadNext()" t="Next"></a>
-    </li>
-  </ul>
 </template>
