@@ -1,7 +1,8 @@
-import {bindable, inject, computedFrom} from 'aurelia-framework';
+import {bindable, inject, computedFrom, customElement} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {Statham} from 'json-statham';
 
+@customElement('data-table')
 @inject(Router, Element)
 export class DataTable {
 @bindable repository;
