@@ -38,7 +38,6 @@ export class DataTable {
   }
 
   load() {
-    this.updateRecordCount();
     let criteria = this.buildCriteria();
     this.repository.find(criteria, true).then(result => {
      this.data = result;
