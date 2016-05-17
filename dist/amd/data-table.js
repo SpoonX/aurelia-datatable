@@ -115,7 +115,6 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
     DataTable.prototype.load = function load() {
       var _this = this;
 
-      this.updateRecordCount();
       var criteria = this.buildCriteria();
       this.repository.find(criteria, true).then(function (result) {
         _this.data = result;

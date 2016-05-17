@@ -100,7 +100,6 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
   DataTable.prototype.load = function load() {
     var _this = this;
 
-    this.updateRecordCount();
     var criteria = this.buildCriteria();
     this.repository.find(criteria, true).then(function (result) {
       _this.data = result;

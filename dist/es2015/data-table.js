@@ -84,7 +84,6 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = inject(Route
   }
 
   load() {
-    this.updateRecordCount();
     let criteria = this.buildCriteria();
     this.repository.find(criteria, true).then(result => {
       this.data = result;
