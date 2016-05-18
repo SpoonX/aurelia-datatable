@@ -10,15 +10,15 @@ export class DataTable {
   @bindable columns = '';
   // Column used by default for search
   @bindable defaultColumn;
-  // Show the search field? (Optional attribut)
+  // Show the search field? (Optional attribute)
   @bindable searchable = null;
-  // Columns can be sorted? (Optional attribut)
+  // Columns can be sorted? (Optional attribute)
   @bindable sortable = null;
-  // Rows are editable? (Optional attribut)
+  // Rows are editable? (Optional attribute)
   @bindable update = null;
-  // Rows are removable? (Optional attribut)
+  // Rows are removable? (Optional attribute)
   @bindable destroy = null;
-  // Rows are selactable? (Optional attribut)
+  // Rows are selectable? (Optional attribute)
   @bindable select;
   @bindable data;
   @bindable route;
