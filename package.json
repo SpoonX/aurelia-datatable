@@ -63,6 +63,9 @@
     "directories": {
       "dist": "dist/amd"
     },
+    "dependencies": {
+      "aurelia-event-aggregator": "^1.0.0-beta.1.2.1"
+    },
     "devDependencies": {
       "aurelia-framework": "^1.0.0-beta.1.0.5",
       "aurelia-orm": "^3.0.0-rc2",

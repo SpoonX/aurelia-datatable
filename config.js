@@ -14,6 +14,7 @@ System.config({
   },
 
   map: {
+    "aurelia-event-aggregator": "npm:aurelia-event-aggregator@1.0.0-beta.1.2.1",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.0.5",
     "aurelia-orm": "npm:aurelia-orm@3.0.0-rc2",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.1.1.4",
@@ -73,6 +74,9 @@ System.config({
       "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.2"
     },
     "npm:aurelia-event-aggregator@1.0.0-beta.1": {
+      "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1"
+    },
+    "npm:aurelia-event-aggregator@1.0.0-beta.1.2.1": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1"
     },
     "npm:aurelia-framework@1.0.0-beta.1.0.5": {

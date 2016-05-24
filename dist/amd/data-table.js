@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], function (exports, _aureliaFramework, _aureliaRouter, _jsonStatham) {
+define(['exports', 'aurelia-framework', 'aurelia-event-aggregator', 'aurelia-router', 'json-statham'], function (exports, _aureliaFramework, _aureliaEventAggregator, _aureliaRouter, _jsonStatham) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -73,10 +73,10 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
   }
 
-  var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10;
+  var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
 
-  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element), _dec3 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = (_class2 = function () {
-    function DataTable(Router, element) {
+  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaEventAggregator.EventAggregator), _dec3 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = (_class2 = function () {
+    function DataTable(Router, element, eventAggregator) {
       _classCallCheck(this, DataTable);
 
       _initDefineProp(this, 'repository', _descriptor, this);
@@ -93,11 +93,13 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
 
       _initDefineProp(this, 'destroy', _descriptor7, this);
 
-      _initDefineProp(this, 'select', _descriptor8, this);
+      _initDefineProp(this, 'showActions', _descriptor8, this);
 
-      _initDefineProp(this, 'data', _descriptor9, this);
+      _initDefineProp(this, 'select', _descriptor9, this);
 
-      _initDefineProp(this, 'route', _descriptor10, this);
+      _initDefineProp(this, 'data', _descriptor10, this);
+
+      _initDefineProp(this, 'route', _descriptor11, this);
 
       this.count = 0;
       this.columnsArray = [];
@@ -106,18 +108,33 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
 
       this.router = Router;
       this.element = element;
+      this.ea = eventAggregator;
     }
 
     DataTable.prototype.attached = function attached() {
-      return this.load();
+      var _this = this;
+
+      this.ea.subscribe('publishData', function (response) {
+        _this.data = response.data;
+      });
+
+      this.load();
     };
 
     DataTable.prototype.load = function load() {
-      var _this = this;
+      var _this2 = this;
 
       var criteria = this.buildCriteria();
+
+      this.ea.publish('updateCriteria', criteria);
+
+      if (!this.repository) {
+        this.showActions = false;
+        return;
+      }
+
       this.repository.find(criteria, true).then(function (result) {
-        _this.data = result;
+        _this2.data = result;
       }).catch(function (error) {
         console.error('Something went wrong.', error);
       });
@@ -134,12 +151,14 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
           criteria['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
         }
       }
+
       if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
         var _propertyName = Object.keys(this.sortingCriteria)[0];
         if (this.sortingCriteria[_propertyName]) {
           criteria['sort'] = _propertyName + ' ' + this.sortingCriteria[_propertyName];
         }
       }
+
       return criteria;
     };
 
@@ -148,32 +167,32 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
     };
 
     DataTable.prototype.doDelete = function doDelete(row) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (typeof this.delete === 'function') {
         return this.delete(this.populate(row));
       }
 
       this.populate(row).destroy().then(function (ah) {
-        _this2.load();
-        _this2.triggerEvent('deleted', row);
+        _this3.load();
+        _this3.triggerEvent('deleted', row);
       }).catch(function (error) {
-        _this2.triggerEvent('exception', { on: 'delete', error: error });
+        _this3.triggerEvent('exception', { on: 'delete', error: error });
       });
     };
 
     DataTable.prototype.doUpdate = function doUpdate(row) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (typeof this.update === 'function') {
         return this.update(this.populate(row));
       }
 
       this.populate(row).update().then(function () {
-        _this3.load();
-        _this3.triggerEvent('updated', row);
+        _this4.load();
+        _this4.triggerEvent('updated', row);
       }).catch(function (error) {
-        _this3.triggerEvent('exception', { on: 'update', error: error });
+        _this4.triggerEvent('exception', { on: 'update', error: error });
       });
     };
 
@@ -200,7 +219,9 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
       if (!(this.defaultColumn in this.searchCriteria)) {
         this.searchCriteria = {};
       }
+
       this.searchCriteria[this.defaultColumn] = searchInput;
+
       this.load();
     };
 
@@ -321,13 +342,18 @@ define(['exports', 'aurelia-framework', 'aurelia-router', 'json-statham'], funct
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaFramework.bindable], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'showActions', [_aureliaFramework.bindable], {
+    enumerable: true,
+    initializer: function initializer() {
+      return true;
+    }
+  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaFramework.bindable], {
+  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaFramework.bindable], {
+  }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
   }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class);
