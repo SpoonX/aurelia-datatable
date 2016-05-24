@@ -24,7 +24,7 @@
       </th>
 
       <!-- Actions -->
-      <th if.bind="destroy != null || update != null" t="Actions"></th>
+      <th if.bind="destroy != null || update != null" t="Actions" show.bind="showActions"></th>
     </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
       </td>
 
       <!-- Actions -->
-      <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || update !== null">
+      <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || update !== null" show.bind="showActions">
         <button if.bind="update !== null" class="btn btn-sm btn-white" click.delegate="doUpdate(row)">
           <i class="fa fa-pencil"></i>
         </button>
