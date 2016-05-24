@@ -28,7 +28,7 @@ export class DataTable {
   count           = 0;
   columnsArray    = [];
   sortingCriteria = {};
-  searchCriteria  = {}
+  searchCriteria  = {};
 
   constructor(Router, element, eventAggregator) {
     this.router  = Router;
