@@ -1,11 +1,12 @@
-import {bindable, inject, computedFrom, customElement} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {Statham} from 'json-statham';
 
 @customElement('data-table')
-@inject(Router, Element, EventAggregator)
+@inject(Router, Element)
 export class DataTable {
+  @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
+  // search criteria
   @bindable repository;
   // String representing the column names
   @bindable columns = '';
@@ -28,33 +29,26 @@ export class DataTable {
   count           = 0;
   columnsArray    = [];
   sortingCriteria = {};
-  searchCriteria  = {};
+  searchCriteria  = {}
 
   constructor(Router, element, eventAggregator) {
     this.router  = Router;
     this.element = element;
-    this.ea      = eventAggregator;
   }
 
   attached() {
-    this.ea.subscribe('publishData', response => {
-      this.data = response.data;
-    });
-
     this.load();
   }
 
   load() {
-    let criteria = this.buildCriteria();
-
-    this.ea.publish('updateCriteria', criteria);
+    this.criteria = this.buildCriteria();
 
     if (!this.repository) {
       this.showActions = false;
       return;
     }
 
-    this.repository.find(criteria, true).then(result => {
+    this.repository.find(this.criteria, true).then(result => {
      this.data = result;
     })
     .catch(error => {
@@ -63,25 +57,25 @@ export class DataTable {
   }
 
   buildCriteria() {
-    let criteria = {};
+    let crit = {};
 
     if (this.searchable !== null && Object.keys(this.searchCriteria).length ) {
       let propertyName = Object.keys(this.searchCriteria)[0];
       if (this.searchCriteria[propertyName]) {
-        criteria['where']                           = {};
-        criteria['where'][propertyName]             = {};
-        criteria['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+        crit['where']                           = {};
+        crit['where'][propertyName]             = {};
+        crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
       }
     }
 
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length ) {
       let propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[propertyName]) {
-        criteria['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
+        crit['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
       }
     }
 
-    return criteria;
+    return crit;
   }
 
   populate (row) {
