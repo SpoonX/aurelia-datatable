@@ -1,8 +1,10 @@
 import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
+import {resolvedView} from 'aurelia-view-manager';
 import {Router} from 'aurelia-router';
 import {Statham} from 'json-statham';
 
 @customElement('data-table')
+@resolvedView('aurelia-data-table', 'dataTable')
 @inject(Router, Element)
 export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
