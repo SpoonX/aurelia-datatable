@@ -75,8 +75,8 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
 
   var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12;
 
-  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'dataTable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-    function DataTable(Router, element, eventAggregator) {
+  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+    function DataTable(Router, element) {
       _classCallCheck(this, DataTable);
 
       _initDefineProp(this, 'criteria', _descriptor, this);
@@ -95,13 +95,13 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
 
       _initDefineProp(this, 'destroy', _descriptor8, this);
 
-      _initDefineProp(this, 'showActions', _descriptor9, this);
+      _initDefineProp(this, 'select', _descriptor9, this);
 
-      _initDefineProp(this, 'select', _descriptor10, this);
+      _initDefineProp(this, 'data', _descriptor10, this);
 
-      _initDefineProp(this, 'data', _descriptor11, this);
+      _initDefineProp(this, 'route', _descriptor11, this);
 
-      _initDefineProp(this, 'route', _descriptor12, this);
+      _initDefineProp(this, 'page', _descriptor12, this);
 
       this.count = 0;
       this.columnsArray = [];
@@ -112,25 +112,8 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
       this.element = element;
     }
 
-    DataTable.prototype.attached = function attached() {
-      this.load();
-    };
-
     DataTable.prototype.load = function load() {
-      var _this = this;
-
       this.criteria = this.buildCriteria();
-
-      if (!this.repository) {
-        this.showActions = false;
-        return;
-      }
-
-      this.repository.find(this.criteria, true).then(function (result) {
-        _this.data = result;
-      }).catch(function (error) {
-        console.error('Something went wrong.', error);
-      });
     };
 
     DataTable.prototype.buildCriteria = function buildCriteria() {
@@ -160,32 +143,32 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
     };
 
     DataTable.prototype.doDelete = function doDelete(row) {
-      var _this2 = this;
+      var _this = this;
 
       if (typeof this.delete === 'function') {
         return this.delete(this.populate(row));
       }
 
       this.populate(row).destroy().then(function (ah) {
-        _this2.load();
-        _this2.triggerEvent('deleted', row);
+        _this.load();
+        _this.triggerEvent('deleted', row);
       }).catch(function (error) {
-        _this2.triggerEvent('exception', { on: 'delete', error: error });
+        _this.triggerEvent('exception', { on: 'delete', error: error });
       });
     };
 
     DataTable.prototype.doUpdate = function doUpdate(row) {
-      var _this3 = this;
+      var _this2 = this;
 
       if (typeof this.update === 'function') {
         return this.update(this.populate(row));
       }
 
       this.populate(row).update().then(function () {
-        _this3.load();
-        _this3.triggerEvent('updated', row);
+        _this2.load();
+        _this2.triggerEvent('updated', row);
       }).catch(function (error) {
-        _this3.triggerEvent('exception', { on: 'update', error: error });
+        _this2.triggerEvent('exception', { on: 'update', error: error });
       });
     };
 
@@ -338,18 +321,16 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'showActions', [_aureliaFramework.bindable], {
-    enumerable: true,
-    initializer: function initializer() {
-      return true;
-    }
-  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaFramework.bindable], {
+  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaFramework.bindable], {
+  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaFramework.bindable], {
+  }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaFramework.bindable], {
+    enumerable: true,
+    initializer: null
+  }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'page', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
   }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);

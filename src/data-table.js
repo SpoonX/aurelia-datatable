@@ -4,7 +4,7 @@ import {Router} from 'aurelia-router';
 import {Statham} from 'json-statham';
 
 @customElement('data-table')
-@resolvedView('aurelia-data-table', 'dataTable')
+@resolvedView('aurelia-data-table', 'datatable')
 @inject(Router, Element)
 export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
@@ -23,39 +23,23 @@ export class DataTable {
   // Rows are removable? (Optional attribute)
   @bindable destroy = null;
   // Rows are selectable? (Optional attribute)
-  @bindable showActions = true;
   @bindable select;
   @bindable data;
   @bindable route;
+  @bindable page;
 
   count           = 0;
   columnsArray    = [];
   sortingCriteria = {};
   searchCriteria  = {}
 
-  constructor(Router, element, eventAggregator) {
+  constructor(Router, element) {
     this.router  = Router;
     this.element = element;
   }
 
-  attached() {
-    this.load();
-  }
-
   load() {
     this.criteria = this.buildCriteria();
-
-    if (!this.repository) {
-      this.showActions = false;
-      return;
-    }
-
-    this.repository.find(this.criteria, true).then(result => {
-     this.data = result;
-    })
-    .catch(error => {
-      console.error('Something went wrong.', error);
-    });
   }
 
   buildCriteria() {

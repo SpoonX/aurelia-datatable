@@ -48,9 +48,9 @@ import { resolvedView } from 'aurelia-view-manager';
 import { Router } from 'aurelia-router';
 import { Statham } from 'json-statham';
 
-export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'dataTable'), _dec3 = inject(Router, Element), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
+export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
 
-  constructor(Router, element, eventAggregator) {
+  constructor(Router, element) {
     _initDefineProp(this, 'criteria', _descriptor, this);
 
     _initDefineProp(this, 'repository', _descriptor2, this);
@@ -67,13 +67,13 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
 
     _initDefineProp(this, 'destroy', _descriptor8, this);
 
-    _initDefineProp(this, 'showActions', _descriptor9, this);
+    _initDefineProp(this, 'select', _descriptor9, this);
 
-    _initDefineProp(this, 'select', _descriptor10, this);
+    _initDefineProp(this, 'data', _descriptor10, this);
 
-    _initDefineProp(this, 'data', _descriptor11, this);
+    _initDefineProp(this, 'route', _descriptor11, this);
 
-    _initDefineProp(this, 'route', _descriptor12, this);
+    _initDefineProp(this, 'page', _descriptor12, this);
 
     this.count = 0;
     this.columnsArray = [];
@@ -84,23 +84,8 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
     this.element = element;
   }
 
-  attached() {
-    this.load();
-  }
-
   load() {
     this.criteria = this.buildCriteria();
-
-    if (!this.repository) {
-      this.showActions = false;
-      return;
-    }
-
-    this.repository.find(this.criteria, true).then(result => {
-      this.data = result;
-    }).catch(error => {
-      console.error('Something went wrong.', error);
-    });
   }
 
   buildCriteria() {
@@ -297,18 +282,16 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
   initializer: function () {
     return null;
   }
-}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'showActions', [bindable], {
-  enumerable: true,
-  initializer: function () {
-    return true;
-  }
-}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'page', [bindable], {
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
