@@ -6,12 +6,8 @@ A data-table built with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-o
 #### columns
 String representing the column names, supports renaming columns with `as` e.g. `name as username`.
 
-#### repository (optional)
+#### repository
 A entity with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm).
-When no repository is given it will prevent `destroy` and `update` buttons from showing.
-
-#### data (optional)
-When not using a repository you can give an array with objects to this bindable.
 
 ## Optional attributes
 
@@ -50,35 +46,10 @@ this.dbData = entityManager.getRepository('users');
     ></data-table>
 ```
 
-Pagination through [Spoonx/Aurelia-paged](https://github.com/SpoonX/aurelia-paged) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager).
+Pagination with [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager).
 
 ```html
-<paged resource.bind="dbData" data.bind="data" page.bind="page">
-    <data-table 
-        data.bind="data" 
-        columns="id,name" 
-        default-column="name" 
-        searchable 
-        sortable
-    ></data-table>
-</paged>
-
-<pager resource.bind="dbData" page.bind="page"></pager>
-```
-
- It is possible to add a repository but that will invoke a extra request to the back-end since the data gets retrieved by `paged`.
-
-```html
-<paged resource.bind="dbData" data.bind="data" page.bind="page">
-    <data-table 
-        repository.bind="dbData" 
-        data.bind="data" 
-        columns="id,name" 
-        default-column="name" 
-        searchable 
-        sortable
-    ></data-table>
-</paged>
+<data-table repository.bind="dbData" page.bind="page"></data-table>
 
 <pager resource.bind="dbData" page.bind="page"></pager>
 ```
