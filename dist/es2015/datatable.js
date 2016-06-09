@@ -45,12 +45,13 @@ function _initializerWarningHelper(descriptor, context) {
 
 import { bindable, inject, computedFrom, customElement, bindingMode } from 'aurelia-framework';
 import { resolvedView } from 'aurelia-view-manager';
+import { EntityManager } from "aurelia-orm";
 import { Router } from 'aurelia-router';
 import { Statham } from 'json-statham';
 
-export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
+export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
 
-  constructor(Router, element, pager) {
+  constructor(Router, element, entityManager) {
     _initDefineProp(this, 'criteria', _descriptor, this);
 
     _initDefineProp(this, 'repository', _descriptor2, this);
@@ -86,6 +87,10 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
 
     this.router = Router;
     this.element = element;
+
+    if (!this.repository && this.element.hasAttribute('resource')) {
+      this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
+    }
   }
 
   attached() {

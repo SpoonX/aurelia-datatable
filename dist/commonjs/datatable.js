@@ -13,6 +13,8 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _aureliaViewManager = require('aurelia-view-manager');
 
+var _aureliaOrm = require('aurelia-orm');
+
 var _aureliaRouter = require('aurelia-router');
 
 var _jsonStatham = require('json-statham');
@@ -62,8 +64,8 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-  function DataTable(Router, element, pager) {
+var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+  function DataTable(Router, element, entityManager) {
     _classCallCheck(this, DataTable);
 
     _initDefineProp(this, 'criteria', _descriptor, this);
@@ -101,6 +103,10 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 
     this.router = Router;
     this.element = element;
+
+    if (!this.repository && this.element.hasAttribute('resource')) {
+      this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
+    }
   }
 
   DataTable.prototype.attached = function attached() {

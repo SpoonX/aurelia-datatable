@@ -1,11 +1,12 @@
 import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
 import {resolvedView} from 'aurelia-view-manager';
+import {EntityManager} from "aurelia-orm";
 import {Router} from 'aurelia-router';
 import {Statham} from 'json-statham';
 
 @customElement('data-table')
 @resolvedView('aurelia-data-table', 'datatable')
-@inject(Router, Element)
+@inject(Router, Element, EntityManager)
 export class DataTable {
   // search criteria
   @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
@@ -47,9 +48,13 @@ export class DataTable {
   sortingCriteria = {};
   searchCriteria  = {}
 
-  constructor(Router, element) {
-    this.router  = Router;
-    this.element = element;
+  constructor(Router, element, entityManager) {
+    this.router        = Router;
+    this.element       = element;
+
+    if (!this.repository && this.element.hasAttribute('resource')) {
+      this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
+    }
   }
 
   attached() {

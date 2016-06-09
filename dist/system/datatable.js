@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-router', 'json-statham'], function (_export, _context) {
+System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'json-statham'], function (_export, _context) {
   "use strict";
 
-  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, DataTable;
+  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, DataTable;
 
   function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -63,6 +63,8 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-router', 
       bindingMode = _aureliaFramework.bindingMode;
     }, function (_aureliaViewManager) {
       resolvedView = _aureliaViewManager.resolvedView;
+    }, function (_aureliaOrm) {
+      EntityManager = _aureliaOrm.EntityManager;
     }, function (_aureliaRouter) {
       Router = _aureliaRouter.Router;
     }, function (_jsonStatham) {
@@ -87,8 +89,8 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-router', 
         };
       }();
 
-      _export('DataTable', DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-        function DataTable(Router, element, pager) {
+      _export('DataTable', DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+        function DataTable(Router, element, entityManager) {
           _classCallCheck(this, DataTable);
 
           _initDefineProp(this, 'criteria', _descriptor, this);
@@ -126,6 +128,10 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-router', 
 
           this.router = Router;
           this.element = element;
+
+          if (!this.repository && this.element.hasAttribute('resource')) {
+            this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
+          }
         }
 
         DataTable.prototype.attached = function attached() {

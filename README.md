@@ -1,29 +1,30 @@
 # Data-table
 A data-table with pagination built with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
 
-## Bindables
-
-#### columns
+### columns
 String representing the column names, supports renaming columns with `as` e.g. `name as username`.
 
-#### repository
-A entity with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm).
+### repository (optional)
+A entity with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) e.g. `entityManager.getRepository('users')`
 
-#### limit
+### resource (optional)
+The name of a repository e.g. `users`
+
+### limit
 The amount of items to show on 1 page, defaults to 30.
 
 ## Optional attributes
 
-##### destroy
+### destroy
 Show delete button. Rows are removable, will trigger `deleted.delegate="myEventCallback($event)"` when clicked.
 
-##### update 
+### update 
 Show edit button. Rows are editable, will trigger `updated.delegate="myEventCallback($event)"` when clicked.
 
-##### sortable
+### sortable
 Columns can be sorted.
 
-##### searchable
+### searchable
 Show the search field
 
 ## Custom html
