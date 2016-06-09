@@ -47,7 +47,7 @@ export class DataTable {
   sortingCriteria = {};
   searchCriteria  = {}
 
-  constructor(Router, element, pager) {
+  constructor(Router, element) {
     this.router  = Router;
     this.element = element;
   }
