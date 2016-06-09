@@ -1,5 +1,5 @@
 # Data-table
-A data-table built with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm)
+A data-table with pagination built with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
 
 ## Bindables
 
@@ -8,6 +8,9 @@ String representing the column names, supports renaming columns with `as` e.g. `
 
 #### repository
 A entity with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm).
+
+#### limit
+The amount of items to show on 1 page, defaults to 30.
 
 ## Optional attributes
 
@@ -44,12 +47,4 @@ this.dbData = entityManager.getRepository('users');
         update 
         destroy
     ></data-table>
-```
-
-Pagination with [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager).
-
-```html
-<data-table repository.bind="dbData" page.bind="page"></data-table>
-
-<pager resource.bind="dbData" page.bind="page"></pager>
 ```
