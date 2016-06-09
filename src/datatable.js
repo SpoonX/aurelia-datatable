@@ -7,39 +7,68 @@ import {Statham} from 'json-statham';
 @resolvedView('aurelia-data-table', 'datatable')
 @inject(Router, Element)
 export class DataTable {
-  @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
   // search criteria
+  @bindable({defaultBindingMode: bindingMode.twoWay}) criteria;
+
+  // repository resource
   @bindable repository;
+
+  // amount of items to show on 1 page
+  @bindable limit = 30;
+
   // String representing the column names
   @bindable columns = '';
+
   // Column used by default for search
   @bindable defaultColumn;
+
   // Show the search field? (Optional attribute)
   @bindable searchable = null;
+
   // Columns can be sorted? (Optional attribute)
   @bindable sortable = null;
+
   // Rows are editable? (Optional attribute)
   @bindable update = null;
+
   // Rows are removable? (Optional attribute)
   @bindable destroy = null;
+
   // Rows are selectable? (Optional attribute)
   @bindable select;
+
   @bindable data;
   @bindable route;
-  @bindable page;
+  @bindable page = 1;
+  @bindable criteriaPager;
 
   count           = 0;
   columnsArray    = [];
   sortingCriteria = {};
   searchCriteria  = {}
 
-  constructor(Router, element) {
+  constructor(Router, element, pager) {
     this.router  = Router;
     this.element = element;
   }
 
+  attached() {
+    this.load();
+  }
+
   load() {
     this.criteria = this.buildCriteria();
+
+    this.repository.find(this.criteria, true).then(result => {
+     this.data = result;
+    })
+    .catch(error => {
+      console.error('Something went wrong.', error);
+    });
+  }
+
+  pageChanged(newValue, oldvalue) {
+    this.load();
   }
 
   buildCriteria() {
@@ -51,6 +80,8 @@ export class DataTable {
         crit['where']                           = {};
         crit['where'][propertyName]             = {};
         crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+
+        this.criteriaPager = crit['where'];
       }
     }
 
@@ -60,6 +91,9 @@ export class DataTable {
         crit['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
       }
     }
+
+    crit['skip']  = this.page * this.limit - this.limit;
+    crit['limit'] = this.limit;
 
     return crit;
   }
@@ -198,11 +232,7 @@ export class DataTable {
   }
 
   displayValue (row, propertyName) {
-    if (row[propertyName]) {
-      return row[propertyName];
-    }
-    let statham = new Statham(row, Statham.MODE_NESTED);
-    return statham.fetch(propertyName);
+    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
   }
 
   isObject (columnName) {

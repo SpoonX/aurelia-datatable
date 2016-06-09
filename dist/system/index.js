@@ -10,12 +10,14 @@ System.register(['aurelia-view-manager'], function (_export, _context) {
     }],
     execute: function () {
       function configure(aurelia) {
+        aurelia.plugin('aurelia-pager');
+
         aurelia.container.get(Config).configureNamespace('aurelia-data-table', {
           framework: 'bootstrap',
           location: './{{framework}}/{{view}}.html'
         });
 
-        aurelia.globalResources('./data-table');
+        aurelia.globalResources('./datatable');
       }
 
       _export('configure', configure);
