@@ -12,7 +12,11 @@
     "datatable",
     "spoonx"
   ],
-  "author": "RWOverdijk <wesley@spoonx.nl>",
+  "contributors": [
+    "RWOverdijk <wesley@spoonx.nl>",
+    "VMBindraban <vijay@spoonx.nl>",
+    "jeremyvergnas <jeremy@sweebr.com"
+  ],
   "license": "MIT",
   "main": "dist/commonjs/index.js",
   "repository": {
@@ -65,12 +69,14 @@
     },
     "dependencies": {
       "aurelia-framework": "^1.0.0-beta.1.0.5",
-      "json-statham": "^1.3.0",
-      "aurelia-router": "^1.0.0-beta.1"
+      "aurelia-pager": "^0.0.2",
+      "aurelia-router": "^1.0.0-beta.1",
+      "aurelia-view-manager": "^0.0.4",
+      "json-statham": "^1.3.0"
     },
     "devDependencies": {
       "aurelia-framework": "^1.0.0-beta.1.0.5",
-      "aurelia-orm": "^3.0.0-rc2",
+      "aurelia-orm": "^3.0.0-rc3",
       "aurelia-polyfills": "^1.0.0-beta.1.1.0",
       "babel": "babel-core@^5.8.24",
       "babel-runtime": "^5.8.24",

@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
+var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -43,35 +43,41 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { bindable, inject, computedFrom, customElement } from 'aurelia-framework';
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { bindable, inject, computedFrom, customElement, bindingMode } from 'aurelia-framework';
+import { resolvedView } from 'aurelia-view-manager';
 import { Router } from 'aurelia-router';
 import { Statham } from 'json-statham';
 
-export let DataTable = (_dec = customElement('data-table'), _dec2 = inject(Router, Element, EventAggregator), _dec3 = computedFrom('columns'), _dec(_class = _dec2(_class = (_class2 = class DataTable {
+export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
 
-  constructor(Router, element, eventAggregator) {
-    _initDefineProp(this, 'repository', _descriptor, this);
+  constructor(Router, element, pager) {
+    _initDefineProp(this, 'criteria', _descriptor, this);
 
-    _initDefineProp(this, 'columns', _descriptor2, this);
+    _initDefineProp(this, 'repository', _descriptor2, this);
 
-    _initDefineProp(this, 'defaultColumn', _descriptor3, this);
+    _initDefineProp(this, 'limit', _descriptor3, this);
 
-    _initDefineProp(this, 'searchable', _descriptor4, this);
+    _initDefineProp(this, 'columns', _descriptor4, this);
 
-    _initDefineProp(this, 'sortable', _descriptor5, this);
+    _initDefineProp(this, 'defaultColumn', _descriptor5, this);
 
-    _initDefineProp(this, 'update', _descriptor6, this);
+    _initDefineProp(this, 'searchable', _descriptor6, this);
 
-    _initDefineProp(this, 'destroy', _descriptor7, this);
+    _initDefineProp(this, 'sortable', _descriptor7, this);
 
-    _initDefineProp(this, 'showActions', _descriptor8, this);
+    _initDefineProp(this, 'update', _descriptor8, this);
 
-    _initDefineProp(this, 'select', _descriptor9, this);
+    _initDefineProp(this, 'destroy', _descriptor9, this);
 
-    _initDefineProp(this, 'data', _descriptor10, this);
+    _initDefineProp(this, 'select', _descriptor10, this);
 
-    _initDefineProp(this, 'route', _descriptor11, this);
+    _initDefineProp(this, 'data', _descriptor11, this);
+
+    _initDefineProp(this, 'route', _descriptor12, this);
+
+    _initDefineProp(this, 'page', _descriptor13, this);
+
+    _initDefineProp(this, 'criteriaPager', _descriptor14, this);
 
     this.count = 0;
     this.columnsArray = [];
@@ -80,54 +86,51 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = inject(Route
 
     this.router = Router;
     this.element = element;
-    this.ea = eventAggregator;
   }
 
   attached() {
-    this.ea.subscribe('publishData', response => {
-      this.data = response.data;
-    });
-
     this.load();
   }
 
   load() {
-    let criteria = this.buildCriteria();
+    this.criteria = this.buildCriteria();
 
-    this.ea.publish('updateCriteria', criteria);
-
-    if (!this.repository) {
-      this.showActions = false;
-      return;
-    }
-
-    this.repository.find(criteria, true).then(result => {
+    this.repository.find(this.criteria, true).then(result => {
       this.data = result;
     }).catch(error => {
       console.error('Something went wrong.', error);
     });
   }
 
+  pageChanged(newValue, oldvalue) {
+    this.load();
+  }
+
   buildCriteria() {
-    let criteria = {};
+    let crit = {};
 
     if (this.searchable !== null && Object.keys(this.searchCriteria).length) {
       let propertyName = Object.keys(this.searchCriteria)[0];
       if (this.searchCriteria[propertyName]) {
-        criteria['where'] = {};
-        criteria['where'][propertyName] = {};
-        criteria['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+        crit['where'] = {};
+        crit['where'][propertyName] = {};
+        crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+
+        this.criteriaPager = crit['where'];
       }
     }
 
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
       let propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[propertyName]) {
-        criteria['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
+        crit['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
       }
     }
 
-    return criteria;
+    crit['skip'] = this.page * this.limit - this.limit;
+    crit['limit'] = this.limit;
+
+    return crit;
   }
 
   populate(row) {
@@ -258,59 +261,66 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = inject(Route
   }
 
   displayValue(row, propertyName) {
-    if (row[propertyName]) {
-      return row[propertyName];
-    }
-    let statham = new Statham(row, Statham.MODE_NESTED);
-    return statham.fetch(propertyName);
+    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
   }
 
   isObject(columnName) {
     return columnName.indexOf('.') !== -1;
   }
-}, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+}, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'criteria', [_dec4], {
   enumerable: true,
   initializer: null
-}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [bindable], {
+}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [bindable], {
+  enumerable: true,
+  initializer: function () {
+    return 30;
+  }
+}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [bindable], {
   enumerable: true,
   initializer: function () {
     return '';
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'defaultColumn', [bindable], {
+}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'defaultColumn', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [bindable], {
+}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [bindable], {
   enumerable: true,
   initializer: function () {
     return null;
   }
-}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [bindable], {
+}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [bindable], {
   enumerable: true,
   initializer: function () {
     return null;
   }
-}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'update', [bindable], {
+}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'update', [bindable], {
   enumerable: true,
   initializer: function () {
     return null;
   }
-}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [bindable], {
+}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [bindable], {
   enumerable: true,
   initializer: function () {
     return null;
   }
-}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'showActions', [bindable], {
+}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'page', [bindable], {
   enumerable: true,
   initializer: function () {
-    return true;
+    return 1;
   }
-}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
-  enumerable: true,
-  initializer: null
-}), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class);
+}), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
