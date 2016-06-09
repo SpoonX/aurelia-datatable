@@ -49,8 +49,8 @@ export class DataTable {
   searchCriteria  = {}
 
   constructor(Router, element, entityManager) {
-    this.router        = Router;
-    this.element       = element;
+    this.router  = Router;
+    this.element = element;
 
     if (!this.repository && this.element.hasAttribute('resource')) {
       this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
@@ -114,8 +114,8 @@ export class DataTable {
 
     this.populate(row).destroy()
       .then(ah => {
-      this.load();
-      this.triggerEvent('deleted', row);
+        this.load();
+        this.triggerEvent('deleted', row);
     })
     .catch(error => {
       this.triggerEvent('exception', {on: 'delete', error: error});
@@ -129,8 +129,8 @@ export class DataTable {
 
     this.populate(row).update()
       .then(() => {
-      this.load();
-      this.triggerEvent('updated', row);
+        this.load();
+        this.triggerEvent('updated', row);
     })
     .catch(error => {
       this.triggerEvent('exception', {on: 'update', error: error});
