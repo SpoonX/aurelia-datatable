@@ -1,0 +1,56 @@
+<template>
+  <require from="../columns-filter"></require>
+
+  <!-- Search bar -->
+  <div if.bind="searchable !== null" class="row">
+    <div class="col-xs-2">
+      <select value.bind="defaultColumn" class="form-control" id="columnSelect">
+        <option model.bind="columnLabel.column" repeat.for="columnLabel of columnLabels | columnsFilter">${columnLabel.label}</option>
+      </select>
+    </div>
+
+    <div class="col-xs-10">
+      <input class="form-control" type="text" id="search" placeholder="search" value.bind="search" keyup.delegate="doSearch(search) & debounce:500">
+    </div>
+  </div>
+  <br/>
+
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+      <!-- Labels -->
+      <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
+        <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}"></span>
+        <a if.bind="sortable !== null && !isObject(columnLabel.column)">${columnLabel.label} <i class="${sortingCriteria[columnLabel.column] ? (sortingCriteria[columnLabel.column] === 'desc' ? 'fa fa-caret-down' : 'fa fa-caret-up') : 'fa fa-sort'}"></i></a>
+      </th>
+
+      <!-- Actions -->
+      <th if.bind="destroy != null || update != null" t="Actions"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr repeat.for="row of data">
+
+      <!-- Columns -->
+      <td repeat.for="columnLabel of columnLabels">
+        <a click.delegate="selected(row)">${displayValue(row, columnLabel.column)}</a>
+      </td>
+
+      <!-- Actions -->
+      <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || update !== null">
+        <button if.bind="update !== null" class="btn btn-sm btn-white" click.delegate="doUpdate(row)">
+          <i class="fa fa-pencil"></i>
+        </button>
+
+        <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDelete(row)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div show.bind="pages > 1">
+    <pager resource.bind="repository" criteria.bind="criteriaPager" page.bind="page" pages.two-way="pages" limit.bind="limit"></pager>
+  </div>
+</template>
