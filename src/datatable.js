@@ -65,11 +65,12 @@ export class DataTable {
   load() {
     this.criteria = this.buildCriteria();
 
-    this.repository.find(this.criteria, true).then(result => {
-     this.data = result;
-    }).catch(error => {
-      console.error('Something went wrong.', error);
-    });
+    this.repository.find(this.criteria, true)
+      .then(result => {
+        this.data = result;
+      }).catch(error => {
+        console.error('Something went wrong.', error);
+      });
   }
 
   pageChanged() {
