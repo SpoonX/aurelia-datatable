@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router', 'json-statham'], function (exports, _aureliaFramework, _aureliaViewManager, _aureliaRouter, _jsonStatham) {
+define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'json-statham'], function (exports, _aureliaFramework, _aureliaViewManager, _aureliaOrm, _aureliaRouter, _jsonStatham) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -75,8 +75,8 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
 
   var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
 
-  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-    function DataTable(Router, element, pager) {
+  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+    function DataTable(Router, element, entityManager) {
       _classCallCheck(this, DataTable);
 
       _initDefineProp(this, 'criteria', _descriptor, this);
@@ -114,6 +114,10 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
 
       this.router = Router;
       this.element = element;
+
+      if (!this.repository && this.element.hasAttribute('resource')) {
+        this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
+      }
     }
 
     DataTable.prototype.attached = function attached() {
@@ -174,7 +178,7 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-router'
         return this.delete(this.populate(row));
       }
 
-      this.populate(row).destroy().then(function (ah) {
+      this.populate(row).destroy().then(function () {
         _this2.load();
         _this2.triggerEvent('deleted', row);
       }).catch(function (error) {
