@@ -147,7 +147,7 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
       return this.delete(this.populate(row));
     }
 
-    this.populate(row).destroy().then(ah => {
+    this.populate(row).destroy().then(() => {
       this.load();
       this.triggerEvent('deleted', row);
     }).catch(error => {

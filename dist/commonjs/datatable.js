@@ -167,7 +167,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
       return this.delete(this.populate(row));
     }
 
-    this.populate(row).destroy().then(function (ah) {
+    this.populate(row).destroy().then(function () {
       _this2.load();
       _this2.triggerEvent('deleted', row);
     }).catch(function (error) {

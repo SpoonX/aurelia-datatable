@@ -113,7 +113,7 @@ export class DataTable {
     }
 
     this.populate(row).destroy()
-      .then(ah => {
+      .then(() => {
         this.load();
         this.triggerEvent('deleted', row);
     })

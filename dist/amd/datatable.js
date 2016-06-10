@@ -178,7 +178,7 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
         return this.delete(this.populate(row));
       }
 
-      this.populate(row).destroy().then(function (ah) {
+      this.populate(row).destroy().then(function () {
         _this2.load();
         _this2.triggerEvent('deleted', row);
       }).catch(function (error) {
