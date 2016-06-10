@@ -73,7 +73,7 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
   }
 
-  var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;
 
   var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('data-table'), _dec2 = (0, _aureliaViewManager.resolvedView)('aurelia-data-table', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
     function DataTable(Router, element, entityManager) {
@@ -105,7 +105,9 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
 
       _initDefineProp(this, 'page', _descriptor13, this);
 
-      _initDefineProp(this, 'criteriaPager', _descriptor14, this);
+      _initDefineProp(this, 'pages', _descriptor14, this);
+
+      _initDefineProp(this, 'criteriaPager', _descriptor15, this);
 
       this.count = 0;
       this.columnsArray = [];
@@ -136,35 +138,37 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
       });
     };
 
-    DataTable.prototype.pageChanged = function pageChanged(newValue, oldvalue) {
+    DataTable.prototype.pageChanged = function pageChanged() {
       this.load();
     };
 
     DataTable.prototype.buildCriteria = function buildCriteria() {
-      var crit = {};
+      var criteria = {};
 
       if (this.searchable !== null && Object.keys(this.searchCriteria).length) {
         var propertyName = Object.keys(this.searchCriteria)[0];
         if (this.searchCriteria[propertyName]) {
-          crit['where'] = {};
-          crit['where'][propertyName] = {};
-          crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+          var _criteria$where;
 
-          this.criteriaPager = crit['where'];
+          criteria.where = (_criteria$where = {}, _criteria$where[propertyName] = {
+            contains: this.searchCriteria[propertyName]
+          }, _criteria$where);
+
+          this.criteriaPager = criteria.where;
         }
       }
 
       if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
         var _propertyName = Object.keys(this.sortingCriteria)[0];
         if (this.sortingCriteria[_propertyName]) {
-          crit['sort'] = _propertyName + ' ' + this.sortingCriteria[_propertyName];
+          criteria.sort = _propertyName + ' ' + this.sortingCriteria[_propertyName];
         }
       }
 
-      crit['skip'] = this.page * this.limit - this.limit;
-      crit['limit'] = this.limit;
+      criteria.skip = this.page * this.limit - this.limit;
+      criteria.limit = this.limit;
 
-      return crit;
+      return criteria;
     };
 
     DataTable.prototype.populate = function populate(row) {
@@ -276,9 +280,9 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
     _createClass(DataTable, [{
       key: 'columnLabels',
       get: function get() {
-        var instance = this,
-            labelsRaw = instance.columns.split(','),
-            labels = [];
+        var instance = this;
+        var labelsRaw = instance.columns.split(',');
+        var labels = [];
 
         function clean(str) {
           return str.replace(/^'?\s*|\s*'$/g, '');
@@ -292,8 +296,9 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
           if (!label) {
             return;
           }
-          var aliased = label.split(' as '),
-              cleanedLabel = clean(aliased[0]);
+
+          var aliased = label.split(' as ');
+          var cleanedLabel = clean(aliased[0]);
 
           if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
             instance.columnsArray.push(cleanedLabel);
@@ -365,7 +370,10 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
     initializer: function initializer() {
       return 1;
     }
-  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [_aureliaFramework.bindable], {
+  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [_aureliaFramework.bindable], {
+    enumerable: true,
+    initializer: null
+  }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
   }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);

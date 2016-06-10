@@ -50,5 +50,7 @@
     </tbody>
   </table>
 
-  <pager resource.bind="repository" criteria.bind="criteriaPager" page.bind="page" limit.bind="limit"></pager>
+  <div show.bind="pages > 1">
+    <pager resource.bind="repository" criteria.bind="criteriaPager" page.bind="page" pages.two-way="pages" limit.bind="limit"></pager>
+  </div>
 </template>

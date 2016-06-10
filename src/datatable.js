@@ -40,13 +40,14 @@ export class DataTable {
 
   @bindable data;
   @bindable route;
-  @bindable page = 1;
+  @bindable page  = 1;
+  @bindable pages;
   @bindable criteriaPager;
 
   count           = 0;
   columnsArray    = [];
   sortingCriteria = {};
-  searchCriteria  = {}
+  searchCriteria  = {};
 
   constructor(Router, element, entityManager) {
     this.router  = Router;
@@ -64,43 +65,45 @@ export class DataTable {
   load() {
     this.criteria = this.buildCriteria();
 
-    this.repository.find(this.criteria, true).then(result => {
-     this.data = result;
-    })
-    .catch(error => {
-      console.error('Something went wrong.', error);
-    });
+    this.repository.find(this.criteria, true)
+      .then(result => {
+        this.data = result;
+      }).catch(error => {
+        console.error('Something went wrong.', error);
+      });
   }
 
-  pageChanged(newValue, oldvalue) {
+  pageChanged() {
     this.load();
   }
 
   buildCriteria() {
-    let crit = {};
+    let criteria = {};
 
     if (this.searchable !== null && Object.keys(this.searchCriteria).length ) {
       let propertyName = Object.keys(this.searchCriteria)[0];
       if (this.searchCriteria[propertyName]) {
-        crit['where']                           = {};
-        crit['where'][propertyName]             = {};
-        crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+        criteria.where = {
+          [propertyName]: {
+            contains: this.searchCriteria[propertyName]
+          }
+        };
 
-        this.criteriaPager = crit['where'];
+        this.criteriaPager = criteria.where;
       }
     }
 
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length ) {
       let propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[propertyName]) {
-        crit['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
+        criteria.sort = propertyName + ' ' + this.sortingCriteria[propertyName];
       }
     }
 
-    crit['skip']  = this.page * this.limit - this.limit;
-    crit['limit'] = this.limit;
+    criteria.skip  = this.page * this.limit - this.limit;
+    criteria.limit = this.limit;
 
-    return crit;
+    return criteria;
   }
 
   populate (row) {
@@ -116,10 +119,9 @@ export class DataTable {
       .then(() => {
         this.load();
         this.triggerEvent('deleted', row);
-    })
-    .catch(error => {
-      this.triggerEvent('exception', {on: 'delete', error: error});
-    });
+      }).catch(error => {
+        this.triggerEvent('exception', {on: 'delete', error: error});
+      });
   }
 
   doUpdate (row) {
@@ -129,12 +131,11 @@ export class DataTable {
 
     this.populate(row).update()
       .then(() => {
-        this.load();
-        this.triggerEvent('updated', row);
-    })
-    .catch(error => {
-      this.triggerEvent('exception', {on: 'update', error: error});
-    });
+          this.load();
+          this.triggerEvent('updated', row);
+      }).catch(error => {
+        this.triggerEvent('exception', {on: 'update', error: error});
+      });
   }
 
   doSort(columnLabel) {
@@ -169,9 +170,9 @@ export class DataTable {
 
   @computedFrom('columns')
   get columnLabels () {
-    let instance  = this,
-        labelsRaw = instance.columns.split(','),
-        labels    = [];
+    let instance  = this;
+    let labelsRaw = instance.columns.split(',');
+    let labels    = [];
 
     function clean (str) {
       return str.replace(/^'?\s*|\s*'$/g, '');
@@ -185,8 +186,9 @@ export class DataTable {
       if(!label) {
         return;
       }
-      let aliased = label.split(' as '),
-          cleanedLabel = clean(aliased[0]);
+
+      let aliased      = label.split(' as ');
+      let cleanedLabel = clean(aliased[0]);
 
       if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
         instance.columnsArray.push(cleanedLabel);

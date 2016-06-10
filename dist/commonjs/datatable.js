@@ -7,7 +7,7 @@ exports.DataTable = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;
 
 var _aureliaFramework = require('aurelia-framework');
 
@@ -94,7 +94,9 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 
     _initDefineProp(this, 'page', _descriptor13, this);
 
-    _initDefineProp(this, 'criteriaPager', _descriptor14, this);
+    _initDefineProp(this, 'pages', _descriptor14, this);
+
+    _initDefineProp(this, 'criteriaPager', _descriptor15, this);
 
     this.count = 0;
     this.columnsArray = [];
@@ -125,35 +127,37 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     });
   };
 
-  DataTable.prototype.pageChanged = function pageChanged(newValue, oldvalue) {
+  DataTable.prototype.pageChanged = function pageChanged() {
     this.load();
   };
 
   DataTable.prototype.buildCriteria = function buildCriteria() {
-    var crit = {};
+    var criteria = {};
 
     if (this.searchable !== null && Object.keys(this.searchCriteria).length) {
       var propertyName = Object.keys(this.searchCriteria)[0];
       if (this.searchCriteria[propertyName]) {
-        crit['where'] = {};
-        crit['where'][propertyName] = {};
-        crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+        var _criteria$where;
 
-        this.criteriaPager = crit['where'];
+        criteria.where = (_criteria$where = {}, _criteria$where[propertyName] = {
+          contains: this.searchCriteria[propertyName]
+        }, _criteria$where);
+
+        this.criteriaPager = criteria.where;
       }
     }
 
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
       var _propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[_propertyName]) {
-        crit['sort'] = _propertyName + ' ' + this.sortingCriteria[_propertyName];
+        criteria.sort = _propertyName + ' ' + this.sortingCriteria[_propertyName];
       }
     }
 
-    crit['skip'] = this.page * this.limit - this.limit;
-    crit['limit'] = this.limit;
+    criteria.skip = this.page * this.limit - this.limit;
+    criteria.limit = this.limit;
 
-    return crit;
+    return criteria;
   };
 
   DataTable.prototype.populate = function populate(row) {
@@ -265,9 +269,9 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
   _createClass(DataTable, [{
     key: 'columnLabels',
     get: function get() {
-      var instance = this,
-          labelsRaw = instance.columns.split(','),
-          labels = [];
+      var instance = this;
+      var labelsRaw = instance.columns.split(',');
+      var labels = [];
 
       function clean(str) {
         return str.replace(/^'?\s*|\s*'$/g, '');
@@ -281,8 +285,9 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
         if (!label) {
           return;
         }
-        var aliased = label.split(' as '),
-            cleanedLabel = clean(aliased[0]);
+
+        var aliased = label.split(' as ');
+        var cleanedLabel = clean(aliased[0]);
 
         if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
           instance.columnsArray.push(cleanedLabel);
@@ -354,7 +359,10 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [_aureliaFramework.bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [_aureliaFramework.bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [_aureliaFramework.bindable], {
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
