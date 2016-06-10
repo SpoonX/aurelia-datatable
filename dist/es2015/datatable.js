@@ -202,9 +202,9 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
   }
 
   get columnLabels() {
-    let instance = this,
-        labelsRaw = instance.columns.split(','),
-        labels = [];
+    let instance = this;
+    let labelsRaw = instance.columns.split(',');
+    let labels = [];
 
     function clean(str) {
       return str.replace(/^'?\s*|\s*'$/g, '');
@@ -219,8 +219,8 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
         return;
       }
 
-      let aliased = label.split(' as '),
-          cleanedLabel = clean(aliased[0]);
+      let aliased = label.split(' as ');
+      let cleanedLabel = clean(aliased[0]);
 
       if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
         instance.columnsArray.push(cleanedLabel);

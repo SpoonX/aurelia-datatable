@@ -294,9 +294,9 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
         _createClass(DataTable, [{
           key: 'columnLabels',
           get: function get() {
-            var instance = this,
-                labelsRaw = instance.columns.split(','),
-                labels = [];
+            var instance = this;
+            var labelsRaw = instance.columns.split(',');
+            var labels = [];
 
             function clean(str) {
               return str.replace(/^'?\s*|\s*'$/g, '');
@@ -311,8 +311,8 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
                 return;
               }
 
-              var aliased = label.split(' as '),
-                  cleanedLabel = clean(aliased[0]);
+              var aliased = label.split(' as ');
+              var cleanedLabel = clean(aliased[0]);
 
               if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
                 instance.columnsArray.push(cleanedLabel);
