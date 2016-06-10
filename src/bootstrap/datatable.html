@@ -10,22 +10,28 @@
     </div>
 
     <div class="col-xs-10">
-      <input class="form-control" type="text" id="search" placeholder="search" value.bind="search" keyup.delegate="doSearch(search) & debounce:500">
+      <input class="form-control" type="text" id="search" placeholder="search" value.bind="search" keyup.delegate="doSearch() & debounce:500">
     </div>
+
+    <br/>
   </div>
-  <br/>
 
   <table class="table table-striped table-bordered table-hover">
     <thead>
     <tr>
       <!-- Labels -->
       <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
+        <!-- Just show the label -->
         <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}"></span>
-        <a if.bind="sortable !== null && !isObject(columnLabel.column)">${columnLabel.label} <i class="${sortingCriteria[columnLabel.column] ? (sortingCriteria[columnLabel.column] === 'desc' ? 'fa fa-caret-down' : 'fa fa-caret-up') : 'fa fa-sort'}"></i></a>
+
+        <!-- Show label and make it sortable (click) -->
+        <a if.bind="sortable !== null && !isObject(columnLabel.column)">
+          ${columnLabel.label} <i class="fa ${getCaretIcon(columnLabel.column)}"></i>
+        </a>
       </th>
 
       <!-- Actions -->
-      <th if.bind="destroy != null || update != null" t="Actions"></th>
+      <th if.bind="destroy != null || edit != null" t="Actions"></th>
     </tr>
     </thead>
     <tbody>
@@ -37,12 +43,12 @@
       </td>
 
       <!-- Actions -->
-      <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || update !== null">
-        <button if.bind="update !== null" class="btn btn-sm btn-white" click.delegate="doUpdate(row)">
+      <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || edit !== null">
+        <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row)">
           <i class="fa fa-pencil"></i>
         </button>
 
-        <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDelete(row)">
+        <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row)">
           <i class="fa fa-trash"></i>
         </button>
       </td>
