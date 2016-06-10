@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -78,7 +78,9 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
 
     _initDefineProp(this, 'page', _descriptor13, this);
 
-    _initDefineProp(this, 'criteriaPager', _descriptor14, this);
+    _initDefineProp(this, 'pages', _descriptor14, this);
+
+    _initDefineProp(this, 'criteriaPager', _descriptor15, this);
 
     this.count = 0;
     this.columnsArray = [];
@@ -107,35 +109,37 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
     });
   }
 
-  pageChanged(newValue, oldvalue) {
+  pageChanged() {
     this.load();
   }
 
   buildCriteria() {
-    let crit = {};
+    let criteria = {};
 
     if (this.searchable !== null && Object.keys(this.searchCriteria).length) {
       let propertyName = Object.keys(this.searchCriteria)[0];
       if (this.searchCriteria[propertyName]) {
-        crit['where'] = {};
-        crit['where'][propertyName] = {};
-        crit['where'][propertyName]['contains'] = this.searchCriteria[propertyName];
+        criteria.where = {
+          [propertyName]: {
+            contains: this.searchCriteria[propertyName]
+          }
+        };
 
-        this.criteriaPager = crit['where'];
+        this.criteriaPager = criteria.where;
       }
     }
 
     if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
       let propertyName = Object.keys(this.sortingCriteria)[0];
       if (this.sortingCriteria[propertyName]) {
-        crit['sort'] = propertyName + ' ' + this.sortingCriteria[propertyName];
+        criteria.sort = propertyName + ' ' + this.sortingCriteria[propertyName];
       }
     }
 
-    crit['skip'] = this.page * this.limit - this.limit;
-    crit['limit'] = this.limit;
+    criteria.skip = this.page * this.limit - this.limit;
+    criteria.limit = this.limit;
 
-    return crit;
+    return criteria;
   }
 
   populate(row) {
@@ -214,6 +218,7 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
       if (!label) {
         return;
       }
+
       let aliased = label.split(' as '),
           cleanedLabel = clean(aliased[0]);
 
@@ -325,7 +330,10 @@ export let DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView
   initializer: function () {
     return 1;
   }
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [bindable], {
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
