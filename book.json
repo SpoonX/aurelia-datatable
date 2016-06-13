@@ -2,8 +2,7 @@
   "root": "./doc",
   "plugins": [
     "edit-link",
-    "github",
-    "versions"
+    "github"
   ],
   "pluginsConfig": {
     "edit-link": {

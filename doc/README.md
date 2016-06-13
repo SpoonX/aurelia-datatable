@@ -2,11 +2,12 @@
 
 [View on github](https://github.com/spoonx/aurelia-datatable)
 
-A data-table featuring [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
+> A data-table using [aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [aurelia-pager](https://github.com/SpoonX/aurelia-pager).
 
 Features:
 
 * Pagination
+* Sorting
 * Intergrated ORM
 * Search
 * Custom columns
