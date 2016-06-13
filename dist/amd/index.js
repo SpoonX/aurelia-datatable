@@ -8,7 +8,7 @@ define(['exports', 'aurelia-view-manager'], function (exports, _aureliaViewManag
   function configure(aurelia) {
     aurelia.plugin('aurelia-pager');
 
-    aurelia.container.get(_aureliaViewManager.Config).configureNamespace('aurelia-data-table', {
+    aurelia.container.get(_aureliaViewManager.Config).configureNamespace('spoonx/datatable', {
       framework: 'bootstrap',
       location: './{{framework}}/{{view}}.html'
     });

@@ -3,7 +3,7 @@
 System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "aurelia-router", "json-statham"], function (_export, _context) {
   "use strict";
 
-  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, DataTable;
+  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, DataTable;
 
   function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -89,27 +89,27 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
         };
       }();
 
-      _export("DataTable", DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+      _export("DataTable", DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
         function DataTable(Router, element, entityManager) {
           _classCallCheck(this, DataTable);
 
           _initDefineProp(this, "criteria", _descriptor, this);
 
-          _initDefineProp(this, "limit", _descriptor2, this);
+          _initDefineProp(this, "where", _descriptor2, this);
 
-          _initDefineProp(this, "columns", _descriptor3, this);
+          _initDefineProp(this, "limit", _descriptor3, this);
 
-          _initDefineProp(this, "searchColumn", _descriptor4, this);
+          _initDefineProp(this, "columns", _descriptor4, this);
 
-          _initDefineProp(this, "searchable", _descriptor5, this);
+          _initDefineProp(this, "searchColumn", _descriptor5, this);
 
-          _initDefineProp(this, "sortable", _descriptor6, this);
+          _initDefineProp(this, "searchable", _descriptor6, this);
 
-          _initDefineProp(this, "edit", _descriptor7, this);
+          _initDefineProp(this, "sortable", _descriptor7, this);
 
-          _initDefineProp(this, "destroy", _descriptor8, this);
+          _initDefineProp(this, "edit", _descriptor8, this);
 
-          _initDefineProp(this, "where", _descriptor9, this);
+          _initDefineProp(this, "destroy", _descriptor9, this);
 
           _initDefineProp(this, "page", _descriptor10, this);
 
@@ -195,26 +195,25 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
 
           this.criteria.sort = (_criteria$sort = {}, _criteria$sort[column] = this.criteria.sort[column] === 'asc' ? 'desc' : 'asc', _criteria$sort);
 
-          for (var i in this.caretIcon) {
-            this.caretIcon[i] = this.getCaretIcon(i);
-          }
-
           this.load();
+        };
+
+        DataTable.prototype.searchColumnChanged = function searchColumnChanged() {
+          return this.doSearch();
         };
 
         DataTable.prototype.doSearch = function doSearch() {
-          var _criteria;
+          var _criteria$where;
 
-          var criteria = (_criteria = {}, _criteria[this.searchColumn] = { contains: this.search }, _criteria);
-          this.criteria.where = criteria;
+          this.criteria.where = (_criteria$where = {}, _criteria$where[this.searchColumn] = { contains: this.search }, _criteria$where);
+
+          this.pager.reloadCount();
 
           this.load();
         };
 
-        DataTable.prototype.searchColumnChanged = function searchColumnChanged(newValue, oldValue) {
-          delete this.criteria.where[oldValue];
-
-          this.doSearch();
+        DataTable.prototype.reload = function reload() {
+          this.pager.reloadCount();
         };
 
         DataTable.prototype.triggerEvent = function triggerEvent(event) {
@@ -226,29 +225,25 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
         };
 
         DataTable.prototype.selected = function selected(row) {
-          return this.select ? this.select(row) : this.router.navigateToRoute(this.route, { id: row.id });
+          if (this.route) {
+            return this.router.navigateToRoute(this.route, { id: row.id });
+          }
+
+          if (this.select) {
+            return this.select(row);
+          }
         };
 
         DataTable.prototype.displayValue = function displayValue(row, propertyName) {
           return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
         };
 
-        DataTable.prototype.getCaretIcon = function getCaretIcon(column) {
-          var sorting = this.criteria.sort[column];
-
-          return sorting ? sorting === 'desc' ? 'fa-caret-down' : 'fa-caret-up' : 'fa-sort';
-        };
-
         _createClass(DataTable, [{
           key: "columnLabels",
           get: function get() {
-            var _this3 = this;
-
             var labelsRaw = this.columns.split(',');
             var columnsArray = [];
             var labels = [];
-
-            this.caretIcon = {};
 
             function clean(str) {
               return str.replace(/^'?\s*|\s*'$/g, '');
@@ -264,16 +259,15 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
               }
 
               var aliased = label.split(' as ');
-              var cleanedLabel = clean(aliased[0]);
+              var cleanedColumn = clean(aliased[0]);
 
-              _this3.caretIcon[cleanedLabel] = _this3.getCaretIcon(cleanedLabel);
-
-              if (columnsArray.indexOf(cleanedLabel) === -1) {
-                columnsArray.push(cleanedLabel);
+              if (columnsArray.indexOf(cleanedColumn) === -1) {
+                columnsArray.push(cleanedColumn);
               }
 
               labels.push({
-                column: cleanedLabel,
+                nested: cleanedColumn.indexOf('.') !== -1,
+                column: cleanedColumn,
                 label: ucfirst(clean(aliased[1] || aliased[0]))
               });
             });
@@ -288,45 +282,45 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
         initializer: function initializer() {
           return { populate: null };
         }
-      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "limit", [bindable], {
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "where", [_dec5], {
+        enumerable: true,
+        initializer: function initializer() {
+          return {};
+        }
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "limit", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return 30;
         }
-      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "columns", [bindable], {
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "columns", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return '';
         }
-      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "searchColumn", [bindable], {
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "searchColumn", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return 'name';
         }
-      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [bindable], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "sortable", [bindable], {
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "sortable", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "edit", [bindable], {
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "edit", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "destroy", [bindable], {
+      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "destroy", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
-        }
-      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "where", [bindable], {
-        enumerable: true,
-        initializer: function initializer() {
-          return {};
         }
       }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "page", [bindable], {
         enumerable: true,
@@ -348,7 +342,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
       }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
         enumerable: true,
         initializer: null
-      }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class));
+      }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class));
 
       _export("DataTable", DataTable);
     }
