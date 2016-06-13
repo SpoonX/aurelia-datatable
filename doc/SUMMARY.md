@@ -2,6 +2,6 @@
 
 * [Introduction](README.md)
 * [Installation](installation.md)
-* [Configuration](configuration.md)
+* [Usage](usage.md)
 * [Changelog](CHANGELOG.md)
 * [License](license.md)

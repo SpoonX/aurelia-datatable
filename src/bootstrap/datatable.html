@@ -4,13 +4,21 @@
   <!-- Search bar -->
   <div if.bind="searchable !== null" class="row">
     <div class="col-xs-2">
-      <select value.bind="searchColumn" class="form-control" id="columnSelect">
-        <option model.bind="columnLabel.column" repeat.for="columnLabel of columnLabels | columnsFilter">${columnLabel.label}</option>
+      <select value.bind="searchColumn" class="form-control" id="columnSelect" title="Search">
+        <option model.bind="columnLabel.column" repeat.for="columnLabel of columnLabels | columnsFilter">
+          ${columnLabel.label}
+        </option>
       </select>
     </div>
 
     <div class="col-xs-10">
-      <input class="form-control" type="text" id="search" placeholder="search" value.bind="search" keyup.delegate="doSearch() & debounce:500">
+      <input
+        class="form-control"
+        type="text"
+        id="search"
+        placeholder="search"
+        value.bind="search"
+        keyup.delegate="doSearch() & debounce:500">
     </div>
 
     <br/>
@@ -22,16 +30,18 @@
       <!-- Labels -->
       <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
         <!-- Just show the label -->
-        <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}"></span>
+        <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}">${columnLabel.label}</span>
 
         <!-- Show label and make it sortable (click) -->
         <a if.bind="sortable !== null && !isObject(columnLabel.column)">
-          ${columnLabel.label} <i class="fa ${caretIcon[columnLabel.column]}"></i>
+          ${columnLabel.label}
+          <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
+          </i>
         </a>
       </th>
 
       <!-- Actions -->
-      <th if.bind="destroy != null || edit != null" t="Actions"></th>
+      <th if.bind="destroy != null || edit != null" t="Actions">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -57,6 +67,13 @@
   </table>
 
   <div show.bind="pages > 1">
-    <pager resource.bind="repository" criteria.bind="criteria.where" page.bind="page" pages.two-way="pages" limit.bind="limit"></pager>
+    <pager
+      resource.bind="repository"
+      criteria.bind="criteria.where"
+      page.bind="page"
+      pages.two-way="pages"
+      view-model.ref="pager"
+      limit.bind="limit"
+    ></pager>
   </div>
 </template>

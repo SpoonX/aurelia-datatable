@@ -5,11 +5,15 @@ import {Router} from "aurelia-router";
 import {Statham} from "json-statham";
 
 @customElement('data-table')
-@resolvedView('aurelia-data-table', 'datatable')
+@resolvedView('datatable', 'datatable')
 @inject(Router, Element, EntityManager)
 export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay})
-  criteria               = {populate: null};
+  criteria = {populate: null};
+
+  @bindable({defaultBindingMode: bindingMode.twoWay})
+  where = {};
+
   @bindable limit        = 30;
   @bindable columns      = '';
   @bindable searchColumn = 'name';
@@ -17,7 +21,6 @@ export class DataTable {
   @bindable sortable     = null; // Columns can be sorted? (Optional attribute)
   @bindable edit         = null; // Rows are editable? (Optional attribute)
   @bindable destroy      = null; // Rows are removable? (Optional attribute)
-  @bindable where        = {};
   @bindable page         = 1;
   @bindable select;
   @bindable repository;
@@ -94,17 +97,14 @@ export class DataTable {
       [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
     };
 
-    for (var i in this.caretIcon) {
-      this.caretIcon[i] = this.getCaretIcon(i);
-    }
-
     this.load();
   }
 
   doSearch() {
     // defining a new variable will trigger the `changed` method even when a property is changed.
-    let criteria        = {[this.searchColumn]: {contains: this.search}};
-    this.criteria.where = criteria;
+    this.criteria.where = {[this.searchColumn]: {contains: this.search}};
+
+    this.pager.reloadCount();
 
     this.load();
   }
@@ -121,8 +121,6 @@ export class DataTable {
     let columnsArray = [];
     let labels       = [];
 
-    this.caretIcon   = {};
-
     function clean(str) {
       return str.replace(/^'?\s*|\s*'$/g, '');
     }
@@ -138,8 +136,6 @@ export class DataTable {
 
       let aliased      = label.split(' as ');
       let cleanedLabel = clean(aliased[0]);
-
-      this.caretIcon[cleanedLabel] = this.getCaretIcon(cleanedLabel);
 
       if (columnsArray.indexOf(cleanedLabel) === -1) {
         columnsArray.push(cleanedLabel);
@@ -166,11 +162,5 @@ export class DataTable {
 
   displayValue(row, propertyName) {
     return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
-  }
-
-  getCaretIcon(column) {
-    let sorting = this.criteria.sort[column];
-
-    return sorting ? (sorting === 'desc' ? 'fa-caret-down' : 'fa-caret-up') : 'fa-sort';
   }
 }
