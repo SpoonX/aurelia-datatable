@@ -4,8 +4,8 @@ import {EntityManager} from "aurelia-orm";
 import {Router} from "aurelia-router";
 import {Statham} from "json-statham";
 
-@customElement('data-table')
-@resolvedView('datatable', 'datatable')
+@customElement('datatable')
+@resolvedView('spoonx/datatable', 'datatable')
 @inject(Router, Element, EntityManager)
 export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay})
@@ -17,12 +17,12 @@ export class DataTable {
   @bindable limit        = 30;
   @bindable columns      = '';
   @bindable searchColumn = 'name';
-  @bindable searchable   = null; // Show the search field? (Optional attribute)
-  @bindable sortable     = null; // Columns can be sorted? (Optional attribute)
-  @bindable edit         = null; // Rows are editable? (Optional attribute)
-  @bindable destroy      = null; // Rows are removable? (Optional attribute)
-  @bindable page         = 1;
-  @bindable select;
+  @bindable searchable   = null; // Show the search field? (Optional attribute).
+  @bindable sortable     = null; // Columns can be sorted? (Optional attribute).
+  @bindable edit         = null; // Rows are editable? (Optional attribute).
+  @bindable destroy      = null; // Rows are removable? (Optional attribute).
+  @bindable page         = 1;    // Current page.
+  @bindable select;              // User provided callback, called upon clicking on a row.
   @bindable repository;
   @bindable data;
   @bindable route;
@@ -100,8 +100,11 @@ export class DataTable {
     this.load();
   }
 
+  searchColumnChanged() {
+    return this.doSearch();
+  }
+
   doSearch() {
-    // defining a new variable will trigger the `changed` method even when a property is changed.
     this.criteria.where = {[this.searchColumn]: {contains: this.search}};
 
     this.pager.reloadCount();
@@ -109,10 +112,8 @@ export class DataTable {
     this.load();
   }
 
-  searchColumnChanged(newValue, oldValue) {
-    delete this.criteria.where[oldValue];
-
-    this.doSearch();
+  reload() {
+    this.pager.reloadCount(); // Sets page to 1, and triggers this.pageChanged() (reload data).
   }
 
   @computedFrom('columns')
@@ -134,15 +135,16 @@ export class DataTable {
         return;
       }
 
-      let aliased      = label.split(' as ');
-      let cleanedLabel = clean(aliased[0]);
+      let aliased       = label.split(' as ');
+      let cleanedColumn = clean(aliased[0]);
 
-      if (columnsArray.indexOf(cleanedLabel) === -1) {
-        columnsArray.push(cleanedLabel);
+      if (columnsArray.indexOf(cleanedColumn) === -1) {
+        columnsArray.push(cleanedColumn);
       }
 
       labels.push({
-        column: cleanedLabel,
+        nested: cleanedColumn.indexOf('.') !== -1,
+        column: cleanedColumn,
         label : ucfirst(clean(aliased[1] || aliased[0]))
       });
     });
@@ -157,7 +159,13 @@ export class DataTable {
   }
 
   selected(row) {
-    return this.select ? this.select(row) : this.router.navigateToRoute(this.route, {id: row.id});
+    if (this.route) {
+      return this.router.navigateToRoute(this.route, {id: row.id})
+    }
+
+    if (this.select) {
+      return this.select(row);
+    }
   }
 
   displayValue(row, propertyName) {

@@ -20,7 +20,6 @@
         value.bind="search"
         keyup.delegate="doSearch() & debounce:500">
     </div>
-
     <br/>
   </div>
 
@@ -30,10 +29,10 @@
       <!-- Labels -->
       <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
         <!-- Just show the label -->
-        <span if.bind="sortable === null || isObject(columnLabel.column)" t="${columnLabel.label}">${columnLabel.label}</span>
+        <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
 
         <!-- Show label and make it sortable (click) -->
-        <a if.bind="sortable !== null && !isObject(columnLabel.column)">
+        <a if.bind="sortable !== null && !columnLabel.nested">
           ${columnLabel.label}
           <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
           </i>
