@@ -1,6 +1,6 @@
 {
   "name": "aurelia-datatable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Aurelia-only data tables",
   "bugs": {
     "url": "https://github.com/SpoonX/aurelia-datatable/issues"
@@ -69,7 +69,7 @@
     },
     "dependencies": {
       "aurelia-framework": "^1.0.0-beta.1.0.5",
-      "aurelia-pager": "^0.0.2",
+      "aurelia-pager": "^0.0.3",
       "aurelia-router": "^1.0.0-beta.1",
       "aurelia-view-manager": "^0.0.4",
       "json-statham": "^1.3.0"
