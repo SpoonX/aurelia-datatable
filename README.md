@@ -1,7 +1,5 @@
 # aurelia-orm
 
-[![Build Status](https://travis-ci.org/SpoonX/aurelia-orm.svg)](https://travis-ci.org/SpoonX/aurelia-orm)
-[![Known Vulnerabilities](https://snyk.io/test/npm/name/badge.svg)](https://snyk.io/test/npm/aurelia-orm)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000?style=plastic)](https://gitter.im/SpoonX/Dev)
 
 A data-table featuring [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
