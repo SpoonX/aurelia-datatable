@@ -1,51 +1,53 @@
-# Data-table
-A data-table with pagination built with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
+# aurelia-orm
 
-### columns
-String representing the column names, supports renaming columns with `as` e.g. `name as username`.
+[![Build Status](https://travis-ci.org/SpoonX/aurelia-orm.svg)](https://travis-ci.org/SpoonX/aurelia-orm)
+[![Known Vulnerabilities](https://snyk.io/test/npm/name/badge.svg)](https://snyk.io/test/npm/aurelia-orm)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000?style=plastic)](https://gitter.im/SpoonX/Dev)
 
-### repository (optional)
-A entity with [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) e.g. `entityManager.getRepository('users')`
+A data-table featuring [Spoonx/Aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [Spoonx/Aurelia-pager](https://github.com/SpoonX/aurelia-pager)
 
-### resource (optional)
-The name of a repository e.g. `users`
+Features:
 
-### limit
-The amount of items to show on 1 page, defaults to 30.
+* Pagination
+* Intergrated ORM
+* Search
+* Custom columns
+* And more
 
-## Optional attributes
+## Installation
 
-### destroy
-Show delete button. Rows are removable, will trigger `deleted.delegate="myEventCallback($event)"` when clicked.
+### Jspm/SytemJs
 
-### update 
-Show edit button. Rows are editable, will trigger `updated.delegate="myEventCallback($event)"` when clicked.
+Run `jspm i npm:aurelia-datatable` from your project root.
 
-### sortable
-Columns can be sorted.
+### Webpack
 
-### searchable
-Show the search field
+Run `npm i aurelia-datatable --save` from your project root.
 
-## Custom html
-You can override the html with your own by configuring it through the [Spoonx/Aurelia-view-manager](https://github.com/spoonx/aurelia-view-manager).
+## Documentation
 
-## Examples:
+You can find usage examples and the documentation at [aurelia-orm-doc](http://aurelia-datatable.spoonx.org/).
+
+The [changelog](doc/changelog.md) provides you with information about important changes.
+
+## Example
+
+Here's a snippet to give you an idea of what this module supports.
 
 ```js
-this.dbData = entityManager.getRepository('users');
+this.repository = entityManager.getRepository('users');
 ```
 
 ```html
-    <data-table 
-        deleted.delegate="myEventCallback($event)" 
-        updated.delegate="myEventCallback($event)" 
-        columns="id,name" 
-        repository.bind="dbData" 
-        default-column="name" 
-        searchable 
-        sortable 
-        update 
-        destroy
-    ></data-table>
+  <data-table 
+      deleted.delegate="myEventCallback($event)" 
+      updated.delegate="myEventCallback($event)" 
+      columns="id,name as username" 
+      repository.bind="repository" 
+      search-column="name" 
+      searchable 
+      sortable 
+      update 
+      destroy
+  ></data-table>
 ```
