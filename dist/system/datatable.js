@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'json-statham'], function (_export, _context) {
+System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "aurelia-router", "json-statham"], function (_export, _context) {
   "use strict";
 
   var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, DataTable;
@@ -89,44 +89,39 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
         };
       }();
 
-      _export('DataTable', DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+      _export("DataTable", DataTable = (_dec = customElement('data-table'), _dec2 = resolvedView('aurelia-data-table', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
         function DataTable(Router, element, entityManager) {
           _classCallCheck(this, DataTable);
 
-          _initDefineProp(this, 'criteria', _descriptor, this);
+          _initDefineProp(this, "criteria", _descriptor, this);
 
-          _initDefineProp(this, 'repository', _descriptor2, this);
+          _initDefineProp(this, "limit", _descriptor2, this);
 
-          _initDefineProp(this, 'limit', _descriptor3, this);
+          _initDefineProp(this, "columns", _descriptor3, this);
 
-          _initDefineProp(this, 'columns', _descriptor4, this);
+          _initDefineProp(this, "searchColumn", _descriptor4, this);
 
-          _initDefineProp(this, 'defaultColumn', _descriptor5, this);
+          _initDefineProp(this, "searchable", _descriptor5, this);
 
-          _initDefineProp(this, 'searchable', _descriptor6, this);
+          _initDefineProp(this, "sortable", _descriptor6, this);
 
-          _initDefineProp(this, 'sortable', _descriptor7, this);
+          _initDefineProp(this, "edit", _descriptor7, this);
 
-          _initDefineProp(this, 'update', _descriptor8, this);
+          _initDefineProp(this, "destroy", _descriptor8, this);
 
-          _initDefineProp(this, 'destroy', _descriptor9, this);
+          _initDefineProp(this, "where", _descriptor9, this);
 
-          _initDefineProp(this, 'select', _descriptor10, this);
+          _initDefineProp(this, "page", _descriptor10, this);
 
-          _initDefineProp(this, 'data', _descriptor11, this);
+          _initDefineProp(this, "select", _descriptor11, this);
 
-          _initDefineProp(this, 'route', _descriptor12, this);
+          _initDefineProp(this, "repository", _descriptor12, this);
 
-          _initDefineProp(this, 'page', _descriptor13, this);
+          _initDefineProp(this, "data", _descriptor13, this);
 
-          _initDefineProp(this, 'pages', _descriptor14, this);
+          _initDefineProp(this, "route", _descriptor14, this);
 
-          _initDefineProp(this, 'criteriaPager', _descriptor15, this);
-
-          this.count = 0;
-          this.columnsArray = [];
-          this.sortingCriteria = {};
-          this.searchCriteria = {};
+          _initDefineProp(this, "pages", _descriptor15, this);
 
           this.router = Router;
           this.element = element;
@@ -134,169 +129,126 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
           if (!this.repository && this.element.hasAttribute('resource')) {
             this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
           }
+
+          this.criteria.where = this.where;
+          this.criteria.sort = this.criteria.sort || {};
         }
 
         DataTable.prototype.attached = function attached() {
           this.load();
         };
 
-        DataTable.prototype.load = function load() {
-          var _this = this;
-
-          this.criteria = this.buildCriteria();
-
-          this.repository.find(this.criteria, true).then(function (result) {
-            _this.data = result;
-          }).catch(function (error) {
-            console.error('Something went wrong.', error);
-          });
-        };
-
         DataTable.prototype.pageChanged = function pageChanged() {
           this.load();
         };
 
-        DataTable.prototype.buildCriteria = function buildCriteria() {
-          var criteria = {};
+        DataTable.prototype.limitChanged = function limitChanged() {
+          this.load();
+        };
 
-          if (this.searchable !== null && Object.keys(this.searchCriteria).length) {
-            var propertyName = Object.keys(this.searchCriteria)[0];
-            if (this.searchCriteria[propertyName]) {
-              var _criteria$where;
+        DataTable.prototype.load = function load() {
+          var _this = this;
 
-              criteria.where = (_criteria$where = {}, _criteria$where[propertyName] = {
-                contains: this.searchCriteria[propertyName]
-              }, _criteria$where);
+          this.criteria.skip = this.page * this.limit - this.limit;
+          this.criteria.limit = this.limit;
 
-              this.criteriaPager = criteria.where;
-            }
-          }
-
-          if (this.sortable !== null && Object.keys(this.sortingCriteria).length) {
-            var _propertyName = Object.keys(this.sortingCriteria)[0];
-            if (this.sortingCriteria[_propertyName]) {
-              criteria.sort = _propertyName + ' ' + this.sortingCriteria[_propertyName];
-            }
-          }
-
-          criteria.skip = this.page * this.limit - this.limit;
-          criteria.limit = this.limit;
-
-          return criteria;
+          this.repository.find(this.criteria, true).then(function (result) {
+            _this.data = result;
+          }).catch(function (error) {
+            _this.triggerEvent('exception', { on: 'load', error: error });
+          });
         };
 
         DataTable.prototype.populate = function populate(row) {
           return this.repository.getPopulatedEntity(row);
         };
 
-        DataTable.prototype.doDelete = function doDelete(row) {
+        DataTable.prototype.doDestroy = function doDestroy(row) {
           var _this2 = this;
 
-          if (typeof this.delete === 'function') {
-            return this.delete(this.populate(row));
+          if (typeof this.destroy === 'function') {
+            return this.destroy(row);
           }
 
           this.populate(row).destroy().then(function () {
             _this2.load();
-            _this2.triggerEvent('deleted', row);
+            _this2.triggerEvent('destroyed', row);
           }).catch(function (error) {
-            _this2.triggerEvent('exception', { on: 'delete', error: error });
+            _this2.triggerEvent('exception', { on: 'destroy', error: error });
           });
         };
 
-        DataTable.prototype.doUpdate = function doUpdate(row) {
-          var _this3 = this;
-
-          if (typeof this.update === 'function') {
-            return this.update(this.populate(row));
+        DataTable.prototype.doEdit = function doEdit(row) {
+          if (typeof this.edit === 'function') {
+            return this.edit(row);
           }
-
-          this.populate(row).update().then(function () {
-            _this3.load();
-            _this3.triggerEvent('updated', row);
-          }).catch(function (error) {
-            _this3.triggerEvent('exception', { on: 'update', error: error });
-          });
         };
 
         DataTable.prototype.doSort = function doSort(columnLabel) {
-          if (this.sortable === null || this.isObject(columnLabel.column)) {
+          var _criteria$sort;
+
+          if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
             return;
           }
 
-          if (this.sortingCriteria[columnLabel.column]) {
-            this.sortingCriteria[columnLabel.column] = this.sortingCriteria[columnLabel.column] === 'asc' ? 'desc' : 'asc';
-          } else {
-            this.sortingCriteria = {};
-            this.sortingCriteria[columnLabel.column] = 'asc';
+          var column = columnLabel.column;
+
+          this.criteria.sort = (_criteria$sort = {}, _criteria$sort[column] = this.criteria.sort[column] === 'asc' ? 'desc' : 'asc', _criteria$sort);
+
+          for (var i in this.caretIcon) {
+            this.caretIcon[i] = this.getCaretIcon(i);
           }
 
           this.load();
         };
 
-        DataTable.prototype.doSearch = function doSearch(searchInput) {
-          if (this.searchable === null) {
-            return;
-          }
+        DataTable.prototype.doSearch = function doSearch() {
+          var _criteria;
 
-          if (!(this.defaultColumn in this.searchCriteria)) {
-            this.searchCriteria = {};
-          }
-
-          this.searchCriteria[this.defaultColumn] = searchInput;
+          var criteria = (_criteria = {}, _criteria[this.searchColumn] = { contains: this.search }, _criteria);
+          this.criteria.where = criteria;
 
           this.load();
         };
 
-        DataTable.prototype.checkDefaultColumn = function checkDefaultColumn() {
-          var hasNameColumn = this.columnsArray.indexOf('name') !== -1;
+        DataTable.prototype.searchColumnChanged = function searchColumnChanged(newValue, oldValue) {
+          delete this.criteria.where[oldValue];
 
-          if (!this.defaultColumn || this.defaultColumn && this.columnsArray.indexOf(this.defaultColumn) === -1) {
-            this.defaultColumn = hasNameColumn ? 'name' : this.columnsArray[0] || null;
-          }
+          this.doSearch();
         };
 
         DataTable.prototype.triggerEvent = function triggerEvent(event) {
           var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
           payload.bubbles = true;
+
           return this.element.dispatchEvent(new CustomEvent(event, payload));
         };
 
-        DataTable.prototype.destroyRow = function destroyRow(id) {
-          return this.element.dispatchEvent(new CustomEvent('destroyed', this.data.asObject()));
-        };
-
-        DataTable.prototype.populate = function populate(row) {
-          return this.repository.getPopulatedEntity(row);
-        };
-
         DataTable.prototype.selected = function selected(row) {
-          if (this.select) {
-            return this.select(this.repository.getPopulatedEntity(row));
-          }
-
-          return this.navigateTo(row.id);
-        };
-
-        DataTable.prototype.navigateTo = function navigateTo(id) {
-          this.router.navigateToRoute(this.route, { id: id });
+          return this.select ? this.select(row) : this.router.navigateToRoute(this.route, { id: row.id });
         };
 
         DataTable.prototype.displayValue = function displayValue(row, propertyName) {
           return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
         };
 
-        DataTable.prototype.isObject = function isObject(columnName) {
-          return columnName.indexOf('.') !== -1;
+        DataTable.prototype.getCaretIcon = function getCaretIcon(column) {
+          var sorting = this.criteria.sort[column];
+
+          return sorting ? sorting === 'desc' ? 'fa-caret-down' : 'fa-caret-up' : 'fa-sort';
         };
 
         _createClass(DataTable, [{
-          key: 'columnLabels',
+          key: "columnLabels",
           get: function get() {
-            var instance = this;
-            var labelsRaw = instance.columns.split(',');
+            var _this3 = this;
+
+            var labelsRaw = this.columns.split(',');
+            var columnsArray = [];
             var labels = [];
+
+            this.caretIcon = {};
 
             function clean(str) {
               return str.replace(/^'?\s*|\s*'$/g, '');
@@ -314,8 +266,10 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
               var aliased = label.split(' as ');
               var cleanedLabel = clean(aliased[0]);
 
-              if (instance.columnsArray.indexOf(cleanedLabel) === -1) {
-                instance.columnsArray.push(cleanedLabel);
+              _this3.caretIcon[cleanedLabel] = _this3.getCaretIcon(cleanedLabel);
+
+              if (columnsArray.indexOf(cleanedLabel) === -1) {
+                columnsArray.push(cleanedLabel);
               }
 
               labels.push({
@@ -324,75 +278,79 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
               });
             });
 
-            this.checkDefaultColumn();
-
             return labels;
           }
         }]);
 
         return DataTable;
-      }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'criteria', [_dec4], {
+      }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
         enumerable: true,
-        initializer: null
-      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
-        enumerable: true,
-        initializer: null
-      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [bindable], {
+        initializer: function initializer() {
+          return { populate: null };
+        }
+      }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "limit", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return 30;
         }
-      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [bindable], {
+      }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "columns", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return '';
         }
-      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'defaultColumn', [bindable], {
+      }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "searchColumn", [bindable], {
         enumerable: true,
-        initializer: null
-      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [bindable], {
+        initializer: function initializer() {
+          return 'name';
+        }
+      }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [bindable], {
+      }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "sortable", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'update', [bindable], {
+      }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "edit", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [bindable], {
+      }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "destroy", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return null;
         }
-      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+      }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "where", [bindable], {
         enumerable: true,
-        initializer: null
-      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
-        enumerable: true,
-        initializer: null
-      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
-        enumerable: true,
-        initializer: null
-      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'page', [bindable], {
+        initializer: function initializer() {
+          return {};
+        }
+      }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "page", [bindable], {
         enumerable: true,
         initializer: function initializer() {
           return 1;
         }
-      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
         enumerable: true,
         initializer: null
-      }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'criteriaPager', [bindable], {
+      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
         enumerable: true,
         initializer: null
-      }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class));
+      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
+        enumerable: true,
+        initializer: null
+      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
+        enumerable: true,
+        initializer: null
+      }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
+        enumerable: true,
+        initializer: null
+      }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class));
 
-      _export('DataTable', DataTable);
+      _export("DataTable", DataTable);
     }
   };
 });

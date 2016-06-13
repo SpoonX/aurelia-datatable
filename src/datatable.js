@@ -24,7 +24,6 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
-  @bindable criteriaPager;
 
   constructor(Router, element, entityManager) {
     this.router  = Router;
@@ -33,11 +32,12 @@ export class DataTable {
     if (!this.repository && this.element.hasAttribute('resource')) {
       this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
     }
+
+    this.criteria.where = this.where;
+    this.criteria.sort  = this.criteria.sort || {};
   }
 
   attached() {
-    this.criteria.where = this.where;
-
     this.load();
   }
 
@@ -94,11 +94,17 @@ export class DataTable {
       [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
     };
 
+    for (var i in this.caretIcon) {
+      this.caretIcon[i] = this.getCaretIcon(i);
+    }
+
     this.load();
   }
 
   doSearch() {
-    this.criteria.where[this.searchColumn] = {contains: this.search};
+    // defining a new variable will trigger the `changed` method even when a property is changed.
+    let criteria        = {[this.searchColumn]: {contains: this.search}};
+    this.criteria.where = criteria;
 
     this.load();
   }
@@ -115,6 +121,8 @@ export class DataTable {
     let columnsArray = [];
     let labels       = [];
 
+    this.caretIcon   = {};
+
     function clean(str) {
       return str.replace(/^'?\s*|\s*'$/g, '');
     }
@@ -130,6 +138,8 @@ export class DataTable {
 
       let aliased      = label.split(' as ');
       let cleanedLabel = clean(aliased[0]);
+
+      this.caretIcon[cleanedLabel] = this.getCaretIcon(cleanedLabel);
 
       if (columnsArray.indexOf(cleanedLabel) === -1) {
         columnsArray.push(cleanedLabel);
