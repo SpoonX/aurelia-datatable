@@ -107,6 +107,10 @@ export class DataTable {
   doSearch() {
     this.criteria.where = {[this.searchColumn]: {contains: this.search}};
 
+    if (!this.pager) {
+      return;
+    }
+
     this.pager.reloadCount();
 
     this.load();
