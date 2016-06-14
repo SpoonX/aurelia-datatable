@@ -16,7 +16,7 @@ System.config({
   map: {
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.2.5",
     "aurelia-orm": "npm:aurelia-orm@3.0.0-rc4",
-    "aurelia-pager": "npm:aurelia-pager@0.0.3",
+    "aurelia-pager": "npm:aurelia-pager@0.0.4",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.2.0.0",
     "aurelia-router": "npm:aurelia-router@1.0.0-beta.2.0.0",
     "aurelia-view-manager": "npm:aurelia-view-manager@0.0.4",
@@ -95,7 +95,7 @@ System.config({
       "extend": "npm:extend@3.0.0",
       "typer": "npm:typer@1.1.0"
     },
-    "npm:aurelia-pager@0.0.3": {
+    "npm:aurelia-pager@0.0.4": {
       "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.2.5",
       "aurelia-view-manager": "npm:aurelia-view-manager@0.0.4"
     },

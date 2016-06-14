@@ -13,7 +13,6 @@ System.register(['aurelia-view-manager'], function (_export, _context) {
         aurelia.plugin('aurelia-pager');
 
         aurelia.container.get(Config).configureNamespace('spoonx/datatable', {
-          framework: 'bootstrap',
           location: './{{framework}}/{{view}}.html'
         });
 
