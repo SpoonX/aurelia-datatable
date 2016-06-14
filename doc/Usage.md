@@ -105,7 +105,5 @@ Full criteria object used to talk to the API. This object contains the `where`, 
 
 **Note:** Only use this option if you know what you're doing. Only useful when combined with `resource` or `repository`.
 
-## Templates
-You can override the html used for the datatable with your own by configuring them through the [Spoonx/Aurelia-view-manager](https://github.com/spoonx/aurelia-view-manager).
-
-For reference when configuring: the namespace used is `spoonx-datatable` and the name of the template is `datatable`.
+## Changing framework
+You can override the framework used for the datatable with any of the [supported ones](https://github.com/SpoonX/aurelia-datatable/tree/master/src) using the [aurelia-view-manager](https://github.com/spoonx/aurelia-view-manager).
