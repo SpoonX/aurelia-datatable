@@ -110,7 +110,13 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
   }
 
   DataTable.prototype.attached = function attached() {
+    this.ready = true;
+
     this.load();
+  };
+
+  DataTable.prototype.detached = function detached() {
+    this.ready = false;
   };
 
   DataTable.prototype.pageChanged = function pageChanged() {
@@ -181,6 +187,10 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     var _criteria$where;
 
     this.criteria.where = (_criteria$where = {}, _criteria$where[this.searchColumn] = { contains: this.search }, _criteria$where);
+
+    if (!this.ready) {
+      return;
+    }
 
     this.pager.reloadCount();
 
