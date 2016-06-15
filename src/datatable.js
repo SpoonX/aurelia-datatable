@@ -41,7 +41,13 @@ export class DataTable {
   }
 
   attached() {
+    this.ready = true;
+
     this.load();
+  }
+
+  detached() {
+    this.ready = false;
   }
 
   pageChanged() {
@@ -106,6 +112,10 @@ export class DataTable {
 
   doSearch() {
     this.criteria.where = {[this.searchColumn]: {contains: this.search}};
+
+    if (!this.ready) {
+      return;
+    }
 
     this.pager.reloadCount();
 
