@@ -94,7 +94,13 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   attached() {
+    this.ready = true;
+
     this.load();
+  }
+
+  detached() {
+    this.ready = false;
   }
 
   pageChanged() {
@@ -159,6 +165,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
   doSearch() {
     this.criteria.where = { [this.searchColumn]: { contains: this.search } };
+
+    if (!this.ready) {
+      return;
+    }
 
     this.pager.reloadCount();
 
