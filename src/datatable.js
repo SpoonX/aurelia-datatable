@@ -46,6 +46,10 @@ export class DataTable {
     this.load();
   }
 
+  detached() {
+    this.ready = false;
+  }
+
   pageChanged() {
     this.load();
   }
