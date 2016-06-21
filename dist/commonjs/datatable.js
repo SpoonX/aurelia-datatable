@@ -199,6 +199,10 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 
   DataTable.prototype.reload = function reload() {
     this.pager.reloadCount();
+
+    if (this.page === 1) {
+      this.load();
+    }
   };
 
   DataTable.prototype.triggerEvent = function triggerEvent(event) {

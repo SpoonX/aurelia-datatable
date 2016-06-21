@@ -210,6 +210,10 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
 
     DataTable.prototype.reload = function reload() {
       this.pager.reloadCount();
+
+      if (this.page === 1) {
+        this.load();
+      }
     };
 
     DataTable.prototype.triggerEvent = function triggerEvent(event) {
