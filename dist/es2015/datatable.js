@@ -177,6 +177,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
   reload() {
     this.pager.reloadCount();
+
+    if (this.page === 1) {
+      this.load();
+    }
   }
 
   get columnLabels() {
