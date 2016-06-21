@@ -123,7 +123,11 @@ export class DataTable {
   }
 
   reload() {
-    this.pager.reloadCount(); // Sets page to 1, and triggers this.pageChanged() (reload data).
+    this.pager.reloadCount(); // sets page to 1, and triggers this.pageChanged() (reload data).
+
+    if (this.page === 1) {
+      this.load(); // this.pageChanged() won't trigger if the current page is already page 1.
+    }
   }
 
   @computedFrom('columns')
