@@ -4,10 +4,12 @@
   <!-- Search bar -->
   <div if.bind="searchable !== null" class="row">
     <div class="col-xs-2">
-      <select value.bind="searchColumn" class="form-control" id="columnSelect" title="Search">
-        <option model.bind="columnLabel.column" repeat.for="columnLabel of columnLabels | columnsFilter">
-          ${columnLabel.label}
-        </option>
+      <select value.bind="searchColumn" class="form-control" id="columnSelect">
+        <option
+          model.bind="columnLabel.column"
+          repeat.for="columnLabel of columnLabels | columnsFilter"
+          t="${columnLabel.label}"
+        ></option>
       </select>
     </div>
 
@@ -16,7 +18,7 @@
         class="form-control"
         type="text"
         id="search"
-        placeholder="search"
+        t="[placeholder]Search"
         value.bind="search"
         keyup.delegate="doSearch() & debounce:500">
     </div>
@@ -29,11 +31,11 @@
       <!-- Labels -->
       <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
         <!-- Just show the label -->
-        <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
+        <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}"></span>
 
         <!-- Show label and make it sortable (click) -->
         <a if.bind="sortable !== null && !columnLabel.nested">
-          ${columnLabel.label}
+          <span t="${columnLabel.label}"></span>
           <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
           </i>
         </a>
