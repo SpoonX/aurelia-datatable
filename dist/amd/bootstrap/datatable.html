@@ -9,7 +9,7 @@
           model.bind="columnLabel.column"
           repeat.for="columnLabel of columnLabels | columnsFilter"
           t="${columnLabel.label}"
-        ></option>
+        >${columnLabel.label}</option>
       </select>
     </div>
 
@@ -19,6 +19,7 @@
         type="text"
         id="search"
         t="[placeholder]Search"
+        placeholder="Search"
         value.bind="search"
         keyup.delegate="doSearch() & debounce:500">
     </div>
@@ -31,11 +32,11 @@
       <!-- Labels -->
       <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
         <!-- Just show the label -->
-        <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}"></span>
+        <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
 
         <!-- Show label and make it sortable (click) -->
         <a if.bind="sortable !== null && !columnLabel.nested">
-          <span t="${columnLabel.label}"></span>
+          <span t="${columnLabel.label}">${columnLabel.label}</span>
           <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
           </i>
         </a>
