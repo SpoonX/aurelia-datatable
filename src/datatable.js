@@ -113,12 +113,20 @@ export class DataTable {
   }
 
   searchColumnChanged(newValue, oldValue) {
+    if (!this.ready) {
+      return;
+    }    
+    
     delete this.criteria.where[oldValue];
 
     return this.doSearch();
   }
 
   doSearch() {
+    if (!this.ready) {
+      return;
+    }    
+    
     if (typeof this.criteria.where[this.searchColumn] === 'object') {
       this.criteria.where[this.searchColumn].contains = this.search;
     } else {
