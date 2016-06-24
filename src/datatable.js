@@ -38,6 +38,10 @@ export class DataTable {
   }
 
   attached() {
+    if (this.element.hasAttribute('populate')) {
+      delete this.criteria.populate;
+    }
+
     this.criteria.where = this.where;
     this.criteria.sort  = this.criteria.sort || {};
 
@@ -60,7 +64,6 @@ export class DataTable {
 
   load() {
     this.criteria.where = Object.assign(this.criteria.where, this.where);
-
     this.criteria.skip  = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
 
