@@ -35,6 +35,7 @@ Comma-separated string representing the column names to display. This is used fo
 #### Full-blown
 ```html
 <datatable
+  populate
   resource="product"
   columns="name, price as 'Market price', group.name as group"
 ></datatable>
@@ -98,6 +99,13 @@ Allow rows to be sorted. When provided, this will cause datatable to add clickab
 
 ```html
 <datatable sortable></datatable>
+```
+
+### populate
+When provided, this will populate the association of a `resource` or `repository`.
+
+```html
+<datatable populate columns="group.name as name"></datatable>
 ```
 
 ### criteria
