@@ -75,7 +75,7 @@ export class DataTable {
     });
   }
 
-  populate(row) {
+  populateEntity(row) {
     return this.repository.getPopulatedEntity(row);
   }
 
@@ -84,7 +84,7 @@ export class DataTable {
       return this.destroy(row);
     }
 
-    this.populate(row).destroy().then(() => {
+    this.populateEntity(row).destroy().then(() => {
       this.load();
       this.triggerEvent('destroyed', row);
     }).catch(error => {
