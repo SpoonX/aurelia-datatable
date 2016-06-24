@@ -9,7 +9,7 @@ import {Statham} from "json-statham";
 @inject(Router, Element, EntityManager)
 export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay})
-  criteria = {populate: null};
+  criteria = {};
 
   @bindable({defaultBindingMode: bindingMode.twoWay})
   where = {};
@@ -17,12 +17,13 @@ export class DataTable {
   @bindable limit        = 30;
   @bindable columns      = '';
   @bindable searchColumn = 'name';
-  @bindable searchable   = null; // Show the search field? (Optional attribute).
-  @bindable sortable     = null; // Columns can be sorted? (Optional attribute).
-  @bindable edit         = null; // Rows are editable? (Optional attribute).
-  @bindable destroy      = null; // Rows are removable? (Optional attribute).
-  @bindable page         = 1;    // Current page.
-  @bindable select;              // User provided callback, called upon clicking on a row.
+  @bindable searchable   = null;  // Show the search field? (Optional attribute).
+  @bindable sortable     = null;  // Columns can be sorted? (Optional attribute).
+  @bindable edit         = null;  // Rows are editable? (Optional attribute).
+  @bindable destroy      = null;  // Rows are removable? (Optional attribute).
+  @bindable page         = 1;     // Current page.
+  @bindable populate     = false; // Which columns to populate. True for all, string for specific.
+  @bindable select;               // User provided callback, called upon clicking on a row.
   @bindable repository;
   @bindable data;
   @bindable route;
@@ -61,6 +62,12 @@ export class DataTable {
   load() {
     this.criteria.skip  = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
+
+    if (!this.populate) {
+      this.criteria.populate = null;
+    } else if (typeof this.criteria.populate === 'string') {
+      this.criteria.populate = this.populate;
+    }
 
     this.repository.find(this.criteria, true).then(result => {
       this.data = result;
@@ -106,12 +113,18 @@ export class DataTable {
     this.load();
   }
 
-  searchColumnChanged() {
+  searchColumnChanged(newValue, oldValue) {
+    delete this.criteria.where[oldValue];
+
     return this.doSearch();
   }
 
   doSearch() {
-    this.criteria.where = {[this.searchColumn]: {contains: this.search}};
+    if (typeof this.criteria.where[this.searchColumn] === 'object') {
+      this.criteria.where[this.searchColumn].contains = this.search;
+    } else {
+      this.criteria.where[this.searchColumn] = {contains: this.search};
+    }
 
     if (!this.ready) {
       return;
