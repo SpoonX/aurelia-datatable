@@ -36,13 +36,12 @@ export class DataTable {
     if (!this.repository && this.element.hasAttribute('resource')) {
       this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
     }
-
-    this.criteria.where = this.where;
-    this.criteria.sort  = this.criteria.sort || {};
   }
 
   attached() {
-    this.ready = true;
+    this.ready          = true;
+    this.criteria.where = this.where;
+    this.criteria.sort  = this.criteria.sort || {};
 
     this.load();
   }
