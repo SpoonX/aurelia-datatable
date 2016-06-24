@@ -35,12 +35,16 @@ export class DataTable {
     if (!this.repository && this.element.hasAttribute('resource')) {
       this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
     }
-
-    this.criteria.where = this.where;
-    this.criteria.sort  = this.criteria.sort || {};
   }
 
   attached() {
+    if (this.element.hasAttribute('populate')) {
+      delete this.criteria.populate;
+    }
+
+    this.criteria.where = this.where;
+    this.criteria.sort  = this.criteria.sort || {};
+
     this.ready = true;
 
     this.load();
@@ -59,6 +63,7 @@ export class DataTable {
   }
 
   load() {
+    this.criteria.where = Object.assign(this.criteria.where, this.where);
     this.criteria.skip  = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
 
