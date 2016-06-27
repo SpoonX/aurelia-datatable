@@ -63,6 +63,10 @@
         <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row)">
           <i class="fa fa-trash"></i>
         </button>
+
+        <button repeat.for="action of actions" class="btn btn-sm btn-${action.type || 'white'}" click.delegate="action.action(row)">
+          <i class="fa fa-${action.icon}"></i>
+        </button>
       </td>
     </tr>
     </tbody>

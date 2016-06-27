@@ -28,6 +28,7 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
+  bindable actions;
 
   constructor(Router, element, entityManager) {
     this.router  = Router;
@@ -115,8 +116,8 @@ export class DataTable {
   searchColumnChanged(newValue, oldValue) {
     if (!this.ready) {
       return;
-    }    
-    
+    }
+
     delete this.criteria.where[oldValue];
 
     return this.doSearch();
@@ -125,8 +126,8 @@ export class DataTable {
   doSearch() {
     if (!this.ready) {
       return;
-    }    
-    
+    }
+
     if (typeof this.criteria.where[this.searchColumn] === 'object') {
       this.criteria.where[this.searchColumn].contains = this.search;
     } else {
