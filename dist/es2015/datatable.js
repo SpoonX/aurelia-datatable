@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -72,15 +72,17 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     _initDefineProp(this, "page", _descriptor10, this);
 
-    _initDefineProp(this, "select", _descriptor11, this);
+    _initDefineProp(this, "populate", _descriptor11, this);
 
-    _initDefineProp(this, "repository", _descriptor12, this);
+    _initDefineProp(this, "select", _descriptor12, this);
 
-    _initDefineProp(this, "data", _descriptor13, this);
+    _initDefineProp(this, "repository", _descriptor13, this);
 
-    _initDefineProp(this, "route", _descriptor14, this);
+    _initDefineProp(this, "data", _descriptor14, this);
 
-    _initDefineProp(this, "pages", _descriptor15, this);
+    _initDefineProp(this, "route", _descriptor15, this);
+
+    _initDefineProp(this, "pages", _descriptor16, this);
 
     this.router = Router;
     this.element = element;
@@ -88,13 +90,12 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     if (!this.repository && this.element.hasAttribute('resource')) {
       this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
     }
-
-    this.criteria.where = this.where;
-    this.criteria.sort = this.criteria.sort || {};
   }
 
   attached() {
     this.ready = true;
+    this.criteria.where = this.where;
+    this.criteria.sort = this.criteria.sort || {};
 
     this.load();
   }
@@ -115,6 +116,12 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     this.criteria.skip = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
 
+    if (!this.populate) {
+      this.criteria.populate = null;
+    } else if (typeof this.criteria.populate === 'string') {
+      this.criteria.populate = this.populate;
+    }
+
     this.repository.find(this.criteria, true).then(result => {
       this.data = result;
     }).catch(error => {
@@ -122,7 +129,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     });
   }
 
-  populate(row) {
+  populateEntity(row) {
     return this.repository.getPopulatedEntity(row);
   }
 
@@ -131,7 +138,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       return this.destroy(row);
     }
 
-    this.populate(row).destroy().then(() => {
+    this.populateEntity(row).destroy().then(() => {
       this.load();
       this.triggerEvent('destroyed', row);
     }).catch(error => {
@@ -159,12 +166,26 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     this.load();
   }
 
-  searchColumnChanged() {
+  searchColumnChanged(newValue, oldValue) {
+    if (!this.ready) {
+      return;
+    }
+
+    delete this.criteria.where[oldValue];
+
     return this.doSearch();
   }
 
   doSearch() {
-    this.criteria.where = { [this.searchColumn]: { contains: this.search } };
+    if (!this.ready) {
+      return;
+    }
+
+    if (typeof this.criteria.where[this.searchColumn] === 'object') {
+      this.criteria.where[this.searchColumn].contains = this.search;
+    } else {
+      this.criteria.where[this.searchColumn] = { contains: this.search };
+    }
 
     if (!this.ready) {
       return;
@@ -240,7 +261,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
   enumerable: true,
   initializer: function () {
-    return { populate: null };
+    return {};
   }
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "where", [_dec5], {
   enumerable: true,
@@ -287,19 +308,24 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   initializer: function () {
     return 1;
   }
-}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
+}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "populate", [bindable], {
+  enumerable: true,
+  initializer: function () {
+    return false;
+  }
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
+}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
+}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class);
