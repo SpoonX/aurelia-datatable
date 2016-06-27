@@ -3,7 +3,7 @@
 System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "aurelia-router", "json-statham"], function (_export, _context) {
   "use strict";
 
-  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, DataTable;
+  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _typeof, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, DataTable;
 
   function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -71,6 +71,12 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
       Statham = _jsonStatham.Statham;
     }],
     execute: function () {
+      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+      };
+
       _createClass = function () {
         function defineProperties(target, props) {
           for (var i = 0; i < props.length; i++) {
@@ -113,15 +119,17 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
 
           _initDefineProp(this, "page", _descriptor10, this);
 
-          _initDefineProp(this, "select", _descriptor11, this);
+          _initDefineProp(this, "populate", _descriptor11, this);
 
-          _initDefineProp(this, "repository", _descriptor12, this);
+          _initDefineProp(this, "select", _descriptor12, this);
 
-          _initDefineProp(this, "data", _descriptor13, this);
+          _initDefineProp(this, "repository", _descriptor13, this);
 
-          _initDefineProp(this, "route", _descriptor14, this);
+          _initDefineProp(this, "data", _descriptor14, this);
 
-          _initDefineProp(this, "pages", _descriptor15, this);
+          _initDefineProp(this, "route", _descriptor15, this);
+
+          _initDefineProp(this, "pages", _descriptor16, this);
 
           this.router = Router;
           this.element = element;
@@ -129,13 +137,12 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
           if (!this.repository && this.element.hasAttribute('resource')) {
             this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
           }
-
-          this.criteria.where = this.where;
-          this.criteria.sort = this.criteria.sort || {};
         }
 
         DataTable.prototype.attached = function attached() {
           this.ready = true;
+          this.criteria.where = this.where;
+          this.criteria.sort = this.criteria.sort || {};
 
           this.load();
         };
@@ -158,6 +165,12 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
           this.criteria.skip = this.page * this.limit - this.limit;
           this.criteria.limit = this.limit;
 
+          if (!this.populate) {
+            this.criteria.populate = null;
+          } else if (typeof this.criteria.populate === 'string') {
+            this.criteria.populate = this.populate;
+          }
+
           this.repository.find(this.criteria, true).then(function (result) {
             _this.data = result;
           }).catch(function (error) {
@@ -165,7 +178,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
           });
         };
 
-        DataTable.prototype.populate = function populate(row) {
+        DataTable.prototype.populateEntity = function populateEntity(row) {
           return this.repository.getPopulatedEntity(row);
         };
 
@@ -176,7 +189,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
             return this.destroy(row);
           }
 
-          this.populate(row).destroy().then(function () {
+          this.populateEntity(row).destroy().then(function () {
             _this2.load();
             _this2.triggerEvent('destroyed', row);
           }).catch(function (error) {
@@ -204,14 +217,26 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
           this.load();
         };
 
-        DataTable.prototype.searchColumnChanged = function searchColumnChanged() {
+        DataTable.prototype.searchColumnChanged = function searchColumnChanged(newValue, oldValue) {
+          if (!this.ready) {
+            return;
+          }
+
+          delete this.criteria.where[oldValue];
+
           return this.doSearch();
         };
 
         DataTable.prototype.doSearch = function doSearch() {
-          var _criteria$where;
+          if (!this.ready) {
+            return;
+          }
 
-          this.criteria.where = (_criteria$where = {}, _criteria$where[this.searchColumn] = { contains: this.search }, _criteria$where);
+          if (_typeof(this.criteria.where[this.searchColumn]) === 'object') {
+            this.criteria.where[this.searchColumn].contains = this.search;
+          } else {
+            this.criteria.where[this.searchColumn] = { contains: this.search };
+          }
 
           if (!this.ready) {
             return;
@@ -294,7 +319,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
       }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
         enumerable: true,
         initializer: function initializer() {
-          return { populate: null };
+          return {};
         }
       }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "where", [_dec5], {
         enumerable: true,
@@ -341,19 +366,24 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
         initializer: function initializer() {
           return 1;
         }
-      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
+      }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "populate", [bindable], {
+        enumerable: true,
+        initializer: function initializer() {
+          return false;
+        }
+      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
         enumerable: true,
         initializer: null
-      }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
+      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
         enumerable: true,
         initializer: null
-      }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
+      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
         enumerable: true,
         initializer: null
-      }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
+      }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
         enumerable: true,
         initializer: null
-      }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
+      }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
         enumerable: true,
         initializer: null
       }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class));
