@@ -64,7 +64,7 @@
           <i class="fa fa-trash"></i>
         </button>
 
-        <button repeat.for="action of actions" class="btn btn-sm btn-${action.type || 'white'}" click.delegate="action.action(row)">
+        <button repeat.for="action of actions" disabled.bind="action.disabled" class="btn btn-sm btn-${action.type || 'white'}" click.delegate="doCustomAction(action, row)">
           <i class="fa fa-${action.icon}"></i>
         </button>
       </td>

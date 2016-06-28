@@ -99,6 +99,12 @@ export class DataTable {
     }
   }
 
+  doCustomAction(action, row) {
+    if (typeof action.action === 'function' && !action.disabled) {
+      return action.action(row);
+    }
+  }
+
   doSort(columnLabel) {
     if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
       return;
