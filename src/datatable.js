@@ -28,7 +28,7 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
-  @bindable actions;
+  @bindable actions = [];
 
   constructor(Router, element, entityManager) {
     this.router  = Router;
