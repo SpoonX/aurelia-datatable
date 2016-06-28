@@ -5,13 +5,13 @@ this.repository = entityManager.getRepository('users');
 ```
 
 ```html
-  <datatable 
-      deleted.delegate="myEventCallback($event)" 
-      edit.call="myEditImplementation($event)" 
+  <datatable
+      deleted.delegate="myEventCallback($event)"
+      edit.call="myEditImplementation($event)"
       columns="id,name as username"
       repository.bind="repository"
       searchable
-      sortable 
+      sortable
       destroy
   ></datatable>
 ```
@@ -87,7 +87,7 @@ The initial search field, defaults to `name`. This value changes when another va
 * When given a callback, datatable will call it when the user clicks the destroy action in the datatable.
 * When provided without a function, datatable will call `.destroy()` on the entity (only useful when combined with `resource` or `repository`).
 
-### edit 
+### edit
 * Using this attribute will cause datatable to add an edit button on every row.
 * You must provide a callback, which will be called when the user clicks the edit button. You'll be passed the row object.
 
@@ -104,6 +104,45 @@ Allow rows to be sorted. When provided, this will cause datatable to add clickab
 Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.
 
 **Note:** Only use this option if you know what you're doing. Only useful when combined with `resource` or `repository`.
+
+### actions
+Allow the user to add custom action buttons in case he needs more than just `edit` and/or `destroy` on the rows.
+
+Example:
+
+```js
+// On your viewmodel
+class ViewModel {
+  actionsData = [{
+    icon: 'flag',       // fontawesome icon name
+    title: 'My Title'     // Title, used as text for the button if `icon` is not provided
+    action: this.actionOne, // Action to perform on click, should be a function
+    type: 'danger',     // Button type to display (`default`, `white`, `warning`, `danger`...)
+    disabled: true      // Disabled button
+  }, {
+    icon: 'cubes',
+    title: 'My Title'
+    // Use this approach in case you need to keep the context of the Modelview in `actionTwo`
+    action: ((record) => {
+      this.actionTwo(record)
+    })
+  }];
+
+  actionOne(record) {
+    console.log('Action one');
+  }
+
+  actionTwo(record) {
+    return this.load(record).then(result => {/*stuff*/});
+  }
+}
+```
+
+```html
+<datatable
+    actions.bind="actionsData"
+ ></datatable>
+```
 
 ## Changing framework
 You can override the framework used for the datatable with any of the [supported ones](https://github.com/SpoonX/aurelia-datatable/tree/master/src) using the [aurelia-view-manager](https://github.com/spoonx/aurelia-view-manager).
