@@ -29,6 +29,7 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
+  @bindable actions = [];
 
   constructor(Router, element, entityManager) {
     this.router        = Router;
@@ -97,6 +98,12 @@ export class DataTable {
   doEdit(row) {
     if (typeof this.edit === 'function') {
       return this.edit(row);
+    }
+  }
+
+  doCustomAction(action, row) {
+    if (typeof action.action === 'function' && !action.disabled) {
+      return action.action(row);
     }
   }
 
