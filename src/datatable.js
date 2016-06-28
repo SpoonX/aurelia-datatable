@@ -25,20 +25,22 @@ export class DataTable {
   @bindable populate     = false; // Which columns to populate. True for all, string for specific.
   @bindable select;               // User provided callback, called upon clicking on a row.
   @bindable repository;
+  @bindable resource;
   @bindable data;
   @bindable route;
   @bindable pages;
 
   constructor(Router, element, entityManager) {
-    this.router  = Router;
-    this.element = element;
-
-    if (!this.repository && this.element.hasAttribute('resource')) {
-      this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
-    }
+    this.router        = Router;
+    this.element       = element;
+    this.entityManager = entityManager;
   }
 
   attached() {
+    if (!this.repository && this.resource) {
+      this.repository = this.entityManager.getRepository(this.resource);
+    }
+
     this.ready          = true;
     this.criteria.where = this.where;
     this.criteria.sort  = this.criteria.sort || {};
@@ -115,8 +117,8 @@ export class DataTable {
   searchColumnChanged(newValue, oldValue) {
     if (!this.ready) {
       return;
-    }    
-    
+    }
+
     delete this.criteria.where[oldValue];
 
     return this.doSearch();
@@ -125,8 +127,8 @@ export class DataTable {
   doSearch() {
     if (!this.ready) {
       return;
-    }    
-    
+    }
+
     if (typeof this.criteria.where[this.searchColumn] === 'object') {
       this.criteria.where[this.searchColumn].contains = this.search;
     } else {
