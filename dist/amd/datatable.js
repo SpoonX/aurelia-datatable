@@ -79,7 +79,7 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
   }
 
-  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18;
 
   var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('datatable'), _dec2 = (0, _aureliaViewManager.resolvedView)('spoonx/datatable', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec6 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
     function DataTable(Router, element, entityManager) {
@@ -111,23 +111,26 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
 
       _initDefineProp(this, "repository", _descriptor13, this);
 
-      _initDefineProp(this, "data", _descriptor14, this);
+      _initDefineProp(this, "resource", _descriptor14, this);
 
-      _initDefineProp(this, "route", _descriptor15, this);
+      _initDefineProp(this, "data", _descriptor15, this);
 
-      _initDefineProp(this, "pages", _descriptor16, this);
+      _initDefineProp(this, "route", _descriptor16, this);
 
-      _initDefineProp(this, "actions", _descriptor17, this);
+      _initDefineProp(this, "pages", _descriptor17, this);
+
+      _initDefineProp(this, "actions", _descriptor18, this);
 
       this.router = Router;
       this.element = element;
-
-      if (!this.repository && this.element.hasAttribute('resource')) {
-        this.repository = entityManager.getRepository(this.element.getAttribute('resource'));
-      }
+      this.entityManager = entityManager;
     }
 
     DataTable.prototype.attached = function attached() {
+      if (!this.repository && this.resource) {
+        this.repository = this.entityManager.getRepository(this.resource);
+      }
+
       this.ready = true;
       this.criteria.where = this.where;
       this.criteria.sort = this.criteria.sort || {};
@@ -371,16 +374,19 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
   }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "repository", [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "data", [_aureliaFramework.bindable], {
+  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "resource", [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "route", [_aureliaFramework.bindable], {
+  }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "data", [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "pages", [_aureliaFramework.bindable], {
+  }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "route", [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, "actions", [_aureliaFramework.bindable], {
+  }), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, "pages", [_aureliaFramework.bindable], {
+    enumerable: true,
+    initializer: null
+  }), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, "actions", [_aureliaFramework.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return [];
