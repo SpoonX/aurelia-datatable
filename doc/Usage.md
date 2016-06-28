@@ -13,6 +13,7 @@ this.repository = entityManager.getRepository('users');
       searchable
       sortable
       destroy
+      actions.bind="actionsData"
   ></datatable>
 ```
 

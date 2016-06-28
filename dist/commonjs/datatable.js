@@ -9,7 +9,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17;
 
 var _aureliaFramework = require("aurelia-framework");
 
@@ -102,6 +102,8 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 
     _initDefineProp(this, "pages", _descriptor16, this);
 
+    _initDefineProp(this, "actions", _descriptor17, this);
+
     this.router = Router;
     this.element = element;
 
@@ -171,6 +173,12 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
   DataTable.prototype.doEdit = function doEdit(row) {
     if (typeof this.edit === 'function') {
       return this.edit(row);
+    }
+  };
+
+  DataTable.prototype.doCustomAction = function doCustomAction(action, row) {
+    if (typeof action.action === 'function' && !action.disabled) {
+      return action.action(row);
     }
   };
 
@@ -357,4 +365,9 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "pages", [_aureliaFramework.bindable], {
   enumerable: true,
   initializer: null
+}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, "actions", [_aureliaFramework.bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return [];
+  }
 }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class);
