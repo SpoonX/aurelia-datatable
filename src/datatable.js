@@ -102,9 +102,16 @@ export class DataTable {
   }
 
   doCustomAction(action, row) {
-    if (typeof action.action === 'function' && !action.disabled) {
+    if (typeof action.action === 'function') {
       return action.action(row);
     }
+  }
+
+  checkDisabled(action, row) {
+    if (typeof action.disabled === 'function') {
+      return action.disabled(row);
+    }
+    return false;
   }
 
   doSort(columnLabel) {

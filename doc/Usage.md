@@ -119,14 +119,16 @@ class ViewModel {
     title: 'My Title'     // Title, used as text for the button if `icon` is not provided
     action: this.actionOne, // Action to perform on click, should be a function
     type: 'danger',     // Button type to display (`default`, `white`, `warning`, `danger`...)
-    disabled: true      // Disabled button
+    disabled: record => {
+      return record.id > 5; // Will disabled the buttons where id > 5
+    }
   }, {
     icon: 'cubes',
     title: 'My Title'
     // Use this approach in case you need to keep the context of the Modelview in `actionTwo`
-    action: ((record) => {
+    action: record => {
       this.actionTwo(record)
-    })
+    }
   }];
 
   actionOne(record) {
