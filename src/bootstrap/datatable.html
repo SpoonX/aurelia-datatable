@@ -64,7 +64,7 @@
           <i class="fa fa-trash"></i>
         </button>
 
-        <button repeat.for="action of actions" t="[title]action.title" title.bind="action.title || ''" disabled.bind="action.disabled" class="btn btn-sm btn-${action.type || 'default'}" click.delegate="doCustomAction(action, row)">
+        <button repeat.for="action of actions" t="[title]action.title" title.bind="action.title || ''" disabled.bind="checkCustomActionAttribute(action, row, 'disabled')" class="btn btn-sm btn-${action.type || 'default'}" click.delegate="doCustomAction(action, row)">
           <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
           <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
         </button>
