@@ -176,10 +176,6 @@ export class DataTable {
       return str.replace(/^'?\s*|\s*'$/g, '');
     }
 
-    function ucfirst(str) {
-      return str[0].toUpperCase() + str.substr(1);
-    }
-
     labelsRaw.forEach(label => {
       if (!label) {
         return;
@@ -195,7 +191,7 @@ export class DataTable {
       labels.push({
         nested: cleanedColumn.indexOf('.') !== -1,
         column: cleanedColumn,
-        label : ucfirst(clean(aliased[1] || aliased[0]))
+        label : clean(aliased[1] || aliased[0])
       });
     });
 
