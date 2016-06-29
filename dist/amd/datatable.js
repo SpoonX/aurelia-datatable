@@ -195,9 +195,16 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
     };
 
     DataTable.prototype.doCustomAction = function doCustomAction(action, row) {
-      if (typeof action.action === 'function' && !action.disabled) {
+      if (typeof action.action === 'function') {
         return action.action(row);
       }
+    };
+
+    DataTable.prototype.checkDisabled = function checkDisabled(action, row) {
+      if (typeof action.disabled === 'function') {
+        return action.disabled(row);
+      }
+      return false;
     };
 
     DataTable.prototype.doSort = function doSort(columnLabel) {
