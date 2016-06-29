@@ -49,6 +49,14 @@ export class DataTable {
     this.load();
   }
 
+  checkCustomActionAttribute(action, row, attribute) {
+    if(action[attribute]) {
+      let expression = action[attribute].replace('{{value}}', 'row');
+      let res = eval(expression);
+      return res;
+    }
+  }
+
   detached() {
     this.ready = false;
   }
