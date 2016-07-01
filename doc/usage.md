@@ -6,14 +6,14 @@ this.repository = entityManager.getRepository('users');
 
 ```html
   <datatable
-      deleted.delegate="myEventCallback($event)"
-      edit.call="myEditImplementation($event)"
-      columns="id,name as username"
+      destroy.delegate="myEventCallback($event)"
+      edit.delegate="myEditImplementation($event)"
+      columns="id,name as 'username', user.id as 'User id'"
       repository.bind="repository"
       searchable
       sortable
-      destroy
-      actions.bind="actionsData"
+      actions.bind="actions"
+      populate="user"
   ></datatable>
 ```
 
@@ -30,21 +30,18 @@ Comma-separated string representing the column names to display. This is used fo
 
 #### Aliased
 ```html
-<datatable resource="product" columns="name as product, price as 'Market price'"></datatable>
+<datatable resource="product" columns="name as product,price as 'Market price'"></datatable>
 ```
 
 #### Full-blown
 ```html
-<datatable
-  resource="product"
-  columns="name, price as 'Market price', group.name as group"
-></datatable>
+<datatable resource="product" populate="group" columns="name,price as 'Market price',group.name as 'Product group'"></datatable>
 ```
 
 ### repository
 When given a repository, the datatable will use it to populate the table with.
 
-This is as simple as: `EntityManager.getRepository('resource')`.
+This is as simple as `EntityManager.getRepository('resource')`.
 
 *[More information](http://aurelia-orm.spoonx.org/api_repository.html)*.
 
@@ -63,16 +60,11 @@ A simple object containing a where clause to restrict the data returned from the
 Example:
 
 ```js
-// On your viewmodel
 this.where = {group: 5, price: {'>': 10}};
 ```
 
 ```html
-<datatable
-  resource="product"
-  where.bind="where"
-  columns="name, price"
-></datatable>
+<datatable resource="product" where.bind="where" columns="name,price"></datatable>
 ```
 
 ### searchable
@@ -80,7 +72,7 @@ Allow the user to search through the datatable. This will display a dropdown (`<
 
 **Note:** Only useful when combined with `resource` or `repository`.
 
-### searchColumn
+### search-column
 The initial search field, defaults to `name`. This value changes when another value has been selected from the dropdown.
 
 ### destroy
@@ -101,10 +93,14 @@ Allow rows to be sorted. When provided, this will cause datatable to add clickab
 <datatable sortable></datatable>
 ```
 
-### criteria
-Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.
+### populate
+Which associations to populate for `columns` and `edit`. Defaults to none.
 
-**Note:** Only use this option if you know what you're doing. Only useful when combined with `resource` or `repository`.
+**Note:** Only useful when combined with `resource` or `repository`.
+
+```html
+<datatable populate="user,group"></datatable>
+```
 
 ### actions
 Allow the user to add custom action buttons in case he needs more than just `edit` and/or `destroy` on the rows.
@@ -112,40 +108,30 @@ Allow the user to add custom action buttons in case he needs more than just `edi
 Example:
 
 ```js
-// On your viewmodel
 class ViewModel {
-  actionsData = [{
-    icon: 'flag',       // fontawesome icon name
-    title: 'My Title'     // Title, used as text for the button if `icon` is not provided
-    action: this.actionOne, // Action to perform on click, should be a function
-    type: 'danger',     // Button type to display (`default`, `white`, `warning`, `danger`...)
+  actions = [{
+    icon  : 'flag',    // font-awesome icon name
+    title : 'My Title' // button title if `icon` is not set
+    type  : 'danger',  // bootstrap button type
+    action: (record) => {
+      this.customAction(record); 
+    },
     disabled: record => {
-      return record.id > 5; // Will disabled the buttons where id > 5
-    }
-  }, {
-    icon: 'cubes',
-    title: 'My Title'
-    // Use this approach in case you need to keep the context of the Modelview in `actionTwo`
-    action: record => {
-      this.actionTwo(record)
+      // disable button with id higher than 5
+      return record.id > 5;
     }
   }];
-
-  actionOne(record) {
-    console.log('Action one');
-  }
-
-  actionTwo(record) {
-    return this.load(record).then(result => {/*stuff*/});
-  }
 }
 ```
 
 ```html
-<datatable
-    actions.bind="actionsData"
- ></datatable>
+<datatable actions.bind="actions" ></datatable>
 ```
+
+### criteria
+Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.
+
+**Note:** Only use this option if you know what you're doing. Only useful when combined with `resource` or `repository`.
 
 ## Changing framework
 You can override the framework used for the datatable with any of the [supported ones](https://github.com/SpoonX/aurelia-datatable/tree/master/src) using the [aurelia-view-manager](https://github.com/spoonx/aurelia-view-manager).
