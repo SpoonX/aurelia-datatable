@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['aurelia-view-manager'], function (_export, _context) {
+  "use strict";
+
   var Config;
   return {
     setters: [function (_aureliaViewManager) {
