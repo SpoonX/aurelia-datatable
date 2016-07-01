@@ -41,13 +41,12 @@ this.repository = entityManager.getRepository('users');
 
 ```html
   <data-table 
-      deleted.call="myEventCallback($event)" 
-      edit.call="myEventCallback($event)" 
+      destroy.delegate="myEventCallback($event)" // or without the function to let ORM take care of it
+      edit.delegate="myEventCallback($event)" 
       columns="id,name as 'username'" 
       repository.bind="repository" 
       search-column="name" 
       searchable 
       sortable 
-      destroy
   ></data-table>
 ```

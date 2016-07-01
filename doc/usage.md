@@ -6,13 +6,12 @@ this.repository = entityManager.getRepository('users');
 
 ```html
   <datatable
-      deleted.delegate="myEventCallback($event)"
-      edit.call="myEditImplementation($event)"
+      destroy.delegate="myEventCallback($event)"
+      edit.delegate="myEditImplementation($event)"
       columns="id,name as 'username', user.id as 'User id'"
       repository.bind="repository"
       searchable
       sortable
-      destroy
       actions.bind="actions"
       populate="user"
   ></datatable>
