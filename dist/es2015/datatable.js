@@ -123,7 +123,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     if (!this.populate) {
       this.criteria.populate = null;
-    } else if (typeof this.criteria.populate === 'string') {
+    } else if (typeof this.populate === 'string') {
       this.criteria.populate = this.populate;
     }
 

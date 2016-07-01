@@ -143,7 +143,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
 
     if (!this.populate) {
       this.criteria.populate = null;
-    } else if (typeof this.criteria.populate === 'string') {
+    } else if (typeof this.populate === 'string') {
       this.criteria.populate = this.populate;
     }
 

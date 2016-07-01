@@ -1,6 +1,8 @@
 "use strict";
 
 System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "aurelia-router", "json-statham"], function (_export, _context) {
+  "use strict";
+
   var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _typeof, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, DataTable;
 
   function _initDefineProp(target, property, descriptor, context) {
@@ -170,7 +172,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
 
           if (!this.populate) {
             this.criteria.populate = null;
-          } else if (typeof this.criteria.populate === 'string') {
+          } else if (typeof this.populate === 'string') {
             this.criteria.populate = this.populate;
           }
 
