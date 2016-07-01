@@ -132,7 +132,7 @@ define(["exports", "aurelia-framework", "aurelia-view-manager", "aurelia-orm", "
       }
 
       this.ready = true;
-      this.criteria.where = this.where;
+      this.criteria.where = this.where || {};
       this.criteria.sort = this.criteria.sort || {};
 
       this.load();

@@ -146,7 +146,7 @@ System.register(["aurelia-framework", "aurelia-view-manager", "aurelia-orm", "au
           }
 
           this.ready = true;
-          this.criteria.where = this.where;
+          this.criteria.where = this.where || {};
           this.criteria.sort = this.criteria.sort || {};
 
           this.load();
