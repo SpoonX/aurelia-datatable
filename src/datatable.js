@@ -43,7 +43,7 @@ export class DataTable {
     }
 
     this.ready          = true;
-    this.criteria.where = this.where;
+    this.criteria.where = this.where || {};
     this.criteria.sort  = this.criteria.sort || {};
 
     this.load();
