@@ -8,9 +8,10 @@ Features:
 
 * Pagination
 * Sorting
-* Intergrated ORM
+* Integrated ORM
 * Search
 * Custom columns
+* Custom button actions
 * And more
 
 ## Enjoy

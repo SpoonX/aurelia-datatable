@@ -12,13 +12,14 @@ Features:
 * Integrated ORM
 * Search
 * Custom columns
+* Custom button actions
 * And more
 
 ## Installation
 
 ### Jspm/SytemJs
 
-Run `jspm i npm:aurelia-datatable` from your project root.
+Run `jspm i aurelia-datatable` from your project root.
 
 ### Webpack
 
@@ -40,9 +41,9 @@ this.repository = entityManager.getRepository('users');
 
 ```html
   <data-table 
-      deleted.delegate="myEventCallback($event)" 
-      edit.delegate="myEventCallback($event)" 
-      columns="id,name as username" 
+      deleted.call="myEventCallback($event)" 
+      edit.call="myEventCallback($event)" 
+      columns="id,name as 'username'" 
       repository.bind="repository" 
       search-column="name" 
       searchable 
