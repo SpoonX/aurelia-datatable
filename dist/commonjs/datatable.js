@@ -117,7 +117,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     }
 
     this.ready = true;
-    this.criteria.where = this.where;
+    this.criteria.where = this.where || {};
     this.criteria.sort = this.criteria.sort || {};
 
     this.load();

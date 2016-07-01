@@ -99,7 +99,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     }
 
     this.ready = true;
-    this.criteria.where = this.where;
+    this.criteria.where = this.where || {};
     this.criteria.sort = this.criteria.sort || {};
 
     this.load();
