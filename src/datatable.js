@@ -218,7 +218,7 @@ export class DataTable {
   }
 
   displayValue(row, propertyName) {
-    return fetchFrom(row,propertyName);
+    return fetchFrom(row, propertyName);
   }
 }
 
