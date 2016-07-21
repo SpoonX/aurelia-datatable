@@ -2,7 +2,6 @@ import {bindable, inject, computedFrom, customElement, bindingMode} from "aureli
 import {resolvedView} from "aurelia-view-manager";
 import {EntityManager} from "aurelia-orm";
 import {Router} from "aurelia-router";
-import {Statham} from "json-statham";
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
@@ -219,6 +218,27 @@ export class DataTable {
   }
 
   displayValue(row, propertyName) {
-    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
+    return fetchFrom(row,propertyName);
   }
+}
+
+
+/**
+ * Fetches value from (nested) object with a normalized key
+ * @param  {Object}             data    The data to fetch data from
+ * @param  {string|Array<keys>} keys    (dot-separated) string(s) or array of keys
+ * @param  {Array<key>}              ...rest Rest of the arguments
+ * @return {any}                that    The retrieved value from the data
+ */
+function fetchFrom(data, key, ...rest) {
+  /*
+   * data is the POJO of the current branch
+   * [key,...rest] is the current normalized key,
+   * thus key is the first key as string and ...rest the remainder of the key
+   * if rest is empty, then data[key] is the data we want to fetch
+   * else, we go down onw set on the branch (data[key]) and repeat with ...rest,
+   * which will make the new key the first entry of ...rest
+   * and the new rest the remainder of ...rest minus the key
+   */
+  return rest.length === 0 ? data[key] : fetchFrom(data[key], ...rest);
 }
