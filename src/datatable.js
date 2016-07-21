@@ -244,10 +244,10 @@ function normalizeKey(key, ...rest) {
 
 /**
  * Fetches value from (nested) object with a normalized key
- * @param  {Object}             data    The data to fetch data from
- * @param  {string|Array<keys>} keys    string or array of keys
- * @param  {Array<key>}              ...rest Rest of the arguments
- * @return {any}                that    The retrieved value from the data
+ * @param  {Object}               data    The data to fetch data from
+ * @param  {string|Array<string>} keys    string or array of keys
+ * @param  {Array<string>}        ...rest Rest of the arguments
+ * @return {any}                  that    The retrieved value from the data
  */
 function fetchFrom(data, key, ...rest) {
   /*
