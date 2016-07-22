@@ -19,8 +19,6 @@ var _aureliaOrm = require("aurelia-orm");
 
 var _aureliaRouter = require("aurelia-router");
 
-var _jsonStatham = require("json-statham");
-
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
   Object.defineProperty(target, property, {
@@ -31,7 +29,7 @@ function _initDefineProp(target, property, descriptor, context) {
   });
 }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -68,7 +66,7 @@ function _initializerWarningHelper(descriptor, context) {
 
 var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('datatable'), _dec2 = (0, _aureliaViewManager.resolvedView)('spoonx/datatable', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec6 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
   function DataTable(Router, element, entityManager) {
-    _classCallCheck(this, DataTable);
+    
 
     _initDefineProp(this, "criteria", _descriptor, this);
 
@@ -262,8 +260,12 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     }
   };
 
-  DataTable.prototype.displayValue = function displayValue(row, propertyName) {
-    return new _jsonStatham.Statham(row, _jsonStatham.Statham.MODE_NESTED).fetch(propertyName);
+  DataTable.prototype.displayValue = function displayValue(row) {
+    for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      propertyName[_key - 1] = arguments[_key];
+    }
+
+    return fetchFrom(row, normalizeKey.apply(undefined, propertyName));
   };
 
   _createClass(DataTable, [{
@@ -384,3 +386,21 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     return [];
   }
 }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class);
+
+function normalizeKey(key) {
+  var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');
+
+  for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    rest[_key2 - 1] = arguments[_key2];
+  }
+
+  return rest.length === 0 ? normalized : normalized.concat(normalizeKey.apply(undefined, rest));
+}
+
+function fetchFrom(data, key) {
+  for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+    rest[_key3 - 2] = arguments[_key3];
+  }
+
+  return rest.length === 0 ? data[key] : fetchFrom.apply(undefined, [data[key]].concat(rest));
+}
