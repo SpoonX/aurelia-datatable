@@ -1,49 +1,65 @@
-var gulp = require('gulp');
-var Karma = require('karma').Server;
+var gulp        = require('gulp');
+var KarmaServer = require('karma').Server;
+var server      = require('./server');
 
 /**
  * Run test once and exit
  */
-gulp.task('test', function(done) {
-  new Karma({
-    configFile: __dirname + '/../../karma.conf.js',
-    singleRun: true
-  }, done).start();
+gulp.task('test', ['lint'], function(done) {
+  server.start(function() {
+    var karmaServer = new KarmaServer({
+      configFile: __dirname + '/../../karma.conf.js',
+      singleRun: true
+    }, function(exitCode) {
+      server.stop(function() {
+        done();
+
+        process.exit(exitCode);
+      });
+    });
+
+    karmaServer.start();
+  });
 });
 
 /**
  * Watch for file changes and re-run tests on each change
  */
-gulp.task('tdd', function(done) {
-  new Karma({
-    configFile: __dirname + '/../../karma.conf.js'
-  }, done).start();
+gulp.task('tdd',  function(done) {
+  server.start(function() {
+    var karmaServer = new KarmaServer({
+      configFile: __dirname + '/../../karma.conf.js',
+      singleRun: false,
+      browsers: ['Chrome']
+    }, function(exitCode) {
+      server.stop(function() {
+        done();
+
+        process.exit(exitCode);
+      });
+    });
+
+    karmaServer.start();
+  });
 });
 
 /**
- * Run test once with code coverage and exit
+ * Run ie test once and exit
  */
-gulp.task('cover', function(done) {
-  new Karma({
-    configFile: __dirname + '/../../karma.conf.js',
-    singleRun: true,
-    reporters: ['coverage'],
-    preprocessors: {
-      'test/**/*.js': ['babel'],
-      'src/**/*.js': ['babel', 'coverage']
-    },
-    coverageReporter: {
-      includeAllSources: true,
-      instrumenters: {
-        isparta: require('isparta')
-      },
-      instrumenter: {
-        'src/**/*.js': 'isparta'
-      },
-      reporters: [
-        { type: 'html', dir: 'coverage' },
-        { type: 'text' }
-      ]
-    }
-  }, done).start();
-});
+ gulp.task('test-ie', function(done) {
+   server.start(function() {
+     var karmaServer = new KarmaServer({
+       configFile: __dirname + '/../../karma.conf.js',
+       singleRun: true,
+       browsers: ['IE']
+     }, function(exitCode) {
+       server.stop(function() {
+         done();
+
+         process.exit(exitCode);
+       });
+     });
+
+     karmaServer.start();
+   });
+ });

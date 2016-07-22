@@ -1,8 +1,5 @@
-// Karma configuration
-// Generated on Fri Dec 05 2014 16:49:29 GMT-0500 (EST)
-
-module.exports = function(config) {
-  config.set({
+module.exports = function (config) {
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -13,13 +10,8 @@ module.exports = function(config) {
 
     jspm: {
       // Edit this to your needs
-      loadFiles: ['test/setup.js', 'test/unit/**/*.js'],
-      serveFiles: ['src/**/*.js'],
-      paths: {
-        '*': '*',
-        'github:*': 'jspm_packages/github/*',
-        'npm:*': 'jspm_packages/npm/*'
-      }
+      loadFiles: ['test/setup.js', 'test/**/*.spec.js'],
+      serveFiles: ['src/**/*.js', 'test/resources/**/*.js'],
     },
 
     // list of files / patterns to load in the browser
@@ -27,7 +19,6 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [],
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -67,10 +58,16 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox', 'ChromeCanary'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = ['Firefox'];
+  }
+
+  config.set(configuration);
 };
