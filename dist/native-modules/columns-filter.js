@@ -1,12 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 
-
-var ColumnsFilterValueConverter = exports.ColumnsFilterValueConverter = function () {
+export var ColumnsFilterValueConverter = function () {
   function ColumnsFilterValueConverter() {
     
   }

@@ -1,25 +1,18 @@
 'use strict';
 
-System.register(['aurelia-view-manager'], function (_export, _context) {
+System.register(['./aurelia-datatable'], function (_export, _context) {
   "use strict";
 
-  var Config;
   return {
-    setters: [function (_aureliaViewManager) {
-      Config = _aureliaViewManager.Config;
-    }],
-    execute: function () {
-      function configure(aurelia) {
-        aurelia.plugin('aurelia-pager');
+    setters: [function (_aureliaDatatable) {
+      var _exportObj = {};
 
-        aurelia.container.get(Config).configureNamespace('spoonx/datatable', {
-          location: './{{framework}}/{{view}}.html'
-        });
-
-        aurelia.globalResources('./datatable');
+      for (var _key in _aureliaDatatable) {
+        if (_key !== "default") _exportObj[_key] = _aureliaDatatable[_key];
       }
 
-      _export('configure', configure);
-    }
+      _export(_exportObj);
+    }],
+    execute: function () {}
   };
 });
