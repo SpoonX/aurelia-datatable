@@ -37,30 +37,30 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.6",
-      "aurelia-orm": "^3.0.0-rc4",
+      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-orm": "^3.0.0-rc1",
       "aurelia-pager": "^0.0.5",
-      "aurelia-router": "^1.0.0-rc.1.0.1",
+      "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-view-manager": "^0.0.5"
     },
     "peerDependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.6",
-      "aurelia-orm": "^3.0.0-rc4",
+      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-orm": "^3.0.0-rc1",
       "aurelia-pager": "^0.0.5",
-      "aurelia-router": "^1.0.0-rc.1.0.1",
+      "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-view-manager": "^0.0.5"
     },
     "devDependencies": {
-      "aurelia-pal-browser": "^1.0.0-rc.1.0.1",
+      "aurelia-pal-browser": "^1.0.0-rc.1.0.0",
       "aurelia-polyfills": "^1.0.0-rc.1.0.0",
       "fetch": "github:github/fetch@^1.0.0"
     }
   },
   "dependencies": {
-    "aurelia-framework": "^1.0.0-rc.1.0.6",
-    "aurelia-orm": "^3.0.0-rc4",
+    "aurelia-framework": "^1.0.0-rc.1.0.0",
+    "aurelia-orm": "^3.0.0-rc1",
     "aurelia-pager": "^0.0.5",
-    "aurelia-router": "^1.0.0-rc.1.0.1",
+    "aurelia-router": "^1.0.0-rc.1.0.0",
     "aurelia-view-manager": "^0.0.5"
   },
   "devDependencies": {
