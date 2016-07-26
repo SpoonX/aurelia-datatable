@@ -198,7 +198,6 @@ export class DataTable {
         label    : ucfirst(clean(aliased[1] || aliased[0])),
         converter: (converter.length > 1) ? converter.slice(1).join(' | ') : false
       });
-
     });
 
     return labels;
