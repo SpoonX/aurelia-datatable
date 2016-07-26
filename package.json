@@ -69,11 +69,14 @@
     },
     "dependencies": {
       "aurelia-framework": "^1.0.0-beta.1.2.5",
+      "aurelia-logging": "^1.0.0-rc.1.0.1",
       "aurelia-orm": "^3.0.0-rc4",
       "aurelia-pager": "^0.0.5",
       "aurelia-router": "^1.0.0-beta.1",
+      "aurelia-templating": "^1.0.0-rc.1.0.2",
       "aurelia-view-manager": "^0.0.4",
-      "json-statham": "^1.3.0"
+      "json-statham": "^1.3.0",
+      "typer": "^1.1.0"
     },
     "devDependencies": {
       "aurelia-polyfills": "^1.0.0-beta.1.1.0",
