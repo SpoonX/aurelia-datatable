@@ -1,0 +1,1 @@
+export * from 'aurelia-datatable/aurelia-datatable';

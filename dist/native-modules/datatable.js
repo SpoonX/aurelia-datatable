@@ -1,3 +1,7 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18;
 
 function _initDefineProp(target, property, descriptor, context) {
@@ -9,6 +13,8 @@ function _initDefineProp(target, property, descriptor, context) {
     value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
   });
 }
+
+
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -48,9 +54,10 @@ import { resolvedView } from "aurelia-view-manager";
 import { EntityManager } from "aurelia-orm";
 import { Router } from "aurelia-router";
 
-export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
+export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+  function DataTable(Router, element, entityManager) {
+    
 
-  constructor(Router, element, entityManager) {
     _initDefineProp(this, "criteria", _descriptor, this);
 
     _initDefineProp(this, "where", _descriptor2, this);
@@ -92,7 +99,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     this.entityManager = entityManager;
   }
 
-  attached() {
+  DataTable.prototype.attached = function attached() {
     if (!this.repository && this.resource) {
       this.repository = this.entityManager.getRepository(this.resource);
     }
@@ -102,21 +109,23 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     this.criteria.sort = this.criteria.sort || {};
 
     this.load();
-  }
+  };
 
-  detached() {
+  DataTable.prototype.detached = function detached() {
     this.ready = false;
-  }
+  };
 
-  pageChanged() {
+  DataTable.prototype.pageChanged = function pageChanged() {
     this.load();
-  }
+  };
 
-  limitChanged() {
+  DataTable.prototype.limitChanged = function limitChanged() {
     this.load();
-  }
+  };
 
-  load() {
+  DataTable.prototype.load = function load() {
+    var _this = this;
+
     this.criteria.skip = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
 
@@ -126,64 +135,66 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       this.criteria.populate = this.populate;
     }
 
-    this.repository.find(this.criteria, true).then(result => {
-      this.data = result;
-    }).catch(error => {
-      this.triggerEvent('exception', { on: 'load', error: error });
+    this.repository.find(this.criteria, true).then(function (result) {
+      _this.data = result;
+    }).catch(function (error) {
+      _this.triggerEvent('exception', { on: 'load', error: error });
     });
-  }
+  };
 
-  populateEntity(row) {
+  DataTable.prototype.populateEntity = function populateEntity(row) {
     return this.repository.getPopulatedEntity(row);
-  }
+  };
 
-  doDestroy(row) {
+  DataTable.prototype.doDestroy = function doDestroy(row) {
+    var _this2 = this;
+
     if (typeof this.destroy === 'function') {
       return this.destroy(row);
     }
 
-    this.populateEntity(row).destroy().then(() => {
-      this.load();
-      this.triggerEvent('destroyed', row);
-    }).catch(error => {
-      this.triggerEvent('exception', { on: 'destroy', error: error });
+    this.populateEntity(row).destroy().then(function () {
+      _this2.load();
+      _this2.triggerEvent('destroyed', row);
+    }).catch(function (error) {
+      _this2.triggerEvent('exception', { on: 'destroy', error: error });
     });
-  }
+  };
 
-  doEdit(row) {
+  DataTable.prototype.doEdit = function doEdit(row) {
     if (typeof this.edit === 'function') {
       return this.edit(row);
     }
-  }
+  };
 
-  doCustomAction(action, row) {
+  DataTable.prototype.doCustomAction = function doCustomAction(action, row) {
     if (typeof action.action === 'function') {
       return action.action(row);
     }
-  }
+  };
 
-  checkDisabled(action, row) {
+  DataTable.prototype.checkDisabled = function checkDisabled(action, row) {
     if (typeof action.disabled === 'function') {
       return action.disabled(row);
     }
     return false;
-  }
+  };
 
-  doSort(columnLabel) {
+  DataTable.prototype.doSort = function doSort(columnLabel) {
+    var _criteria$sort;
+
     if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
       return;
     }
 
-    let column = columnLabel.column;
+    var column = columnLabel.column;
 
-    this.criteria.sort = {
-      [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
-    };
+    this.criteria.sort = (_criteria$sort = {}, _criteria$sort[column] = this.criteria.sort[column] === 'asc' ? 'desc' : 'asc', _criteria$sort);
 
     this.load();
-  }
+  };
 
-  searchColumnChanged(newValue, oldValue) {
+  DataTable.prototype.searchColumnChanged = function searchColumnChanged(newValue, oldValue) {
     if (!this.ready) {
       return;
     }
@@ -191,14 +202,14 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     delete this.criteria.where[oldValue];
 
     return this.doSearch();
-  }
+  };
 
-  doSearch() {
+  DataTable.prototype.doSearch = function doSearch() {
     if (!this.ready) {
       return;
     }
 
-    if (typeof this.criteria.where[this.searchColumn] === 'object') {
+    if (_typeof(this.criteria.where[this.searchColumn]) === 'object') {
       this.criteria.where[this.searchColumn].contains = this.search;
     } else {
       this.criteria.where[this.searchColumn] = { contains: this.search };
@@ -211,58 +222,25 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     this.pager.reloadCount();
 
     this.load();
-  }
+  };
 
-  reload() {
+  DataTable.prototype.reload = function reload() {
     this.pager.reloadCount();
 
     if (this.page === 1) {
       this.load();
     }
-  }
+  };
 
-  get columnLabels() {
-    let labelsRaw = this.columns.split(',');
-    let columnsArray = [];
-    let labels = [];
+  DataTable.prototype.triggerEvent = function triggerEvent(event) {
+    var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    function clean(str) {
-      return str.replace(/^'?\s*|\s*'$/g, '');
-    }
-
-    function ucfirst(str) {
-      return str[0].toUpperCase() + str.substr(1);
-    }
-
-    labelsRaw.forEach(label => {
-      if (!label) {
-        return;
-      }
-
-      let aliased = label.split(' as ');
-      let cleanedColumn = clean(aliased[0]);
-
-      if (columnsArray.indexOf(cleanedColumn) === -1) {
-        columnsArray.push(cleanedColumn);
-      }
-
-      labels.push({
-        nested: cleanedColumn.indexOf('.') !== -1,
-        column: cleanedColumn,
-        label: ucfirst(clean(aliased[1] || aliased[0]))
-      });
-    });
-
-    return labels;
-  }
-
-  triggerEvent(event, payload = {}) {
     payload.bubbles = true;
 
     return this.element.dispatchEvent(new CustomEvent(event, payload));
-  }
+  };
 
-  selected(row) {
+  DataTable.prototype.selected = function selected(row) {
     if (this.route) {
       return this.router.navigateToRoute(this.route, { id: row.id });
     }
@@ -270,64 +248,108 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     if (this.select) {
       return this.select(row);
     }
-  }
+  };
 
-  displayValue(row, ...propertyName) {
-    return fetchFrom(row, normalizeKey(...propertyName));
-  }
-}, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
+  DataTable.prototype.displayValue = function displayValue(row) {
+    for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      propertyName[_key - 1] = arguments[_key];
+    }
+
+    return fetchFrom(row, normalizeKey.apply(undefined, propertyName));
+  };
+
+  _createClass(DataTable, [{
+    key: "columnLabels",
+    get: function get() {
+      var labelsRaw = this.columns.split(',');
+      var columnsArray = [];
+      var labels = [];
+
+      function clean(str) {
+        return str.replace(/^'?\s*|\s*'$/g, '');
+      }
+
+      function ucfirst(str) {
+        return str[0].toUpperCase() + str.substr(1);
+      }
+
+      labelsRaw.forEach(function (label) {
+        if (!label) {
+          return;
+        }
+
+        var aliased = label.split(' as ');
+        var cleanedColumn = clean(aliased[0]);
+
+        if (columnsArray.indexOf(cleanedColumn) === -1) {
+          columnsArray.push(cleanedColumn);
+        }
+
+        labels.push({
+          nested: cleanedColumn.indexOf('.') !== -1,
+          column: cleanedColumn,
+          label: ucfirst(clean(aliased[1] || aliased[0]))
+        });
+      });
+
+      return labels;
+    }
+  }]);
+
+  return DataTable;
+}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return {};
   }
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "where", [_dec5], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return {};
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "limit", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return 30;
   }
 }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "columns", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return '';
   }
 }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "searchColumn", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return 'name';
   }
 }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return null;
   }
 }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "sortable", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return null;
   }
 }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "edit", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return null;
   }
 }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "destroy", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return null;
   }
 }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "page", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return 1;
   }
 }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "populate", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return false;
   }
 }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
@@ -350,16 +372,25 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   initializer: null
 }), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, "actions", [bindable], {
   enumerable: true,
-  initializer: function () {
+  initializer: function initializer() {
     return [];
   }
 }), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class);
 
-function normalizeKey(key, ...rest) {
-  let normalized = Array.isArray(key) ? normalizeKey(...key) : key.split('.');
-  return rest.length === 0 ? normalized : normalized.concat(normalizeKey(...rest));
+function normalizeKey(key) {
+  var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');
+
+  for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    rest[_key2 - 1] = arguments[_key2];
+  }
+
+  return rest.length === 0 ? normalized : normalized.concat(normalizeKey.apply(undefined, rest));
 }
 
-function fetchFrom(data, key, ...rest) {
-  return rest.length === 0 ? data[key] : fetchFrom(data[key], ...rest);
+function fetchFrom(data, key) {
+  for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+    rest[_key3 - 2] = arguments[_key3];
+  }
+
+  return rest.length === 0 ? data[key] : fetchFrom.apply(undefined, [data[key]].concat(rest));
 }

@@ -3,16 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.configure = configure;
 
-var _aureliaViewManager = require('aurelia-view-manager');
+var _aureliaDatatable = require('./aurelia-datatable');
 
-function configure(aurelia) {
-  aurelia.plugin('aurelia-pager');
-
-  aurelia.container.get(_aureliaViewManager.Config).configureNamespace('spoonx/datatable', {
-    location: './{{framework}}/{{view}}.html'
+Object.keys(_aureliaDatatable).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _aureliaDatatable[key];
+    }
   });
-
-  aurelia.globalResources('./datatable');
-}
+});
