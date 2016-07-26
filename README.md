@@ -13,6 +13,7 @@ Features:
 * Search
 * Custom columns
 * Custom button actions
+* Custom valueConverters
 * And more
 
 ## Installation
@@ -43,7 +44,7 @@ this.repository = entityManager.getRepository('users');
   <data-table 
       destroy.delegate="myEventCallback($event)" // or without the function to let ORM take care of it
       edit.delegate="myEventCallback($event)" 
-      columns="id,name as 'username'" 
+      columns="id,name as 'username', createdAt | dateFormat: 'yyyy-mm-dd'" 
       repository.bind="repository" 
       search-column="name" 
       searchable 

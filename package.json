@@ -30,6 +30,7 @@
   },
   "jspm": {
     "registry": "npm",
+    "jspmPackage": true,
     "main": "aurelia-datatable",
     "format": "amd",
     "directories": {
