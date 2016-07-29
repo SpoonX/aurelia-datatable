@@ -16,6 +16,7 @@ export class DataTable {
   @bindable limit        = 30;
   @bindable columns      = '';
   @bindable searchColumn = 'name';
+  @bindable actions      = [];
   @bindable searchable   = null;  // Show the search field? (Optional attribute).
   @bindable sortable     = null;  // Columns can be sorted? (Optional attribute).
   @bindable edit         = null;  // Rows are editable? (Optional attribute).
@@ -28,7 +29,6 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
-  @bindable actions = [];
 
   constructor(Router, element, entityManager) {
     this.router        = Router;
@@ -53,10 +53,18 @@ export class DataTable {
   }
 
   pageChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   }
 
   limitChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   }
 
@@ -114,11 +122,11 @@ export class DataTable {
   }
 
   doSort(columnLabel) {
-    if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
+    let column = columnLabel.column;
+
+    if (this.sortable === null || !this.isSortable(column)) {
       return;
     }
-
-    let column = columnLabel.column;
 
     this.criteria.sort = {
       [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
@@ -184,7 +192,8 @@ export class DataTable {
         return;
       }
 
-      let aliased       = label.split(' as ');
+      let converter     = label.split(' | ');
+      let aliased       = converter[0].split(' as ');
       let cleanedColumn = clean(aliased[0]);
 
       if (columnsArray.indexOf(cleanedColumn) === -1) {
@@ -192,9 +201,10 @@ export class DataTable {
       }
 
       labels.push({
-        nested: cleanedColumn.indexOf('.') !== -1,
-        column: cleanedColumn,
-        label : ucfirst(clean(aliased[1] || aliased[0]))
+        nested   : !this.isSortable(cleanedColumn),
+        column   : cleanedColumn,
+        label    : ucfirst(clean(aliased[1] || aliased[0])),
+        converter: (converter.length > 1) ? converter.slice(1).join(' | ') : false
       });
     });
 
@@ -215,6 +225,18 @@ export class DataTable {
     if (this.select) {
       return this.select(row);
     }
+  }
+
+  isSortable(column) {
+    if (column.indexOf('.') > 0) {
+      return false;
+    }
+
+    if (!this.populate) {
+      return true;
+    }
+
+    return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
   }
 
   displayValue(row, ...propertyName) {

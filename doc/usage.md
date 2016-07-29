@@ -38,6 +38,27 @@ Comma-separated string representing the column names to display. This is used fo
 <datatable resource="product" populate="group" columns="name,price as 'Market price',group.name as 'Product group'"></datatable>
 ```
 
+#### valueConverters
+You can give every colum one or more `valueConverter`s (`|` seperated). You need to define the converters in your `main.js` as a global resource. *[More information](http://eisenbergeffect.bluespire.com/binding-with-value-converters-in-aurelia/)()
+
+Example:
+
+```js
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .globalResources('dateFormatValueConverter')
+    .globalResources('priceFormatValueConverter')
+}
+```
+
+```html
+<datatable 
+  resource="product" 
+  columns="name, price as 'Market price' | priceFormat, createdAt | dateFormat: 'yyyy-mm-dd'"
+></datatable>
+```
+
 ### repository
 When given a repository, the datatable will use it to populate the table with.
 

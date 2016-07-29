@@ -12,6 +12,7 @@ Features:
 * Search
 * Custom columns
 * Custom button actions
+* Custom valueConverters
 * And more
 
 ## Enjoy

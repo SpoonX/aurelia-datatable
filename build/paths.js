@@ -22,7 +22,11 @@ var paths = {
   useTypeScriptForDTS: false,
   importsToAdd: [],
   importsToIgnoreForDts: [], // imports that are only used internally. no need to d.ts export them
-  jsResources: [appRoot+ 'datatable.js', appRoot+ 'columns-filter.js'], // js to transpile, but not be concated and keeping their relative path
+  jsResources: [
+    appRoot + 'datatable.js',
+    appRoot + 'columns-filter.js',
+    appRoot + 'convert-manager.js'
+  ], // js to transpile, but not be concated and keeping their relative path
   resources: appRoot + '{**/*.css,**/*.html}',
   sort: true,
   concat: true
