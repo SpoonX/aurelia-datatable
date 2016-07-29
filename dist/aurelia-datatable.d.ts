@@ -1,4 +1,8 @@
+import typer from 'typer';
 import {Config,resolvedView} from 'aurelia-view-manager';
+import {inject} from 'aurelia-dependency-injection';
+import {ViewResources} from 'aurelia-templating';
+import {getLogger} from 'aurelia-logging';
 import {bindable,inject,computedFrom,customElement,bindingMode} from 'aurelia-framework';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
@@ -7,12 +11,19 @@ export declare function configure(aurelia?: any): any;
 export declare class ColumnsFilterValueConverter {
   toView(array?: any): any;
 }
+export declare class ConvertManagerValueConverter {
+  constructor(viewResources?: any);
+  runConverter(value?: any, converter?: any, convertParams?: any): any;
+  toView(value?: any, converters?: any): any;
+  parseParams(str?: any): any;
+}
 export declare class DataTable {
   criteria: any;
   where: any;
   limit: any;
   columns: any;
   searchColumn: any;
+  actions: any;
   searchable: any;
   sortable: any;
   edit: any;
@@ -25,8 +36,7 @@ export declare class DataTable {
   data: any;
   route: any;
   pages: any;
-  actions: any;
-  constructor(Router?: any, element?: any, entityManager?: any);
+  constructor(router?: any, element?: any, entityManager?: any);
   attached(): any;
   detached(): any;
   pageChanged(): any;
@@ -44,5 +54,6 @@ export declare class DataTable {
   columnLabels: any;
   triggerEvent(event?: any, payload?: any): any;
   selected(row?: any): any;
+  isSortable(column?: any): any;
   displayValue(row?: any, ...propertyName: any[]): any;
 }

@@ -49,52 +49,52 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { bindable, inject, computedFrom, customElement, bindingMode } from "aurelia-framework";
-import { resolvedView } from "aurelia-view-manager";
-import { EntityManager } from "aurelia-orm";
-import { Router } from "aurelia-router";
+import { bindable, inject, computedFrom, customElement, bindingMode } from 'aurelia-framework';
+import { resolvedView } from 'aurelia-view-manager';
+import { EntityManager } from 'aurelia-orm';
+import { Router } from 'aurelia-router';
 
 export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-  function DataTable(Router, element, entityManager) {
+  function DataTable(router, element, entityManager) {
     
 
-    _initDefineProp(this, "criteria", _descriptor, this);
+    _initDefineProp(this, 'criteria', _descriptor, this);
 
-    _initDefineProp(this, "where", _descriptor2, this);
+    _initDefineProp(this, 'where', _descriptor2, this);
 
-    _initDefineProp(this, "limit", _descriptor3, this);
+    _initDefineProp(this, 'limit', _descriptor3, this);
 
-    _initDefineProp(this, "columns", _descriptor4, this);
+    _initDefineProp(this, 'columns', _descriptor4, this);
 
-    _initDefineProp(this, "searchColumn", _descriptor5, this);
+    _initDefineProp(this, 'searchColumn', _descriptor5, this);
 
-    _initDefineProp(this, "searchable", _descriptor6, this);
+    _initDefineProp(this, 'actions', _descriptor6, this);
 
-    _initDefineProp(this, "sortable", _descriptor7, this);
+    _initDefineProp(this, 'searchable', _descriptor7, this);
 
-    _initDefineProp(this, "edit", _descriptor8, this);
+    _initDefineProp(this, 'sortable', _descriptor8, this);
 
-    _initDefineProp(this, "destroy", _descriptor9, this);
+    _initDefineProp(this, 'edit', _descriptor9, this);
 
-    _initDefineProp(this, "page", _descriptor10, this);
+    _initDefineProp(this, 'destroy', _descriptor10, this);
 
-    _initDefineProp(this, "populate", _descriptor11, this);
+    _initDefineProp(this, 'page', _descriptor11, this);
 
-    _initDefineProp(this, "select", _descriptor12, this);
+    _initDefineProp(this, 'populate', _descriptor12, this);
 
-    _initDefineProp(this, "repository", _descriptor13, this);
+    _initDefineProp(this, 'select', _descriptor13, this);
 
-    _initDefineProp(this, "resource", _descriptor14, this);
+    _initDefineProp(this, 'repository', _descriptor14, this);
 
-    _initDefineProp(this, "data", _descriptor15, this);
+    _initDefineProp(this, 'resource', _descriptor15, this);
 
-    _initDefineProp(this, "route", _descriptor16, this);
+    _initDefineProp(this, 'data', _descriptor16, this);
 
-    _initDefineProp(this, "pages", _descriptor17, this);
+    _initDefineProp(this, 'route', _descriptor17, this);
 
-    _initDefineProp(this, "actions", _descriptor18, this);
+    _initDefineProp(this, 'pages', _descriptor18, this);
 
-    this.router = Router;
+    this.router = router;
     this.element = element;
     this.entityManager = entityManager;
   }
@@ -116,10 +116,18 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   };
 
   DataTable.prototype.pageChanged = function pageChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   };
 
   DataTable.prototype.limitChanged = function limitChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   };
 
@@ -183,11 +191,11 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   DataTable.prototype.doSort = function doSort(columnLabel) {
     var _criteria$sort;
 
-    if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
+    var column = columnLabel.column;
+
+    if (this.sortable === null || !this.isSortable(column)) {
       return;
     }
-
-    var column = columnLabel.column;
 
     this.criteria.sort = (_criteria$sort = {}, _criteria$sort[column] = this.criteria.sort[column] === 'asc' ? 'desc' : 'asc', _criteria$sort);
 
@@ -250,17 +258,31 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     }
   };
 
+  DataTable.prototype.isSortable = function isSortable(column) {
+    if (column.indexOf('.') > 0) {
+      return false;
+    }
+
+    if (!this.populate) {
+      return true;
+    }
+
+    return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
+  };
+
   DataTable.prototype.displayValue = function displayValue(row) {
     for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       propertyName[_key - 1] = arguments[_key];
     }
 
-    return fetchFrom(row, normalizeKey.apply(undefined, propertyName));
+    return fetchFrom.apply(undefined, [row].concat(normalizeKey.apply(undefined, propertyName)));
   };
 
   _createClass(DataTable, [{
-    key: "columnLabels",
+    key: 'columnLabels',
     get: function get() {
+      var _this3 = this;
+
       var labelsRaw = this.columns.split(',');
       var columnsArray = [];
       var labels = [];
@@ -278,7 +300,8 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
           return;
         }
 
-        var aliased = label.split(' as ');
+        var converter = label.split(' | ');
+        var aliased = converter[0].split(' as ');
         var cleanedColumn = clean(aliased[0]);
 
         if (columnsArray.indexOf(cleanedColumn) === -1) {
@@ -286,9 +309,10 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
         }
 
         labels.push({
-          nested: cleanedColumn.indexOf('.') !== -1,
+          nested: !_this3.isSortable(cleanedColumn),
           column: cleanedColumn,
-          label: ucfirst(clean(aliased[1] || aliased[0]))
+          label: ucfirst(clean(aliased[1] || aliased[0])),
+          converter: converter.length > 1 ? converter.slice(1).join(' | ') : false
         });
       });
 
@@ -297,85 +321,85 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }]);
 
   return DataTable;
-}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, "criteria", [_dec4], {
+}(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'criteria', [_dec4], {
   enumerable: true,
   initializer: function initializer() {
     return {};
   }
-}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, "where", [_dec5], {
+}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'where', [_dec5], {
   enumerable: true,
   initializer: function initializer() {
     return {};
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, "limit", [bindable], {
+}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [bindable], {
   enumerable: true,
   initializer: function initializer() {
     return 30;
   }
-}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, "columns", [bindable], {
+}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [bindable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "searchColumn", [bindable], {
+}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'searchColumn', [bindable], {
   enumerable: true,
   initializer: function initializer() {
     return 'name';
   }
-}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return null;
-  }
-}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "sortable", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return null;
-  }
-}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "edit", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return null;
-  }
-}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, "destroy", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return null;
-  }
-}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, "page", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return 1;
-  }
-}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "populate", [bindable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "select", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, "repository", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, "resource", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, "data", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, "route", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, "pages", [bindable], {
-  enumerable: true,
-  initializer: null
-}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, "actions", [bindable], {
+}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'actions', [bindable], {
   enumerable: true,
   initializer: function initializer() {
     return [];
   }
-}), _applyDecoratedDescriptor(_class2.prototype, "columnLabels", [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, "columnLabels"), _class2.prototype)), _class2)) || _class) || _class) || _class);
+}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return null;
+  }
+}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return null;
+  }
+}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'edit', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return null;
+  }
+}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return null;
+  }
+}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'page', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return 1;
+  }
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+  enumerable: true,
+  initializer: null
+}), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
 
 function normalizeKey(key) {
   var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');

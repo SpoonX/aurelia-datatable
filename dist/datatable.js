@@ -1,7 +1,7 @@
-import {bindable, inject, computedFrom, customElement, bindingMode} from "aurelia-framework";
-import {resolvedView} from "aurelia-view-manager";
-import {EntityManager} from "aurelia-orm";
-import {Router} from "aurelia-router";
+import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
+import {resolvedView} from 'aurelia-view-manager';
+import {EntityManager} from 'aurelia-orm';
+import {Router} from 'aurelia-router';
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
@@ -16,6 +16,7 @@ export class DataTable {
   @bindable limit        = 30;
   @bindable columns      = '';
   @bindable searchColumn = 'name';
+  @bindable actions      = [];
   @bindable searchable   = null;  // Show the search field? (Optional attribute).
   @bindable sortable     = null;  // Columns can be sorted? (Optional attribute).
   @bindable edit         = null;  // Rows are editable? (Optional attribute).
@@ -28,10 +29,9 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
-  @bindable actions = [];
 
-  constructor(Router, element, entityManager) {
-    this.router        = Router;
+  constructor(router, element, entityManager) {
+    this.router        = router;
     this.element       = element;
     this.entityManager = entityManager;
   }
@@ -53,10 +53,18 @@ export class DataTable {
   }
 
   pageChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   }
 
   limitChanged() {
+    if (!this.ready) {
+      return;
+    }
+
     this.load();
   }
 
@@ -114,11 +122,11 @@ export class DataTable {
   }
 
   doSort(columnLabel) {
-    if (this.sortable === null || columnLabel.column.indexOf('.') !== -1) {
+    let column = columnLabel.column;
+
+    if (this.sortable === null || !this.isSortable(column)) {
       return;
     }
-
-    let column = columnLabel.column;
 
     this.criteria.sort = {
       [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
@@ -184,7 +192,8 @@ export class DataTable {
         return;
       }
 
-      let aliased       = label.split(' as ');
+      let converter     = label.split(' | ');
+      let aliased       = converter[0].split(' as ');
       let cleanedColumn = clean(aliased[0]);
 
       if (columnsArray.indexOf(cleanedColumn) === -1) {
@@ -192,9 +201,10 @@ export class DataTable {
       }
 
       labels.push({
-        nested: cleanedColumn.indexOf('.') !== -1,
+        nested: !this.isSortable(cleanedColumn),
         column: cleanedColumn,
-        label : ucfirst(clean(aliased[1] || aliased[0]))
+        label: ucfirst(clean(aliased[1] || aliased[0])),
+        converter: (converter.length > 1) ? converter.slice(1).join(' | ') : false
       });
     });
 
@@ -209,7 +219,7 @@ export class DataTable {
 
   selected(row) {
     if (this.route) {
-      return this.router.navigateToRoute(this.route, {id: row.id})
+      return this.router.navigateToRoute(this.route, {id: row.id});
     }
 
     if (this.select) {
@@ -217,11 +227,22 @@ export class DataTable {
     }
   }
 
+  isSortable(column) {
+    if (column.indexOf('.') > 0) {
+      return false;
+    }
+
+    if (!this.populate) {
+      return true;
+    }
+
+    return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
+  }
+
   displayValue(row, ...propertyName) {
-    return fetchFrom(row, normalizeKey(...propertyName));
+    return fetchFrom(row, ...normalizeKey(...propertyName));
   }
 }
-
 
 /**
  * Used to normalize keys of mixed array and dot-separated string to a single array of undotted strings
@@ -238,6 +259,7 @@ function normalizeKey(key, ...rest) {
    * if not we concat our normalized key with the normalized rest
    */
   let normalized = Array.isArray(key) ? normalizeKey(...key) : key.split('.');
+
   return rest.length === 0 ? normalized : normalized.concat(normalizeKey(...rest));
 }
 

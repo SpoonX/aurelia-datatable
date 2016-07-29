@@ -1,13 +1,14 @@
-import {inject}        from 'aurelia-dependency-injection';
-import {ViewResources} from 'aurelia-templating';
-import {getLogger}     from 'aurelia-logging';
-import typer           from 'typer';
+var _dec, _class;
 
-@inject(ViewResources)
-export class ConvertManagerValueConverter {
+import { inject } from 'aurelia-dependency-injection';
+import { ViewResources } from 'aurelia-templating';
+import { getLogger } from 'aurelia-logging';
+import typer from 'typer';
+
+export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_class = class ConvertManagerValueConverter {
   constructor(viewResources) {
     this.viewResources = viewResources;
-    this.logger        = getLogger('aurelia-datatable');
+    this.logger = getLogger('aurelia-datatable');
   }
 
   runConverter(value, converter, convertParams) {
@@ -36,7 +37,7 @@ export class ConvertManagerValueConverter {
         continue;
       }
 
-      let name  = converter.slice(0, index);
+      let name = converter.slice(0, index);
       let param = this.parseParams(converter.slice(index + 1).trim());
 
       value = this.runConverter(value, name, param);
@@ -56,4 +57,4 @@ export class ConvertManagerValueConverter {
 
     return typer.cast(str);
   }
-}
+}) || _class);
