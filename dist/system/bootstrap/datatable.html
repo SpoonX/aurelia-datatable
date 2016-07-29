@@ -1,5 +1,6 @@
 <template>
   <require from="../columns-filter"></require>
+  <require from="../convert-manager"></require>
 
   <!-- Search bar -->
   <div if.bind="searchable !== null" class="row">
@@ -51,7 +52,7 @@
 
       <!-- Columns -->
       <td repeat.for="columnLabel of columnLabels">
-        <a click.delegate="selected(row)">${displayValue(row, columnLabel.column)}</a>
+        <a click.delegate="selected(row)">${displayValue(row, columnLabel.column) | convertManager: columnLabel.converter}</a>
       </td>
 
       <!-- Actions -->

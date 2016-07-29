@@ -1,7 +1,7 @@
-import {bindable, inject, computedFrom, customElement, bindingMode} from "aurelia-framework";
-import {resolvedView} from "aurelia-view-manager";
-import {EntityManager} from "aurelia-orm";
-import {Router} from "aurelia-router";
+import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
+import {resolvedView} from 'aurelia-view-manager';
+import {EntityManager} from 'aurelia-orm';
+import {Router} from 'aurelia-router';
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
@@ -30,8 +30,8 @@ export class DataTable {
   @bindable route;
   @bindable pages;
 
-  constructor(Router, element, entityManager) {
-    this.router        = Router;
+  constructor(router, element, entityManager) {
+    this.router        = router;
     this.element       = element;
     this.entityManager = entityManager;
   }
@@ -201,9 +201,9 @@ export class DataTable {
       }
 
       labels.push({
-        nested   : !this.isSortable(cleanedColumn),
-        column   : cleanedColumn,
-        label    : ucfirst(clean(aliased[1] || aliased[0])),
+        nested: !this.isSortable(cleanedColumn),
+        column: cleanedColumn,
+        label: ucfirst(clean(aliased[1] || aliased[0])),
         converter: (converter.length > 1) ? converter.slice(1).join(' | ') : false
       });
     });
@@ -219,7 +219,7 @@ export class DataTable {
 
   selected(row) {
     if (this.route) {
-      return this.router.navigateToRoute(this.route, {id: row.id})
+      return this.router.navigateToRoute(this.route, {id: row.id});
     }
 
     if (this.select) {
