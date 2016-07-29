@@ -39,7 +39,7 @@ Comma-separated string representing the column names to display. This is used fo
 ```
 
 #### valueConverters
-You can give every colum a `valueConverter`. You need to define the converter in your `main.js` as a global resource. *[More information](http://eisenbergeffect.bluespire.com/binding-with-value-converters-in-aurelia/)()
+You can give every colum one or more `valueConverter`s (`|` seperated). You need to define the converters in your `main.js` as a global resource. *[More information](http://eisenbergeffect.bluespire.com/binding-with-value-converters-in-aurelia/)()
 
 Example:
 
@@ -48,14 +48,14 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .globalResources('dateFormatValueConverter')
-    .globalResources('priceFormatterValueConverter')
+    .globalResources('priceFormatValueConverter')
 }
 ```
 
 ```html
 <datatable 
   resource="product" 
-  columns="name, price as 'Market price' | , createdAt | dateFormat: 'yyyy-mm-dd'"
+  columns="name, price as 'Market price' | priceFormat, createdAt | dateFormat: 'yyyy-mm-dd'"
 ></datatable>
 ```
 
