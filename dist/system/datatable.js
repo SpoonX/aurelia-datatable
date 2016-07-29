@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router'], function (_export, _context) {
+System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'json-statham'], function (_export, _context) {
   "use strict";
 
-  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, _typeof, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, DataTable;
+  var bindable, inject, computedFrom, customElement, bindingMode, resolvedView, EntityManager, Router, Statham, _typeof, _createClass, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, DataTable;
 
   function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -50,23 +50,6 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
   }
 
-  function normalizeKey(key) {
-    var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');
-
-    for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      rest[_key2 - 1] = arguments[_key2];
-    }
-
-    return rest.length === 0 ? normalized : normalized.concat(normalizeKey.apply(undefined, rest));
-  }
-
-  function fetchFrom(data, key) {
-    for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-      rest[_key3 - 2] = arguments[_key3];
-    }
-
-    return rest.length === 0 ? data[key] : fetchFrom.apply(undefined, [data[key]].concat(rest));
-  }
   return {
     setters: [function (_aureliaFramework) {
       bindable = _aureliaFramework.bindable;
@@ -80,6 +63,8 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
       EntityManager = _aureliaOrm.EntityManager;
     }, function (_aureliaRouter) {
       Router = _aureliaRouter.Router;
+    }, function (_jsonStatham) {
+      Statham = _jsonStatham.Statham;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -322,12 +307,8 @@ System.register(['aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'au
           return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
         };
 
-        DataTable.prototype.displayValue = function displayValue(row) {
-          for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            propertyName[_key - 1] = arguments[_key];
-          }
-
-          return fetchFrom.apply(undefined, [row].concat(normalizeKey.apply(undefined, propertyName)));
+        DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+          return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
         };
 
         _createClass(DataTable, [{

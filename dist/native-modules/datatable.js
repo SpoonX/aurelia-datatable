@@ -53,6 +53,7 @@ import { bindable, inject, computedFrom, customElement, bindingMode } from 'aure
 import { resolvedView } from 'aurelia-view-manager';
 import { EntityManager } from 'aurelia-orm';
 import { Router } from 'aurelia-router';
+import { Statham } from 'json-statham';
 
 export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
   function DataTable(router, element, entityManager) {
@@ -270,12 +271,8 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
   };
 
-  DataTable.prototype.displayValue = function displayValue(row) {
-    for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      propertyName[_key - 1] = arguments[_key];
-    }
-
-    return fetchFrom.apply(undefined, [row].concat(normalizeKey.apply(undefined, propertyName)));
+  DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
   };
 
   _createClass(DataTable, [{
@@ -400,21 +397,3 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
-
-function normalizeKey(key) {
-  var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');
-
-  for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-    rest[_key2 - 1] = arguments[_key2];
-  }
-
-  return rest.length === 0 ? normalized : normalized.concat(normalizeKey.apply(undefined, rest));
-}
-
-function fetchFrom(data, key) {
-  for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-    rest[_key3 - 2] = arguments[_key3];
-  }
-
-  return rest.length === 0 ? data[key] : fetchFrom.apply(undefined, [data[key]].concat(rest));
-}

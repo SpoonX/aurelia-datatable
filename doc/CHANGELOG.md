@@ -1,3 +1,8 @@
+<a name="0.0.15"></a>
+## [0.0.15](https://github.com/SpoonX/aurelia-datatable/compare/0.0.14...v0.0.15) (2016-07-29)
+
+
+
 <a name="0.0.14"></a>
 ## 0.0.14 (2016-07-29)
 
