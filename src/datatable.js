@@ -2,7 +2,7 @@ import {bindable, inject, computedFrom, customElement, bindingMode} from 'aureli
 import {resolvedView} from 'aurelia-view-manager';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
-import {Statham} from "json-statham";
+import {Statham} from 'json-statham';
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
