@@ -6,6 +6,7 @@ import {getLogger} from 'aurelia-logging';
 import {bindable,inject,computedFrom,customElement,bindingMode} from 'aurelia-framework';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
+import {Statham} from 'json-statham';
 
 export declare function configure(aurelia?: any): any;
 export declare class ColumnsFilterValueConverter {
@@ -55,5 +56,5 @@ export declare class DataTable {
   triggerEvent(event?: any, payload?: any): any;
   selected(row?: any): any;
   isSortable(column?: any): any;
-  displayValue(row?: any, ...propertyName: any[]): any;
+  displayValue(row?: any, propertyName?: any): any;
 }
