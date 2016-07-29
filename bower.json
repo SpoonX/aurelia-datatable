@@ -24,9 +24,13 @@
   },
   "dependencies": {
     "aurelia-framework": "^1.0.0-rc.1.0.0",
-    "aurelia-orm": "^3.0.0-rc1",
+    "aurelia-logging": "^1.0.0-rc.1.0.0",
+    "aurelia-orm": "^3.0.0-rc4",
     "aurelia-pager": "^0.0.5",
     "aurelia-router": "^1.0.0-rc.1.0.0",
-    "aurelia-view-manager": "^0.0.5"
+    "aurelia-templating": "^1.0.0-rc.1.0.0",
+    "aurelia-view-manager": "^0.0.5",
+    "json-statham": "^1.6.0",
+    "typer": "^1.1.0"
   }
 }
