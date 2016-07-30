@@ -1,3 +1,13 @@
+<a name="0.0.16"></a>
+## [0.0.16](https://github.com/SpoonX/aurelia-datatable/compare/0.0.14...v0.0.16) (2016-07-30)
+
+
+### Bug Fixes
+
+* **datatable:** and kick json-statham again. still won't bundle ([c2f5407](https://github.com/SpoonX/aurelia-datatable/commit/c2f5407))
+
+
+
 <a name="0.0.15"></a>
 ## [0.0.15](https://github.com/SpoonX/aurelia-datatable/compare/0.0.14...v0.0.15) (2016-07-29)
 
