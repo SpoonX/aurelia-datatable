@@ -248,6 +248,8 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)
     if (this.page === 1) {
       this.load();
     }
+
+    this.page = 1;
   };
 
   DataTable.prototype.triggerEvent = function triggerEvent(event) {

@@ -261,6 +261,8 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
       if (this.page === 1) {
         this.load();
       }
+
+      this.page = 1;
     };
 
     DataTable.prototype.triggerEvent = function triggerEvent(event) {
