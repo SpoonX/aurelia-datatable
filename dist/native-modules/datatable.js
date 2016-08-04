@@ -238,6 +238,8 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     if (this.page === 1) {
       this.load();
     }
+
+    this.page = 1;
   };
 
   DataTable.prototype.triggerEvent = function triggerEvent(event) {
