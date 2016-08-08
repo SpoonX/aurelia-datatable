@@ -30,6 +30,7 @@
     "aurelia-router": "^1.0.0-rc.1.0.0",
     "aurelia-templating": "^1.0.0-rc.1.0.0",
     "aurelia-view-manager": "^0.0.5",
+    "json-statham": "^1.6.0",
     "typer": "^1.1.0"
   }
 }

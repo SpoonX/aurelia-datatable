@@ -17,6 +17,7 @@ System.config({
     "aurelia-templating": "npm:aurelia-templating@1.0.0",
     "aurelia-view-manager": "npm:aurelia-view-manager@0.0.5",
     "fetch": "github:github/fetch@1.0.0",
+    "json-statham": "npm:json-statham@1.6.0",
     "typer": "npm:typer@1.1.0",
     "npm:aurelia-api@3.0.0-rc4": {
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
@@ -112,6 +113,10 @@ System.config({
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
       "aurelia-templating": "npm:aurelia-templating@1.0.0",
       "extend": "npm:extend@3.0.0"
+    },
+    "npm:json-statham@1.6.0": {
+      "extend": "npm:extend@3.0.0",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     }
   }
 });

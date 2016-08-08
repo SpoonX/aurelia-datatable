@@ -2,6 +2,7 @@ import {bindable, inject, computedFrom, customElement, bindingMode} from 'aureli
 import {resolvedView} from 'aurelia-view-manager';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
+import {Statham} from 'json-statham';
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
@@ -241,47 +242,7 @@ export class DataTable {
     return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
   }
 
-  displayValue(row, ...propertyName) {
-    return fetchFrom(row, ...normalizeKey(...propertyName));
+  displayValue(row, propertyName) {
+    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
   }
-}
-
-/**
- * Used to normalize keys of mixed array and dot-separated string to a single array of undotted strings
- * @param  {string|Array<keys>} keys    (dot-separated) string(s) or array of keys
- * @param  {Array}              ...rest Rest of the arguments
- * @return {Array}              that    The key normalized to an array of strings
- */
-function normalizeKey(key, ...rest) {
-  /*
-   * First, we split the arguments in key and rest
-   * then, if key is an array, we need to normalize it as well
-   * else it can be split into an array directly
-   * if the rest was empty, we're done
-   * if not we concat our normalized key with the normalized rest
-   */
-  let normalized = Array.isArray(key) ? normalizeKey(...key) : key.split('.');
-
-  return rest.length === 0 ? normalized : normalized.concat(normalizeKey(...rest));
-}
-
-
-/**
- * Fetches value from (nested) object with a normalized key
- * @param  {Object}               data    The data to fetch data from
- * @param  {string|Array<string>} keys    string or array of keys
- * @param  {Array<string>}        ...rest Rest of the arguments
- * @return {any}                  that    The retrieved value from the data
- */
-function fetchFrom(data, key, ...rest) {
-  /*
-   * data is the POJO of the current branch
-   * [key,...rest] is the current normalized key,
-   * thus key is the first key as string and ...rest the remainder of the key
-   * if rest is empty, then data[key] is the data we want to fetch
-   * else, we go down onw set on the branch (data[key]) and repeat with ...rest,
-   * which will make the new key the first entry of ...rest
-   * and the new rest the remainder of ...rest minus the key
-   */
-  return rest.length === 0 ? data[key] : fetchFrom(data[key], ...rest);
 }
