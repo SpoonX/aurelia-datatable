@@ -1,4 +1,6 @@
-import {bindable, inject, computedFrom, customElement, bindingMode} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
+import {bindingMode, computedFrom} from 'aurelia-binding';
+import {bindable, customElement} from 'aurelia-templating';
 import {resolvedView} from 'aurelia-view-manager';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';

@@ -37,25 +37,27 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-binding": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
       "aurelia-logging": "^1.0.0-rc.1.0.0",
-      "aurelia-orm": "^3.0.0-rc4",
-      "aurelia-pager": "^0.0.5",
+      "aurelia-orm": "^3.0.0-rc5",
+      "aurelia-pager": "^0.0.10",
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
-      "aurelia-view-manager": "^0.0.5",
-      "json-statham": "^1.6.0",
+      "aurelia-view-manager": "^0.0.7",
+      "json-statham": "^2.0.5",
       "typer": "^1.1.0"
     },
     "peerDependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-binding": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
       "aurelia-logging": "^1.0.0-rc.1.0.0",
-      "aurelia-orm": "^3.0.0-rc4",
-      "aurelia-pager": "^0.0.5",
+      "aurelia-orm": "^3.0.0-rc5",
+      "aurelia-pager": "^0.0.10",
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
-      "aurelia-view-manager": "^0.0.5",
-      "json-statham": "^1.6.0",
+      "aurelia-view-manager": "^0.0.7",
+      "json-statham": "^2.0.5",
       "typer": "^1.1.0"
     },
     "devDependencies": {
@@ -65,14 +67,15 @@
     }
   },
   "dependencies": {
-    "aurelia-framework": "^1.0.0-rc.1.0.0",
+    "aurelia-binding": "^1.0.0-rc.1.0.0",
+    "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
     "aurelia-logging": "^1.0.0-rc.1.0.0",
-    "aurelia-orm": "^3.0.0-rc4",
-    "aurelia-pager": "^0.0.5",
+    "aurelia-orm": "^3.0.0-rc5",
+    "aurelia-pager": "^0.0.10",
     "aurelia-router": "^1.0.0-rc.1.0.0",
     "aurelia-templating": "^1.0.0-rc.1.0.0",
-    "aurelia-view-manager": "^0.0.5",
-    "json-statham": "^1.6.0",
+    "aurelia-view-manager": "^0.0.7",
+    "json-statham": "^2.0.5",
     "typer": "^1.1.0"
   },
   "devDependencies": {
