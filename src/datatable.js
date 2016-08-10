@@ -4,7 +4,7 @@ import {bindable, customElement} from 'aurelia-templating';
 import {resolvedView} from 'aurelia-view-manager';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
-import {Statham} from 'json-statham';
+import {Homefront} from 'homefront';
 
 @customElement('datatable')
 @resolvedView('spoonx/datatable', 'datatable')
@@ -245,6 +245,6 @@ export class DataTable {
   }
 
   displayValue(row, propertyName) {
-    return new Statham(row, Statham.MODE_NESTED).fetch(propertyName);
+    return new Homefront(row, Homefront.MODE_NESTED).fetch(propertyName);
   }
 }

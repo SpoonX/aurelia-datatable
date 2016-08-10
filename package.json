@@ -19,7 +19,7 @@
     "VMBindraban <vijay@spoonx.nl>",
     "jeremyvergnas <jeremy@sweebr.com"
   ],
-  "main": "dist/commonjs/datatable.js",
+  "main": "dist/commonjs/aurelia-datatable.js",
   "typings": "dist/aurelia-datatable.d.ts",
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
       "aurelia-view-manager": "^0.0.7",
-      "json-statham": "^2.0.5",
+      "homefront": "^1.0.0",
       "typer": "^1.1.0"
     },
     "peerDependencies": {
@@ -57,7 +57,7 @@
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
       "aurelia-view-manager": "^0.0.7",
-      "json-statham": "^2.0.5",
+      "homefront": "^1.0.0",
       "typer": "^1.1.0"
     },
     "devDependencies": {
@@ -75,7 +75,7 @@
     "aurelia-router": "^1.0.0-rc.1.0.0",
     "aurelia-templating": "^1.0.0-rc.1.0.0",
     "aurelia-view-manager": "^0.0.7",
-    "json-statham": "^2.0.5",
+    "homefront": "^1.0.0",
     "typer": "^1.1.0"
   },
   "devDependencies": {
@@ -134,6 +134,9 @@
   "aurelia": {
     "build": {
       "resources": [
+        "aurelia-datatable/columns-filter",
+        "aurelia-datatable/convert-manager",
+        "aurelia-datatable/datatable",
         "aurelia-datatable/bootstrap/datatable.html"
       ]
     }
