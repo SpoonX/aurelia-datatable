@@ -1,11 +1,12 @@
 import typer from 'typer';
 import {Config,resolvedView} from 'aurelia-view-manager';
 import {inject} from 'aurelia-dependency-injection';
-import {ViewResources} from 'aurelia-templating';
+import {ViewResources,bindable,customElement} from 'aurelia-templating';
 import {getLogger} from 'aurelia-logging';
-import {bindable,inject,computedFrom,customElement,bindingMode} from 'aurelia-framework';
+import {bindingMode,computedFrom} from 'aurelia-binding';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
+import {Homefront} from 'homefront';
 
 export declare function configure(aurelia?: any): any;
 export declare class ColumnsFilterValueConverter {
@@ -55,5 +56,5 @@ export declare class DataTable {
   triggerEvent(event?: any, payload?: any): any;
   selected(row?: any): any;
   isSortable(column?: any): any;
-  displayValue(row?: any, ...propertyName: any[]): any;
+  displayValue(row?: any, propertyName?: any): any;
 }
