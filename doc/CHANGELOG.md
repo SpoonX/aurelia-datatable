@@ -1,3 +1,18 @@
+<a name="0.0.18"></a>
+## [0.0.18](https://github.com/SpoonX/aurelia-datatable/compare/0.0.16...v0.0.18) (2016-08-10)
+
+
+### Bug Fixes
+
+* **project:** set page to 1 when reload() is called ([4f5dac7](https://github.com/SpoonX/aurelia-datatable/commit/4f5dac7))
+
+
+### Features
+
+* **project:** switch to npm:homefront. ([724fdd1](https://github.com/SpoonX/aurelia-datatable/commit/724fdd1))
+
+
+
 <a name="0.0.17"></a>
 ## [0.0.17](https://github.com/SpoonX/aurelia-datatable/compare/0.0.16...v0.0.17) (2016-08-04)
 
