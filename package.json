@@ -61,8 +61,10 @@
       "typer": "^1.1.0"
     },
     "devDependencies": {
+      "aurelia-bootstrapper": "^1.0.0",
       "aurelia-pal-browser": "^1.0.0-rc.1.0.0",
       "aurelia-polyfills": "^1.0.0-rc.1.0.0",
+      "aurelia-testing": "^1.0.0-beta.2.0.0",
       "fetch": "github:github/fetch@^1.0.0"
     }
   },
