@@ -7,22 +7,24 @@ System.config({
   },
 
   map: {
-    "aurelia-framework": "npm:aurelia-framework@1.0.1",
+    "aurelia-binding": "npm:aurelia-binding@1.0.1",
+    "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
     "aurelia-logging": "npm:aurelia-logging@1.0.0",
     "aurelia-orm": "npm:aurelia-orm@3.0.0-rc6",
-    "aurelia-pager": "npm:aurelia-pager@0.0.5",
+    "aurelia-pager": "npm:aurelia-pager@0.0.10",
     "aurelia-pal-browser": "npm:aurelia-pal-browser@1.0.0",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0",
     "aurelia-router": "npm:aurelia-router@1.0.2",
     "aurelia-templating": "npm:aurelia-templating@1.0.0",
-    "aurelia-view-manager": "npm:aurelia-view-manager@0.0.5",
+    "aurelia-view-manager": "npm:aurelia-view-manager@0.0.7",
     "fetch": "github:github/fetch@1.0.0",
+    "homefront": "npm:homefront@1.0.0",
     "typer": "npm:typer@1.1.0",
-    "npm:aurelia-api@3.0.0-rc4": {
+    "npm:aurelia-api@3.0.0-rc8": {
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
       "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0",
-      "extend": "npm:extend@3.0.0",
-      "qs": "npm:qs@6.2.1"
+      "aurelia-path": "npm:aurelia-path@1.0.0",
+      "extend": "npm:extend@3.0.0"
     },
     "npm:aurelia-binding@1.0.1": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
@@ -37,17 +39,6 @@ System.config({
     "npm:aurelia-event-aggregator@1.0.0": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0"
     },
-    "npm:aurelia-framework@1.0.1": {
-      "aurelia-binding": "npm:aurelia-binding@1.0.1",
-      "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
-      "aurelia-loader": "npm:aurelia-loader@1.0.0",
-      "aurelia-logging": "npm:aurelia-logging@1.0.0",
-      "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
-      "aurelia-pal": "npm:aurelia-pal@1.0.0",
-      "aurelia-path": "npm:aurelia-path@1.0.0",
-      "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0",
-      "aurelia-templating": "npm:aurelia-templating@1.0.0"
-    },
     "npm:aurelia-loader@1.0.0": {
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
       "aurelia-path": "npm:aurelia-path@1.0.0"
@@ -56,7 +47,7 @@ System.config({
       "aurelia-pal": "npm:aurelia-pal@1.0.0"
     },
     "npm:aurelia-orm@3.0.0-rc6": {
-      "aurelia-api": "npm:aurelia-api@3.0.0-rc4",
+      "aurelia-api": "npm:aurelia-api@3.0.0-rc8",
       "aurelia-binding": "npm:aurelia-binding@1.0.1",
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
@@ -66,9 +57,10 @@ System.config({
       "get-prop": "npm:get-prop@0.0.10",
       "typer": "npm:typer@1.1.0"
     },
-    "npm:aurelia-pager@0.0.5": {
-      "aurelia-framework": "npm:aurelia-framework@1.0.1",
-      "aurelia-view-manager": "npm:aurelia-view-manager@0.0.5"
+    "npm:aurelia-pager@0.0.10": {
+      "aurelia-binding": "npm:aurelia-binding@1.0.1",
+      "aurelia-templating": "npm:aurelia-templating@1.0.0",
+      "aurelia-view-manager": "npm:aurelia-view-manager@0.0.7"
     },
     "npm:aurelia-pal-browser@1.0.0": {
       "aurelia-pal": "npm:aurelia-pal@1.0.0"
@@ -107,10 +99,14 @@ System.config({
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
       "aurelia-templating": "npm:aurelia-templating@1.0.0"
     },
-    "npm:aurelia-view-manager@0.0.5": {
+    "npm:aurelia-view-manager@0.0.7": {
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
+      "aurelia-path": "npm:aurelia-path@1.0.0",
       "aurelia-templating": "npm:aurelia-templating@1.0.0",
+      "extend": "npm:extend@3.0.0"
+    },
+    "npm:homefront@1.0.0": {
       "extend": "npm:extend@3.0.0"
     }
   }

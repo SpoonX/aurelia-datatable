@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaViewManager, _aureliaOrm, _aureliaRouter) {
+define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'homefront'], function (exports, _aureliaDependencyInjection, _aureliaBinding, _aureliaTemplating, _aureliaViewManager, _aureliaOrm, _aureliaRouter, _homefront) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -77,7 +77,7 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
 
   var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18;
 
-  var DataTable = exports.DataTable = (_dec = (0, _aureliaFramework.customElement)('datatable'), _dec2 = (0, _aureliaViewManager.resolvedView)('spoonx/datatable', 'datatable'), _dec3 = (0, _aureliaFramework.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec6 = (0, _aureliaFramework.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+  var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement)('datatable'), _dec2 = (0, _aureliaViewManager.resolvedView)('spoonx/datatable', 'datatable'), _dec3 = (0, _aureliaDependencyInjection.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec5 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec6 = (0, _aureliaBinding.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
     function DataTable(router, element, entityManager) {
       
 
@@ -295,12 +295,8 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
       return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
     };
 
-    DataTable.prototype.displayValue = function displayValue(row) {
-      for (var _len = arguments.length, propertyName = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        propertyName[_key - 1] = arguments[_key];
-      }
-
-      return fetchFrom.apply(undefined, [row].concat(normalizeKey.apply(undefined, propertyName)));
+    DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+      return new _homefront.Homefront(row, _homefront.Homefront.MODE_NESTED).fetch(propertyName);
     };
 
     _createClass(DataTable, [{
@@ -356,91 +352,73 @@ define(['exports', 'aurelia-framework', 'aurelia-view-manager', 'aurelia-orm', '
     initializer: function initializer() {
       return {};
     }
-  }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [_aureliaFramework.bindable], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return 30;
     }
-  }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [_aureliaFramework.bindable], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return '';
     }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'searchColumn', [_aureliaFramework.bindable], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'searchColumn', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return 'name';
     }
-  }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'actions', [_aureliaFramework.bindable], {
+  }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'actions', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return [];
     }
-  }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [_aureliaFramework.bindable], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [_aureliaFramework.bindable], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'edit', [_aureliaFramework.bindable], {
+  }), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'edit', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [_aureliaFramework.bindable], {
+  }), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return null;
     }
-  }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'page', [_aureliaFramework.bindable], {
+  }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'page', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return 1;
     }
-  }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [_aureliaFramework.bindable], {
+  }), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: function initializer() {
       return false;
     }
-  }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaFramework.bindable], {
+  }), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [_aureliaFramework.bindable], {
+  }), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [_aureliaFramework.bindable], {
+  }), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaFramework.bindable], {
+  }), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaFramework.bindable], {
+  }), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
-  }), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [_aureliaFramework.bindable], {
+  }), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [_aureliaTemplating.bindable], {
     enumerable: true,
     initializer: null
   }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
-
-  function normalizeKey(key) {
-    var normalized = Array.isArray(key) ? normalizeKey.apply(undefined, key) : key.split('.');
-
-    for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      rest[_key2 - 1] = arguments[_key2];
-    }
-
-    return rest.length === 0 ? normalized : normalized.concat(normalizeKey.apply(undefined, rest));
-  }
-
-  function fetchFrom(data, key) {
-    for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-      rest[_key3 - 2] = arguments[_key3];
-    }
-
-    return rest.length === 0 ? data[key] : fetchFrom.apply(undefined, [data[key]].concat(rest));
-  }
 });

@@ -43,10 +43,13 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { bindable, inject, computedFrom, customElement, bindingMode } from 'aurelia-framework';
+import { inject } from 'aurelia-dependency-injection';
+import { bindingMode, computedFrom } from 'aurelia-binding';
+import { bindable, customElement } from 'aurelia-templating';
 import { resolvedView } from 'aurelia-view-manager';
 import { EntityManager } from 'aurelia-orm';
 import { Router } from 'aurelia-router';
+import { Homefront } from 'homefront';
 
 export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
 
@@ -296,8 +299,8 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
   }
 
-  displayValue(row, ...propertyName) {
-    return fetchFrom(row, ...normalizeKey(...propertyName));
+  displayValue(row, propertyName) {
+    return new Homefront(row, Homefront.MODE_NESTED).fetch(propertyName);
   }
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'criteria', [_dec4], {
   enumerable: true,
@@ -378,13 +381,3 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
-
-function normalizeKey(key, ...rest) {
-  let normalized = Array.isArray(key) ? normalizeKey(...key) : key.split('.');
-
-  return rest.length === 0 ? normalized : normalized.concat(normalizeKey(...rest));
-}
-
-function fetchFrom(data, key, ...rest) {
-  return rest.length === 0 ? data[key] : fetchFrom(data[key], ...rest);
-}

@@ -1,6 +1,6 @@
 {
   "name": "aurelia-datatable",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Aurelia-only data tables",
   "keywords": [
     "aurelia",
@@ -19,7 +19,7 @@
     "VMBindraban <vijay@spoonx.nl>",
     "jeremyvergnas <jeremy@sweebr.com"
   ],
-  "main": "dist/commonjs/datatable.js",
+  "main": "dist/commonjs/aurelia-datatable.js",
   "typings": "dist/aurelia-datatable.d.ts",
   "repository": {
     "type": "git",
@@ -37,23 +37,27 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-binding": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
       "aurelia-logging": "^1.0.0-rc.1.0.0",
-      "aurelia-orm": "^3.0.0-rc4",
-      "aurelia-pager": "^0.0.5",
+      "aurelia-orm": "^3.0.0-rc5",
+      "aurelia-pager": "^0.0.10",
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
-      "aurelia-view-manager": "^0.0.5",
+      "aurelia-view-manager": "^0.0.7",
+      "homefront": "^1.0.0",
       "typer": "^1.1.0"
     },
     "peerDependencies": {
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
+      "aurelia-binding": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
       "aurelia-logging": "^1.0.0-rc.1.0.0",
-      "aurelia-orm": "^3.0.0-rc4",
-      "aurelia-pager": "^0.0.5",
+      "aurelia-orm": "^3.0.0-rc5",
+      "aurelia-pager": "^0.0.10",
       "aurelia-router": "^1.0.0-rc.1.0.0",
       "aurelia-templating": "^1.0.0-rc.1.0.0",
-      "aurelia-view-manager": "^0.0.5",
+      "aurelia-view-manager": "^0.0.7",
+      "homefront": "^1.0.0",
       "typer": "^1.1.0"
     },
     "devDependencies": {
@@ -63,13 +67,15 @@
     }
   },
   "dependencies": {
-    "aurelia-framework": "^1.0.0-rc.1.0.0",
+    "aurelia-binding": "^1.0.0-rc.1.0.0",
+    "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
     "aurelia-logging": "^1.0.0-rc.1.0.0",
-    "aurelia-orm": "^3.0.0-rc4",
-    "aurelia-pager": "^0.0.5",
+    "aurelia-orm": "^3.0.0-rc5",
+    "aurelia-pager": "^0.0.10",
     "aurelia-router": "^1.0.0-rc.1.0.0",
     "aurelia-templating": "^1.0.0-rc.1.0.0",
-    "aurelia-view-manager": "^0.0.5",
+    "aurelia-view-manager": "^0.0.7",
+    "homefront": "^1.0.0",
     "typer": "^1.1.0"
   },
   "devDependencies": {
@@ -128,6 +134,9 @@
   "aurelia": {
     "build": {
       "resources": [
+        "aurelia-datatable/columns-filter",
+        "aurelia-datatable/convert-manager",
+        "aurelia-datatable/datatable",
         "aurelia-datatable/bootstrap/datatable.html"
       ]
     }
