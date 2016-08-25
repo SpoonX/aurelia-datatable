@@ -20,7 +20,11 @@ var paths = {
   packageName: pkg.name,
   ignore: [],
   useTypeScriptForDTS: false,
-  importsToAdd: [],
+  importsToAdd: [
+    "import {Datatable} from './datatable';",
+    "import {ColumnsFilterValueConverter} from './columns-filter';",
+    "import {ConvertManagerValueConverter} from './convert-manager';"
+  ],
   importsToIgnoreForDts: [], // imports that are only used internally. no need to d.ts export them
   jsResources: [
     appRoot + 'datatable.js',
