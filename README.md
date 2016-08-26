@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/SpoonX/aurelia-datatable.svg)](https://travis-ci.org/SpoonX/aurelia-datatable)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000?style=plastic)](https://gitter.im/SpoonX/Dev)
 
-A data-table using [aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [aurelia-datatable](https://github.com/SpoonX/aurelia-datatable)
+A data-table using [aurelia-orm](https://github.com/SpoonX/aurelia-orm) and [aurelia-pager](https://github.com/SpoonX/aurelia-pager)
 
 Features:
 
