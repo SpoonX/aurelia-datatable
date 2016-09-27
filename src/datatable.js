@@ -32,6 +32,7 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
+  @bindable footer;
 
   constructor(router, element, entityManager) {
     this.router        = router;
