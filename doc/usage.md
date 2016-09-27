@@ -14,6 +14,7 @@ this.repository = entityManager.getRepository('users');
       sortable
       actions.bind="actions"
       populate="user"
+      footer.bind="footer"
   ></datatable>
 ```
 
@@ -148,6 +149,10 @@ class ViewModel {
 ```html
 <datatable actions.bind="actions" ></datatable>
 ```
+
+### footer
+It's possible to add an extra row to the bottom of your datatable.
+Footer also parses HTML.
 
 ### criteria
 Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.
