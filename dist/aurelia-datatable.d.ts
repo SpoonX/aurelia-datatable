@@ -8,6 +8,10 @@ import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
 import {Homefront} from 'homefront';
 
+// added for bundling
+// eslint-disable-line no-unused-vars
+// eslint-disable-line no-unused-vars
+// eslint-disable-line no-unused-vars
 export declare function configure(aurelia?: any): any;
 export declare class ColumnsFilterValueConverter {
   toView(array?: any): any;
@@ -37,6 +41,7 @@ export declare class DataTable {
   data: any;
   route: any;
   pages: any;
+  footer: any;
   constructor(router?: any, element?: any, entityManager?: any);
   attached(): any;
   detached(): any;
