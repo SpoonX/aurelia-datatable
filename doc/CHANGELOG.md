@@ -1,3 +1,18 @@
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/SpoonX/aurelia-datatable/compare/0.0.18...v0.1.0) (2016-10-05)
+
+
+### Bug Fixes
+
+* **bundle:** re-add imports for bundling ([125fc7f](https://github.com/SpoonX/aurelia-datatable/commit/125fc7f))
+
+
+### Features
+
+* **footer:** add footer ([82adc65](https://github.com/SpoonX/aurelia-datatable/commit/82adc65))
+
+
+
 <a name="0.0.18"></a>
 ## [0.0.18](https://github.com/SpoonX/aurelia-datatable/compare/0.0.16...v0.0.18) (2016-08-10)
 

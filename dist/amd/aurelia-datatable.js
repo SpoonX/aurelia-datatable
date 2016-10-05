@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-view-manager'], function (exports, _aureliaViewManager) {
+define(['exports', './datatable', './columns-filter', './convert-manager', 'aurelia-view-manager'], function (exports, _datatable, _columnsFilter, _convertManager, _aureliaViewManager) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {

@@ -32,6 +32,7 @@ export class DataTable {
   @bindable data;
   @bindable route;
   @bindable pages;
+  @bindable footer;
 
   constructor(router, element, entityManager) {
     this.router        = router;
@@ -72,7 +73,7 @@ export class DataTable {
   }
 
   load() {
-    this.criteria.skip  = this.page * this.limit - this.limit;
+    this.criteria.skip  = (this.page * this.limit) - this.limit;
     this.criteria.limit = this.limit;
 
     if (!this.populate) {
@@ -81,11 +82,13 @@ export class DataTable {
       this.criteria.populate = this.populate;
     }
 
-    this.repository.find(this.criteria, true).then(result => {
-      this.data = result;
-    }).catch(error => {
-      this.triggerEvent('exception', {on: 'load', error: error});
-    });
+    this.repository.find(this.criteria, true)
+      .then(result => {
+        this.data = result;
+      })
+      .catch(error => {
+        this.triggerEvent('exception', {on: 'load', error: error});
+      });
   }
 
   populateEntity(row) {
@@ -97,12 +100,14 @@ export class DataTable {
       return this.destroy(row);
     }
 
-    this.populateEntity(row).destroy().then(() => {
-      this.load();
-      this.triggerEvent('destroyed', row);
-    }).catch(error => {
-      this.triggerEvent('exception', {on: 'destroy', error: error});
-    });
+    this.populateEntity(row).destroy()
+      .then(() => {
+        this.load();
+        this.triggerEvent('destroyed', row);
+      })
+      .catch(error => {
+        this.triggerEvent('exception', {on: 'destroy', error: error});
+      });
   }
 
   doEdit(row) {
@@ -121,6 +126,7 @@ export class DataTable {
     if (typeof action.disabled === 'function') {
       return action.disabled(row);
     }
+
     return false;
   }
 
@@ -206,9 +212,9 @@ export class DataTable {
       }
 
       labels.push({
-        nested: !this.isSortable(cleanedColumn),
-        column: cleanedColumn,
-        label: ucfirst(clean(aliased[1] || aliased[0])),
+        nested   : !this.isSortable(cleanedColumn),
+        column   : cleanedColumn,
+        label    : ucfirst(clean(aliased[1] || aliased[0])),
         converter: (converter.length > 1) ? converter.slice(1).join(' | ') : false
       });
     });
@@ -241,7 +247,10 @@ export class DataTable {
       return true;
     }
 
-    return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
+    return this.populate
+      .replace(' ', '')
+      .split(',')
+      .indexOf(column) === -1;
   }
 
   displayValue(row, propertyName) {
