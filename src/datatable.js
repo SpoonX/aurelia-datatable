@@ -92,9 +92,7 @@ export class DataTable {
   }
 
   gatherData(criteria = {}) {
-    return this.repository.find(criteria || {}, true).then(result => {
-      return result;
-    }).catch(error => {
+    return this.repository.find(criteria, true).catch(error => {
       this.triggerEvent('exception', {on: 'load', error: error});
     });
   }
