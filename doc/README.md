@@ -10,9 +10,10 @@ Features:
 * Sorting
 * Integrated ORM
 * Search
-* Custom columns
+* Custom columns (with aliases and value converter)
 * Custom button actions
 * Custom valueConverters
+* Custom criteria
 * And more
 
 ## Enjoy
