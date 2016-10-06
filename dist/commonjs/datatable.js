@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DataTable = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -168,22 +168,32 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
     });
   };
 
+  DataTable.prototype.gatherData = function gatherData() {
+    var _this2 = this;
+
+    var criteria = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    return this.repository.find(criteria, true).catch(function (error) {
+      _this2.triggerEvent('exception', { on: 'load', error: error });
+    });
+  };
+
   DataTable.prototype.populateEntity = function populateEntity(row) {
     return this.repository.getPopulatedEntity(row);
   };
 
   DataTable.prototype.doDestroy = function doDestroy(row) {
-    var _this2 = this;
+    var _this3 = this;
 
     if (typeof this.destroy === 'function') {
       return this.destroy(row);
     }
 
     this.populateEntity(row).destroy().then(function () {
-      _this2.load();
-      _this2.triggerEvent('destroyed', row);
+      _this3.load();
+      _this3.triggerEvent('destroyed', row);
     }).catch(function (error) {
-      _this2.triggerEvent('exception', { on: 'destroy', error: error });
+      _this3.triggerEvent('exception', { on: 'destroy', error: error });
     });
   };
 
@@ -298,7 +308,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   _createClass(DataTable, [{
     key: 'columnLabels',
     get: function get() {
-      var _this3 = this;
+      var _this4 = this;
 
       var labelsRaw = this.columns.split(',');
       var columnsArray = [];
@@ -326,7 +336,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
         }
 
         labels.push({
-          nested: !_this3.isSortable(cleanedColumn),
+          nested: !_this4.isSortable(cleanedColumn),
           column: cleanedColumn,
           label: ucfirst(clean(aliased[1] || aliased[0])),
           converter: converter.length > 1 ? converter.slice(1).join(' | ') : false

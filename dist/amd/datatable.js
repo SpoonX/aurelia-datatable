@@ -9,7 +9,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
 
   function _initDefineProp(target, property, descriptor, context) {
@@ -175,22 +175,32 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
       });
     };
 
+    DataTable.prototype.gatherData = function gatherData() {
+      var _this2 = this;
+
+      var criteria = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return this.repository.find(criteria, true).catch(function (error) {
+        _this2.triggerEvent('exception', { on: 'load', error: error });
+      });
+    };
+
     DataTable.prototype.populateEntity = function populateEntity(row) {
       return this.repository.getPopulatedEntity(row);
     };
 
     DataTable.prototype.doDestroy = function doDestroy(row) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (typeof this.destroy === 'function') {
         return this.destroy(row);
       }
 
       this.populateEntity(row).destroy().then(function () {
-        _this2.load();
-        _this2.triggerEvent('destroyed', row);
+        _this3.load();
+        _this3.triggerEvent('destroyed', row);
       }).catch(function (error) {
-        _this2.triggerEvent('exception', { on: 'destroy', error: error });
+        _this3.triggerEvent('exception', { on: 'destroy', error: error });
       });
     };
 
@@ -305,7 +315,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
     _createClass(DataTable, [{
       key: 'columnLabels',
       get: function get() {
-        var _this3 = this;
+        var _this4 = this;
 
         var labelsRaw = this.columns.split(',');
         var columnsArray = [];
@@ -333,7 +343,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
           }
 
           labels.push({
-            nested: !_this3.isSortable(cleanedColumn),
+            nested: !_this4.isSortable(cleanedColumn),
             column: cleanedColumn,
             label: ucfirst(clean(aliased[1] || aliased[0])),
             converter: converter.length > 1 ? converter.slice(1).join(' | ') : false
