@@ -48,6 +48,7 @@ export declare class DataTable {
   pageChanged(): any;
   limitChanged(): any;
   load(): any;
+  gatherData(criteria?: any): any;
   populateEntity(row?: any): any;
   doDestroy(row?: any): any;
   doEdit(row?: any): any;

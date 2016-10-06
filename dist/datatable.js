@@ -91,6 +91,12 @@ export class DataTable {
       });
   }
 
+  gatherData(criteria = {}) {
+    return this.repository.find(criteria, true).catch(error => {
+      this.triggerEvent('exception', {on: 'load', error: error});
+    });
+  }
+
   populateEntity(row) {
     return this.repository.getPopulatedEntity(row);
   }
