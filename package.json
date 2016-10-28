@@ -3,11 +3,12 @@
   "version": "0.1.1",
   "description": "Aurelia-only data tables",
   "keywords": [
+    "spoonx",
     "aurelia",
+    "plugin",
     "data",
     "table",
-    "datatable",
-    "spoonx"
+    "datatable"
   ],
   "homepage": "https://github.com/SpoonX/aurelia-datatable#readme",
   "bugs": {
@@ -26,7 +27,11 @@
     "url": "git+ssh://git@github.com/SpoonX/aurelia-datatable.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/gulp test"
+    "test": "gulp test",
+    "build": "gulp build",
+    "preversion": "npm test",
+    "version": "npm run build && gulp prepare-package && git add -A dist doc/CHANGELOG.md bower.json",
+    "postpublish": "git push upstream master && git push upstream --tags"
   },
   "jspm": {
     "jspmPackage": true,
@@ -45,7 +50,7 @@
       "aurelia-router": "^1.0.0",
       "aurelia-templating": "^1.0.0",
       "aurelia-view-manager": "^0.1.0",
-      "homefront": "^1.0.0",
+      "homefront": "^1.3.2",
       "typer": "^1.1.0"
     },
     "peerDependencies": {
@@ -57,7 +62,7 @@
       "aurelia-router": "^1.0.0",
       "aurelia-templating": "^1.0.0",
       "aurelia-view-manager": "^0.1.0",
-      "homefront": "^1.0.0",
+      "homefront": "^1.3.2",
       "typer": "^1.1.0"
     },
     "devDependencies": {
@@ -77,11 +82,11 @@
     "aurelia-router": "^1.0.0",
     "aurelia-templating": "^1.0.0",
     "aurelia-view-manager": "^0.1.0",
-    "homefront": "^1.0.0",
+    "homefront": "^1.3.2",
     "typer": "^1.1.0"
   },
   "devDependencies": {
-    "spoonx-tools": "^0.3.0"
+    "spoonx-tools": "^1.0.0-0"
   },
   "aurelia": {
     "build": {
