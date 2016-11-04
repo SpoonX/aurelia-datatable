@@ -1,4 +1,3 @@
-import typer from 'typer';
 import {Config,resolvedView} from 'aurelia-view-manager';
 import {inject} from 'aurelia-dependency-injection';
 import {ViewResources,bindable,customElement} from 'aurelia-templating';

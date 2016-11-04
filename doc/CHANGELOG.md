@@ -1,3 +1,8 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/SpoonX/aurelia-datatable/compare/0.1.1...v0.1.2) (2016-11-04)
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/SpoonX/aurelia-datatable/compare/0.0.18...v0.1.1) (2016-10-06)
 

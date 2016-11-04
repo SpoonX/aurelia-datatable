@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['./datatable', './columns-filter', './convert-manager', 'aurelia-view-manager'], function (_export, _context) {
+System.register(['aurelia-view-manager', './datatable', './columns-filter', './convert-manager'], function (_export, _context) {
   "use strict";
 
-  var Datatable, ColumnsFilterValueConverter, ConvertManagerValueConverter, Config;
+  var Config, Datatable, ColumnsFilterValueConverter, ConvertManagerValueConverter;
   function configure(aurelia) {
     aurelia.plugin('aurelia-pager');
 
@@ -17,14 +17,14 @@ System.register(['./datatable', './columns-filter', './convert-manager', 'aureli
   _export('configure', configure);
 
   return {
-    setters: [function (_datatable) {
+    setters: [function (_aureliaViewManager) {
+      Config = _aureliaViewManager.Config;
+    }, function (_datatable) {
       Datatable = _datatable.Datatable;
     }, function (_columnsFilter) {
       ColumnsFilterValueConverter = _columnsFilter.ColumnsFilterValueConverter;
     }, function (_convertManager) {
       ConvertManagerValueConverter = _convertManager.ConvertManagerValueConverter;
-    }, function (_aureliaViewManager) {
-      Config = _aureliaViewManager.Config;
     }],
     execute: function () {}
   };

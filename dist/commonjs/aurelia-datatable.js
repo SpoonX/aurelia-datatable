@@ -5,13 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.configure = configure;
 
+var _aureliaViewManager = require('aurelia-view-manager');
+
 var _datatable = require('./datatable');
 
 var _columnsFilter = require('./columns-filter');
 
 var _convertManager = require('./convert-manager');
-
-var _aureliaViewManager = require('aurelia-view-manager');
 
 function configure(aurelia) {
   aurelia.plugin('aurelia-pager');
