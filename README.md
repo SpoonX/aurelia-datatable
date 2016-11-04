@@ -30,6 +30,28 @@ You can find usage examples and the documentation [here](http://aurelia-datatabl
 
 The [changelog](doc/changelog.md) provides you with information about important changes.
 
+## Example
+
+Here's a snippet to give you an idea of what this module supports.
+
+```js
+this.repository = entityManager.getRepository('users');
+```
+
+```html
+  <datatable
+      destroy.delegate="myEventCallback($event)"
+      edit.delegate="myEditImplementation($event)"
+      columns="id,name as 'username', user.id as 'User id'"
+      repository.bind="repository"
+      searchable
+      sortable
+      actions.bind="actions"
+      populate="user"
+      footer.bind="footer"
+  ></datatable>
+```
+
 ## Installation
 
 ### Aureli-Cli
@@ -61,7 +83,7 @@ Aurelia-view-manager uses [homefront](https://www.npmjs.com/package/homefront), 
 
 Run `jspm i aurelia-datatable` from your project root.
 
-Aurelia-view-manager uses [homefront](https://www.npmjs.com/package/homefront), so add following to the `bundles.dist.aurelia.includes` section of `build/bundles.js`:
+Aurelia-datatable uses [homefront](https://www.npmjs.com/package/homefront), so add following to the `bundles.dist.aurelia.includes` section of `build/bundles.js`:
 
 ```js
   "homefront",
@@ -86,25 +108,3 @@ And add `aurelia-datatable` in the `coreBundles.aurelia` section of your `webpac
 ### Typescript
 
 Npm-based installations pick up the typings automatically. For Jspm-based installations, run `typings i github:spoonx/aurelia-datatable` or add `"aurelia-datatable": "github:spoonx/aurelia-datatable",` to your `typings.json` and run `typings i`.
-
-## Example
-
-Here's a snippet to give you an idea of what this module supports.
-
-```js
-this.repository = entityManager.getRepository('users');
-```
-
-```html
-  <datatable
-      destroy.delegate="myEventCallback($event)"
-      edit.delegate="myEditImplementation($event)"
-      columns="id,name as 'username', user.id as 'User id'"
-      repository.bind="repository"
-      searchable
-      sortable
-      actions.bind="actions"
-      populate="user"
-      footer.bind="footer"
-  ></datatable>
-```

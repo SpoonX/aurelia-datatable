@@ -6,7 +6,7 @@
 var appRoot = 'src/';
 
 module.exports = {
-  path : {
+  path: {
     root: appRoot,
 
     /* options and their defaults */
@@ -24,27 +24,36 @@ module.exports = {
     /* Imports to append to the import block of the main file. 
      * Add here eg. non-concated local imports in the main file as they will 
      * get removed during the build process (ValueConverters, CustomElements).
-     *  
+     *
      * importsToAdd: ["import {AssociationSelect} from './association-select';"],
      */
+    importsToAdd: [
+      "import {Datatable} from './datatable';",
+      "import {ColumnsFilterValueConverter} from './columns-filter';",
+      "import {ConvertManagerValueConverter} from './convert-manager';"
+    ],
 
     /* js to be transpiled, but not be concated
      * (ValueConverters, CustomElements)
      *
      * jsResources: [appRoot + 'association-select.js'],
      */
+    jsResources: [
+      appRoot + 'datatable.js',
+      appRoot + 'columns-filter.js',
+      appRoot + 'convert-manager.js'
+    ],
 
     /* other resources that need to get copied keeping their path
      * resources: appRoot + '{** / *.css,** / *.html}',
      */
      resources: appRoot + '{**/*.css,**/*.html}',
-  
 
     /* imports that are only used internally, eg 'extend'. no need to d.ts export them
      *
      * importsToIgnoreForDts: ['extend'],
      */
-    importsToIgnoreForDts: ['extend'],
+    importsToIgnoreForDts: ['typer'],
 
     /* sort when concating
      * sort: true,
@@ -59,5 +68,12 @@ module.exports = {
     /* default options overwrites for karma
      * karma: {browsers: ['Chrome']}
      */
+    karma: {
+      jspm: {
+        // Edit this to your needs
+        loadFiles: ['test/setup.js', 'test/**/*.spec.js'],
+        serveFiles: ['src/**/*', 'test/resources/**/*']
+      }
+    }
   }
 };
