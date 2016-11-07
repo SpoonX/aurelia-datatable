@@ -33,6 +33,7 @@ export declare class DataTable {
   edit: any;
   destroy: any;
   page: any;
+  loadingIndicator: any;
   populate: any;
   select: any;
   repository: any;
@@ -41,6 +42,7 @@ export declare class DataTable {
   route: any;
   pages: any;
   footer: any;
+  loading: any;
   constructor(router?: any, element?: any, entityManager?: any);
   attached(): any;
   detached(): any;
@@ -53,6 +55,7 @@ export declare class DataTable {
   doEdit(row?: any): any;
   doCustomAction(action?: any, row?: any): any;
   checkDisabled(action?: any, row?: any): any;
+  showActions(): any;
   doSort(columnLabel?: any): any;
   searchColumnChanged(newValue?: any, oldValue?: any): any;
   doSearch(): any;

@@ -16,23 +16,26 @@ export class DataTable {
   @bindable({defaultBindingMode: bindingMode.twoWay})
   where = {};
 
-  @bindable limit        = 30;
-  @bindable columns      = '';
-  @bindable searchColumn = 'name';
-  @bindable actions      = [];
-  @bindable searchable   = null;  // Show the search field? (Optional attribute).
-  @bindable sortable     = null;  // Columns can be sorted? (Optional attribute).
-  @bindable edit         = null;  // Rows are editable? (Optional attribute).
-  @bindable destroy      = null;  // Rows are removable? (Optional attribute).
-  @bindable page         = 1;     // Current page.
-  @bindable populate     = false; // Which columns to populate. True for all, string for specific.
-  @bindable select;               // User provided callback, called upon clicking on a row.
+  @bindable limit            = 30;
+  @bindable columns          = '';
+  @bindable searchColumn     = 'name';
+  @bindable actions          = [];
+  @bindable searchable       = null;  // Show the search field? (Optional attribute).
+  @bindable sortable         = null;  // Columns can be sorted? (Optional attribute).
+  @bindable edit             = null;  // Rows are editable? (Optional attribute).
+  @bindable destroy          = null;  // Rows are removable? (Optional attribute).
+  @bindable page             = 1;     // Current page.
+  @bindable loadingIndicator = '<center>Loading...</center>';
+  @bindable populate         = false; // Which columns to populate. True for all, string for specific.
+  @bindable select;                   // User provided callback, called upon clicking on a row.
   @bindable repository;
   @bindable resource;
   @bindable data;
   @bindable route;
   @bindable pages;
   @bindable footer;
+
+  loading = false;
 
   constructor(router, element, entityManager) {
     this.router        = router;
@@ -73,6 +76,8 @@ export class DataTable {
   }
 
   load() {
+    this.loading = true;
+
     this.criteria.skip  = (this.page * this.limit) - this.limit;
     this.criteria.limit = this.limit;
 
@@ -84,9 +89,11 @@ export class DataTable {
 
     this.repository.find(this.criteria, true)
       .then(result => {
-        this.data = result;
+        this.loading = false;
+        this.data    = result;
       })
       .catch(error => {
+        this.loading = false;
         this.triggerEvent('exception', {on: 'load', error: error});
       });
   }
@@ -134,6 +141,10 @@ export class DataTable {
     }
 
     return false;
+  }
+
+  showActions() {
+    return this.destroy !== null || this.edit !== null || this.actions.length > 0;
   }
 
   doSort(columnLabel) {

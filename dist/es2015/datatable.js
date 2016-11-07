@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -76,21 +76,25 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     _initDefineProp(this, 'page', _descriptor11, this);
 
-    _initDefineProp(this, 'populate', _descriptor12, this);
+    _initDefineProp(this, 'loadingIndicator', _descriptor12, this);
 
-    _initDefineProp(this, 'select', _descriptor13, this);
+    _initDefineProp(this, 'populate', _descriptor13, this);
 
-    _initDefineProp(this, 'repository', _descriptor14, this);
+    _initDefineProp(this, 'select', _descriptor14, this);
 
-    _initDefineProp(this, 'resource', _descriptor15, this);
+    _initDefineProp(this, 'repository', _descriptor15, this);
 
-    _initDefineProp(this, 'data', _descriptor16, this);
+    _initDefineProp(this, 'resource', _descriptor16, this);
 
-    _initDefineProp(this, 'route', _descriptor17, this);
+    _initDefineProp(this, 'data', _descriptor17, this);
 
-    _initDefineProp(this, 'pages', _descriptor18, this);
+    _initDefineProp(this, 'route', _descriptor18, this);
 
-    _initDefineProp(this, 'footer', _descriptor19, this);
+    _initDefineProp(this, 'pages', _descriptor19, this);
+
+    _initDefineProp(this, 'footer', _descriptor20, this);
+
+    this.loading = false;
 
     this.router = router;
     this.element = element;
@@ -130,6 +134,8 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   load() {
+    this.loading = true;
+
     this.criteria.skip = this.page * this.limit - this.limit;
     this.criteria.limit = this.limit;
 
@@ -140,8 +146,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     }
 
     this.repository.find(this.criteria, true).then(result => {
+      this.loading = false;
       this.data = result;
     }).catch(error => {
+      this.loading = false;
       this.triggerEvent('exception', { on: 'load', error: error });
     });
   }
@@ -187,6 +195,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     }
 
     return false;
+  }
+
+  showActions() {
+    return this.destroy !== null || this.edit !== null || this.actions.length > 0;
   }
 
   doSort(columnLabel) {
@@ -366,30 +378,35 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   initializer: function () {
     return 1;
   }
-}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [bindable], {
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'loadingIndicator', [bindable], {
+  enumerable: true,
+  initializer: function () {
+    return '<center>Loading...</center>';
+  }
+}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [bindable], {
   enumerable: true,
   initializer: function () {
     return false;
   }
-}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
+}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [bindable], {
+}), _descriptor20 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [bindable], {
   enumerable: true,
   initializer: null
 }), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);

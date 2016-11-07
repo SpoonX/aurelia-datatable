@@ -1,3 +1,13 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.1.2...v0.2.0) (2016-11-07)
+
+
+### Features
+
+* **project:** add loading indicator ([4e53d74](https://github.com/SpoonX/aurelia-datatable/commit/4e53d74))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/SpoonX/aurelia-datatable/compare/0.1.1...v0.1.2) (2016-11-04)
 

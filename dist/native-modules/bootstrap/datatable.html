@@ -44,11 +44,16 @@
         </th>
 
         <!-- Actions -->
-        <th if.bind="destroy != null || edit != null || actions.length > 0" t="Actions">Actions</th>
+        <th if.bind="showActions()" t="Actions">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr repeat.for="row of data">
+
+      <tr if.bind="loadingIndicator && loading">
+        <td colspan="${columnLabels.length + (showActions() ? 1 : 0)}" innerhtml.bind="loadingIndicator"></td>
+      </tr>
+
+      <tr repeat.for="row of data" if.bind="!loading">
 
         <!-- Columns -->
         <td repeat.for="columnLabel of columnLabels">
@@ -56,7 +61,7 @@
         </td>
 
         <!-- Actions -->
-        <td style="white-space: nowrap; width: 1px;" if.bind="destroy !== null || edit !== null || actions.length > 0">
+        <td style="white-space: nowrap; width: 1px;" if.bind="showActions()">
           <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row)">
             <i class="fa fa-pencil"></i>
           </button>
