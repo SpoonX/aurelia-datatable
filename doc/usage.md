@@ -139,8 +139,12 @@ class ViewModel {
       this.customAction(record); 
     },
     disabled: record => {
-      // disable button with id higher than 5
+      // disable button where "id" is higher than 5
       return record.id > 5;
+    },
+    visible: record => {
+      // display only the buttons where "id" is lower than 10
+      return record.id < 10;
     }
   }];
 }
