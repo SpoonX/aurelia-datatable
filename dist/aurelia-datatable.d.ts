@@ -55,6 +55,7 @@ export declare class DataTable {
   doEdit(row?: any): any;
   doCustomAction(action?: any, row?: any): any;
   checkDisabled(action?: any, row?: any): any;
+  checkVisibility(action?: any, row?: any): any;
   showActions(): any;
   doSort(columnLabel?: any): any;
   searchColumnChanged(newValue?: any, oldValue?: any): any;

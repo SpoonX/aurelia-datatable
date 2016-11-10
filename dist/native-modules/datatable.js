@@ -212,6 +212,14 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     return false;
   };
 
+  DataTable.prototype.checkVisibility = function checkVisibility(action, row) {
+    if (typeof action.visible === 'function') {
+      return action.visible(row);
+    }
+
+    return true;
+  };
+
   DataTable.prototype.showActions = function showActions() {
     return this.destroy !== null || this.edit !== null || this.actions.length > 0;
   };

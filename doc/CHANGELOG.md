@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.2.0...v0.3.0) (2016-11-10)
+
+
+### Features
+
+* **actions:** check visibility of the actions ([ae2f844](https://github.com/SpoonX/aurelia-datatable/commit/ae2f844))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.1.2...v0.2.0) (2016-11-07)
 

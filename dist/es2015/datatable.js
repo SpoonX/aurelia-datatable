@@ -197,6 +197,14 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     return false;
   }
 
+  checkVisibility(action, row) {
+    if (typeof action.visible === 'function') {
+      return action.visible(row);
+    }
+
+    return true;
+  }
+
   showActions() {
     return this.destroy !== null || this.edit !== null || this.actions.length > 0;
   }
