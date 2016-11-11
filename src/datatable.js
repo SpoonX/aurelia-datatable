@@ -138,8 +138,6 @@ export class DataTable {
 
   checkDisabled(action, row) {
     if (typeof action.disabled === 'function') {
-      this.hasVisibleActions = true;
-
       return action.disabled(row);
     }
 
@@ -148,6 +146,8 @@ export class DataTable {
 
   checkVisibility(action, row) {
     if (typeof action.visible !== 'function') {
+      this.hasVisibleActions = true;
+
       return true;
     }
 
