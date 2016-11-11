@@ -95,6 +95,7 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     _initDefineProp(this, 'footer', _descriptor20, this);
 
     this.loading = false;
+    this.hasVisibleActions = false;
 
     this.router = router;
     this.element = element;
@@ -198,11 +199,19 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   checkVisibility(action, row) {
-    if (typeof action.visible === 'function') {
-      return action.visible(row);
+    if (typeof action.visible !== 'function') {
+      this.hasVisibleActions = true;
+
+      return true;
     }
 
-    return true;
+    let isVisible = action.visible(row);
+
+    if (isVisible) {
+      this.hasVisibleActions = true;
+    }
+
+    return isVisible;
   }
 
   showActions() {

@@ -44,7 +44,7 @@
         </th>
 
         <!-- Actions -->
-        <th if.bind="showActions()" t="Actions">Actions</th>
+        <th show.bind="showActions() && hasVisibleActions" t="Actions">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -61,7 +61,7 @@
         </td>
 
         <!-- Actions -->
-        <td style="white-space: nowrap; width: 1px;" if.bind="showActions()">
+        <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
           <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row)">
             <i class="fa fa-pencil"></i>
           </button>

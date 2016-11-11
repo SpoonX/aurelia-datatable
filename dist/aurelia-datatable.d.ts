@@ -43,6 +43,7 @@ export declare class DataTable {
   pages: any;
   footer: any;
   loading: any;
+  hasVisibleActions: any;
   constructor(router?: any, element?: any, entityManager?: any);
   attached(): any;
   detached(): any;

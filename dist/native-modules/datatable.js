@@ -102,6 +102,7 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     _initDefineProp(this, 'footer', _descriptor20, this);
 
     this.loading = false;
+    this.hasVisibleActions = false;
 
     this.router = router;
     this.element = element;
@@ -213,11 +214,19 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   };
 
   DataTable.prototype.checkVisibility = function checkVisibility(action, row) {
-    if (typeof action.visible === 'function') {
-      return action.visible(row);
+    if (typeof action.visible !== 'function') {
+      this.hasVisibleActions = true;
+
+      return true;
     }
 
-    return true;
+    var isVisible = action.visible(row);
+
+    if (isVisible) {
+      this.hasVisibleActions = true;
+    }
+
+    return isVisible;
   };
 
   DataTable.prototype.showActions = function showActions() {

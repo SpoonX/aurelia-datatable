@@ -35,7 +35,8 @@ export class DataTable {
   @bindable pages;
   @bindable footer;
 
-  loading = false;
+  loading           = false;
+  hasVisibleActions = false;
 
   constructor(router, element, entityManager) {
     this.router        = router;
@@ -144,11 +145,19 @@ export class DataTable {
   }
 
   checkVisibility(action, row) {
-    if (typeof action.visible === 'function') {
-      return action.visible(row);
+    if (typeof action.visible !== 'function') {
+      this.hasVisibleActions = true;
+
+      return true;
     }
 
-    return true;
+    let isVisible = action.visible(row);
+
+    if (isVisible) {
+      this.hasVisibleActions = true;
+    }
+
+    return isVisible;
   }
 
   showActions() {

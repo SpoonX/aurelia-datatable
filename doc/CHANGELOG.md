@@ -1,3 +1,13 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.3.0...v0.4.0) (2016-11-11)
+
+
+### Features
+
+* **action:** hide action column when there are no visible actions ([d1dfb96](https://github.com/SpoonX/aurelia-datatable/commit/d1dfb96))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.2.0...v0.3.0) (2016-11-10)
 
