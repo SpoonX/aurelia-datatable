@@ -294,6 +294,10 @@ export class DataTable {
       return true;
     }
 
+    if (typeof this.populate !== 'string') {
+      return this.populate.indexOf(column) === -1;
+    }
+
     return this.populate
       .replace(' ', '')
       .split(',')
