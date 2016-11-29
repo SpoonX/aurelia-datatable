@@ -22,7 +22,29 @@ this.repository = entityManager.getRepository('users');
 Datatable supports a couple of attributes allowing you to customize behavior.
 
 ### columns
-Comma-separated string representing the column names to display. This is used for table content, but also the table headers. There's support for nested objects, as well as aliases. Example:
+Comma-separated string representing the column names to display. Or Array of objects describing the columns. Example:
+```html
+<datatable resource="user" columns.bind="columns"></datatable>
+```
+```js
+export class List {
+  columns = [{
+    property: 'id'
+  }, {
+    property: 'name',
+    label   : 'username',
+    valueConverters: ['toLowerCase']
+  }, {
+    property       : 'group.name',
+    label          : 'Group name',
+    route          : {
+      name  : 'groups'      // The name of your route in your application
+      params: {group: 'id'} // Optional. Paramaters required for the given route. ({name: 'value'})
+    }
+  }];
+}
+```
+This is used for table content, but also the table headers. There's support for nested objects, as well as aliases. Example:
 
 #### Simple
 ```html
@@ -122,6 +144,10 @@ Which associations to populate for `columns` and `edit`. Defaults to none.
 
 ```html
 <datatable populate="user,group"></datatable>
+```
+Or
+```html
+<datatable populate.bind="['user','group']"></datatable>
 ```
 
 ### actions
