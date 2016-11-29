@@ -36,7 +36,11 @@ export class List {
     valueConverters: ['toLowerCase']
   }, {
     property       : 'group.name',
-    label          : 'Group name'
+    label          : 'Group name',
+    route          : {
+      name  : 'groups'      // The name of your route in your application
+      params: {group: 'id'} // Optional. Paramaters required for the given route. ({name: 'value'})
+    }
   }];
 }
 ```
