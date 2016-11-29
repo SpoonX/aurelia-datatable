@@ -236,6 +236,7 @@ export class DataTable {
           nested   : !this.isSortable(column.property),
           column   : column.property,
           label    : ucfirst(clean(column.label || column.property)),
+          route    : column.route || false,
           converter: column.valueConverters || false
         };
       });
@@ -275,7 +276,21 @@ export class DataTable {
     return this.element.dispatchEvent(new CustomEvent(event, payload));
   }
 
-  selected(row) {
+  selected(row, columnOptions) {
+    if (columnOptions.route) {
+      let params = {};
+
+      if (columnOptions.route.params) {
+        Object.keys(columnOptions.route.params).forEach(param => {
+          let property = columnOptions.route.params[param];
+
+          params[param] = this.displayValue(row, property);
+        });
+      }
+
+      return this.router.navigateToRoute(columnOptions.route.name, params);
+    }
+
     if (this.route) {
       return this.router.navigateToRoute(this.route, {id: row.id});
     }
