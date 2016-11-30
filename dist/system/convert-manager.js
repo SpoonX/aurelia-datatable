@@ -43,7 +43,11 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', 'aurelia-
             return value;
           }
 
-          for (var _iterator = converters.split(' | '), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+          if (typeof converters === 'string') {
+            converters = converters.split(' | ');
+          }
+
+          for (var _iterator = converters, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
             var _ref;
 
             if (_isArray) {

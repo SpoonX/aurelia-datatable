@@ -153,6 +153,8 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       this.criteria.populate = null;
     } else if (typeof this.populate === 'string') {
       this.criteria.populate = this.populate;
+    } else if (Array.isArray(this.populate)) {
+      this.criteria.populate = this.populate.join(',');
     }
 
     this.repository.find(this.criteria, true).then(function (result) {
@@ -295,7 +297,29 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     return this.element.dispatchEvent(new CustomEvent(event, payload));
   };
 
-  DataTable.prototype.selected = function selected(row) {
+  DataTable.prototype.selected = function selected(row, columnOptions) {
+    var _this4 = this;
+
+    if (columnOptions.route) {
+      var _ret = function () {
+        var params = {};
+
+        if (columnOptions.route.params) {
+          Object.keys(columnOptions.route.params).forEach(function (param) {
+            var property = columnOptions.route.params[param];
+
+            params[param] = _this4.displayValue(row, property);
+          });
+        }
+
+        return {
+          v: _this4.router.navigateToRoute(columnOptions.route.name, params)
+        };
+      }();
+
+      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+    }
+
     if (this.route) {
       return this.router.navigateToRoute(this.route, { id: row.id });
     }
@@ -314,6 +338,10 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       return true;
     }
 
+    if (typeof this.populate !== 'string') {
+      return this.populate.indexOf(column) === -1;
+    }
+
     return this.populate.replace(' ', '').split(',').indexOf(column) === -1;
   };
 
@@ -324,11 +352,7 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   _createClass(DataTable, [{
     key: 'columnLabels',
     get: function get() {
-      var _this4 = this;
-
-      var labelsRaw = this.columns.split(',');
-      var columnsArray = [];
-      var labels = [];
+      var _this5 = this;
 
       function clean(str) {
         return str.replace(/^'?\s*|\s*'$/g, '');
@@ -337,6 +361,22 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       function ucfirst(str) {
         return str[0].toUpperCase() + str.substr(1);
       }
+
+      if (Array.isArray(this.columns)) {
+        return this.columns.map(function (column) {
+          return {
+            nested: !_this5.isSortable(column.property),
+            column: column.property,
+            label: ucfirst(clean(column.label || column.property)),
+            route: column.route || false,
+            converter: column.valueConverters || false
+          };
+        });
+      }
+
+      var labelsRaw = this.columns.split(',');
+      var columnsArray = [];
+      var labels = [];
 
       labelsRaw.forEach(function (label) {
         if (!label) {
@@ -352,7 +392,7 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
         }
 
         labels.push({
-          nested: !_this4.isSortable(cleanedColumn),
+          nested: !_this5.isSortable(cleanedColumn),
           column: cleanedColumn,
           label: ucfirst(clean(aliased[1] || aliased[0])),
           converter: converter.length > 1 ? converter.slice(1).join(' | ') : false

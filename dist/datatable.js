@@ -86,6 +86,8 @@ export class DataTable {
       this.criteria.populate = null;
     } else if (typeof this.populate === 'string') {
       this.criteria.populate = this.populate;
+    } else if(Array.isArray(this.populate)) {
+      this.criteria.populate = this.populate.join(',');
     }
 
     this.repository.find(this.criteria, true)
@@ -220,10 +222,6 @@ export class DataTable {
 
   @computedFrom('columns')
   get columnLabels() {
-    let labelsRaw    = this.columns.split(',');
-    let columnsArray = [];
-    let labels       = [];
-
     function clean(str) {
       return str.replace(/^'?\s*|\s*'$/g, '');
     }
@@ -231,6 +229,22 @@ export class DataTable {
     function ucfirst(str) {
       return str[0].toUpperCase() + str.substr(1);
     }
+
+    if (Array.isArray(this.columns)) {
+      return this.columns.map(column => {
+        return {
+          nested   : !this.isSortable(column.property),
+          column   : column.property,
+          label    : ucfirst(clean(column.label || column.property)),
+          route    : column.route || false,
+          converter: column.valueConverters || false
+        };
+      });
+    }
+
+    let labelsRaw    = this.columns.split(',');
+    let columnsArray = [];
+    let labels       = [];
 
     labelsRaw.forEach(label => {
       if (!label) {
@@ -262,7 +276,21 @@ export class DataTable {
     return this.element.dispatchEvent(new CustomEvent(event, payload));
   }
 
-  selected(row) {
+  selected(row, columnOptions) {
+    if (columnOptions.route) {
+      let params = {};
+
+      if (columnOptions.route.params) {
+        Object.keys(columnOptions.route.params).forEach(param => {
+          let property = columnOptions.route.params[param];
+
+          params[param] = this.displayValue(row, property);
+        });
+      }
+
+      return this.router.navigateToRoute(columnOptions.route.name, params);
+    }
+
     if (this.route) {
       return this.router.navigateToRoute(this.route, {id: row.id});
     }
@@ -279,6 +307,10 @@ export class DataTable {
 
     if (!this.populate) {
       return true;
+    }
+
+    if (typeof this.populate !== 'string') {
+      return this.populate.indexOf(column) === -1;
     }
 
     return this.populate

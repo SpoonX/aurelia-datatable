@@ -57,7 +57,8 @@
 
         <!-- Columns -->
         <td repeat.for="columnLabel of columnLabels">
-          <a click.delegate="selected(row)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></a>
+          <span if.bind="!columnLabel.route && !route && !select" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></span>
+          <a if.bind="route || select || columnLabel.route" click.delegate="selected(row, columnLabel)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></a>
         </td>
 
         <!-- Actions -->

@@ -64,7 +64,7 @@ export declare class DataTable {
   reload(): any;
   columnLabels: any;
   triggerEvent(event?: any, payload?: any): any;
-  selected(row?: any): any;
+  selected(row?: any, columnOptions?: any): any;
   isSortable(column?: any): any;
   displayValue(row?: any, propertyName?: any): any;
 }

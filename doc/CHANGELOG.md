@@ -1,3 +1,20 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.4.0...v0.5.0) (2016-11-30)
+
+
+### Bug Fixes
+
+* **project:** lint errors ([a7cc55f](https://github.com/SpoonX/aurelia-datatable/commit/a7cc55f))
+
+
+### Features
+
+* **project:** Add specific routes for each column ([1393b5c](https://github.com/SpoonX/aurelia-datatable/commit/1393b5c))
+* **project:** Make columns usable as array of objects ([c256c1e](https://github.com/SpoonX/aurelia-datatable/commit/c256c1e))
+* **project:** Make populate usable as array of strings ([a93480b](https://github.com/SpoonX/aurelia-datatable/commit/a93480b))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.3.0...v0.4.0) (2016-11-11)
 

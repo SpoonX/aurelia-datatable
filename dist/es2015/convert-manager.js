@@ -28,7 +28,11 @@ export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
       return value;
     }
 
-    for (let converter of converters.split(' | ')) {
+    if (typeof converters === 'string') {
+      converters = converters.split(' | ');
+    }
+
+    for (let converter of converters) {
       let index = converter.indexOf(':');
 
       if (index < 0) {
