@@ -86,7 +86,7 @@ export class DataTable {
       this.criteria.populate = null;
     } else if (typeof this.populate === 'string') {
       this.criteria.populate = this.populate;
-    } else if(Array.isArray(this.populate)){
+    } else if(Array.isArray(this.populate)) {
       this.criteria.populate = this.populate.join(',');
     }
 
