@@ -238,12 +238,20 @@ System.register(['aurelia-dependency-injection', 'aurelia-binding', 'aurelia-tem
         };
 
         DataTable.prototype.doCustomAction = function doCustomAction(action, row) {
+          if (!action) {
+            return false;
+          }
+
           if (typeof action.action === 'function') {
             return action.action(row);
           }
         };
 
         DataTable.prototype.checkDisabled = function checkDisabled(action, row) {
+          if (!action) {
+            return true;
+          }
+
           if (typeof action.disabled === 'function') {
             return action.disabled(row);
           }
@@ -252,6 +260,10 @@ System.register(['aurelia-dependency-injection', 'aurelia-binding', 'aurelia-tem
         };
 
         DataTable.prototype.checkVisibility = function checkVisibility(action, row) {
+          if (!action) {
+            return false;
+          }
+
           if (typeof action.visible !== 'function') {
             this.hasVisibleActions = true;
 

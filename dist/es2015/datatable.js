@@ -187,12 +187,20 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   doCustomAction(action, row) {
+    if (!action) {
+      return false;
+    }
+
     if (typeof action.action === 'function') {
       return action.action(row);
     }
   }
 
   checkDisabled(action, row) {
+    if (!action) {
+      return true;
+    }
+
     if (typeof action.disabled === 'function') {
       return action.disabled(row);
     }
@@ -201,6 +209,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   checkVisibility(action, row) {
+    if (!action) {
+      return false;
+    }
+
     if (typeof action.visible !== 'function') {
       this.hasVisibleActions = true;
 

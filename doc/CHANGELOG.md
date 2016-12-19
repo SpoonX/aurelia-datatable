@@ -1,3 +1,13 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.5.0...v0.5.1) (2016-12-19)
+
+
+### Bug Fixes
+
+* **actions:** Prevent errors on undefined action ([5b3ff73](https://github.com/SpoonX/aurelia-datatable/commit/5b3ff73))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.4.0...v0.5.0) (2016-11-30)
 
