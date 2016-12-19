@@ -38,8 +38,8 @@ export class List {
     property       : 'group.name',
     label          : 'Group name',
     route          : {
-      name  : 'groups'      // The name of your route in your application
-      params: {group: 'id'} // Optional. Paramaters required for the given route. ({name: 'value'})
+      name  : 'groups',      // The name of your route in your application
+      params: {group: 'id'}  // Optional. Paramaters required for the given route. ({name: 'value'})
     }
   }];
 }
@@ -158,9 +158,9 @@ Example:
 ```js
 class ViewModel {
   actions = [{
-    icon  : 'flag',    // font-awesome icon name
-    title : 'My Title' // button title if `icon` is not set
-    type  : 'danger',  // bootstrap button type
+    icon  : 'flag',     // font-awesome icon name
+    title : 'My Title', // button title if `icon` is not set
+    type  : 'danger',   // bootstrap button type
     action: (record) => {
       this.customAction(record); 
     },
