@@ -133,12 +133,20 @@ export class DataTable {
   }
 
   doCustomAction(action, row) {
+    if (!action) {
+      return false;
+    }
+
     if (typeof action.action === 'function') {
       return action.action(row);
     }
   }
 
   checkDisabled(action, row) {
+    if (!action) {
+      return true;
+    }
+
     if (typeof action.disabled === 'function') {
       return action.disabled(row);
     }
@@ -147,6 +155,10 @@ export class DataTable {
   }
 
   checkVisibility(action, row) {
+    if (!action) {
+      return false;
+    }
+
     if (typeof action.visible !== 'function') {
       this.hasVisibleActions = true;
 
