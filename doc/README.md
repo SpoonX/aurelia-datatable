@@ -14,6 +14,7 @@ Features:
 * Custom button actions
 * Custom valueConverters
 * Custom criteria
+* Expand data to view additional data
 * And more
 
 ## Enjoy
