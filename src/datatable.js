@@ -332,6 +332,6 @@ export class DataTable {
   }
 
   displayValue(row, propertyName) {
-    return new Homefront(row, Homefront.MODE_NESTED).fetch(propertyName);
+    return new Homefront(row, Homefront.MODE_FLAT).fetch(propertyName, '');
   }
 }
