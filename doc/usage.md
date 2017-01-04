@@ -15,6 +15,7 @@ this.repository = entityManager.getRepository('users');
       actions.bind="actions"
       populate="user"
       footer.bind="footer"
+      detail-view="./details"
   ></datatable>
 ```
 
@@ -22,10 +23,14 @@ this.repository = entityManager.getRepository('users');
 Datatable supports a couple of attributes allowing you to customize behavior.
 
 ### columns
-Comma-separated string representing the column names to display. Or Array of objects describing the columns. Example:
+Comma-separated string representing the column names to display. Or Array of objects describing the columns. 
+
+Example:
+
 ```html
 <datatable resource="user" columns.bind="columns"></datatable>
 ```
+
 ```js
 export class List {
   columns = [{
@@ -183,6 +188,27 @@ class ViewModel {
 ### footer
 It's possible to add an extra row to the bottom of your datatable.
 Footer also parses HTML.
+
+### detail-view
+When `detail-view` is given a ViewModel, it allows you to expand the row with additional information.
+
+Example:
+
+```html
+<!-- details.html -->
+<template>
+ Information about ${row.name}
+</template>
+```
+
+```js
+// details.js
+export class Details {
+  activate(row) {
+    this.row = row; // row contains the data of the collapse row
+  }
+}
+```
 
 ### criteria
 Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.

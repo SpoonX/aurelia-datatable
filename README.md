@@ -14,6 +14,7 @@ Features:
 * Custom columns
 * Custom button actions
 * Custom valueConverters
+* Expand data to view additional data
 * And more
 
 ## Uses
@@ -49,6 +50,7 @@ this.repository = entityManager.getRepository('users');
       actions.bind="actions"
       populate="user"
       footer.bind="footer"
+      detail-view="./details"
   ></datatable>
 ```
 

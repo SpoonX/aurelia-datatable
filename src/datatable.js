@@ -27,6 +27,7 @@ export class DataTable {
   @bindable page             = 1;     // Current page.
   @bindable loadingIndicator = '<center>Loading...</center>';
   @bindable populate         = false; // Which columns to populate. True for all, string for specific.
+  @bindable detailView       = false; // Detail viewmodel
   @bindable select;                   // User provided callback, called upon clicking on a row.
   @bindable repository;
   @bindable resource;
@@ -232,6 +233,11 @@ export class DataTable {
     this.page = 1;
   }
 
+  @computedFrom('columnLabels', 'hasVisibleActions', 'detailView')
+  get colspan() {
+    return this.columnLabels.length + (this.hasVisibleActions ? 1 : 0) + (this.detailView ? 1 : 0);
+  }
+
   @computedFrom('columns')
   get columnLabels() {
     function clean(str) {
@@ -333,5 +339,9 @@ export class DataTable {
 
   displayValue(row, propertyName) {
     return new Homefront(row, Homefront.MODE_FLAT).fetch(propertyName, '');
+  }
+
+  collapseRow(row) {
+    row._collapsed = (row._collapsed) ? false : true;
   }
 }
