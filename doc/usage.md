@@ -1,5 +1,5 @@
 # Usage
-
+## Online mode
 ```js
 this.repository = entityManager.getRepository('users');
 ```
@@ -18,12 +18,27 @@ this.repository = entityManager.getRepository('users');
       detail-view="./details"
   ></datatable>
 ```
+## Offline mode
+```js
+this.data = [{id: 1, name: 'Pipo'}, {id: 2, name: 'Mario'}];
+```
 
+```html
+  <datatable
+      destroy
+      edit.delegate="myEditImplementation($event)"
+      columns="id,name as 'username'"
+      actions.bind="actions"
+      footer.bind="footer"
+      detail-view="./details"
+      data.bind="data"
+  ></datatable>
+```
 ## Attributes
 Datatable supports a couple of attributes allowing you to customize behavior.
 
 ### columns
-Comma-separated string representing the column names to display. Or Array of objects describing the columns. 
+Comma-separated string representing the column names to display. Or Array of objects describing the columns.
 
 Example:
 
@@ -81,27 +96,27 @@ export function configure(aurelia) {
 ```
 
 ```html
-<datatable 
-  resource="product" 
+<datatable
+  resource="product"
   columns="name, price as 'Market price' | priceFormat, createdAt | dateFormat: 'yyyy-mm-dd'"
 ></datatable>
 ```
 
-### repository
+### repository (Online mode only)
 When given a repository, the datatable will use it to populate the table with.
 
 This is as simple as `EntityManager.getRepository('resource')`.
 
 *[More information](http://aurelia-orm.spoonx.org/api_repository.html)*.
 
-### resource
+### resource (Online mode only)
 This tells the component which repository to get.
 This takes away the code you'd otherwise have to write with the `repository` attribute.
 
-### limit
+### limit (Online mode only)
 Number of rows to show per-page. Defaults to 30.
 
-### where
+### where (Online mode only)
 A simple object containing a where clause to restrict the data returned from the API.
 
 **Note:** Only useful when combined with `resource` or `repository`.
@@ -116,12 +131,12 @@ this.where = {group: 5, price: {'>': 10}};
 <datatable resource="product" where.bind="where" columns="name,price"></datatable>
 ```
 
-### searchable
+### searchable (Online mode only)
 Allow the user to search through the datatable. This will display a dropdown (`<select />`, for you to choose a column) and a simple input field. The value from the input field is used to search using `contains`.
 
 **Note:** Only useful when combined with `resource` or `repository`.
 
-### search-column
+### search-column (Online mode only)
 The initial search field, defaults to `name`. This value changes when another value has been selected from the dropdown.
 
 ### destroy
@@ -133,7 +148,7 @@ The initial search field, defaults to `name`. This value changes when another va
 * Using this attribute will cause datatable to add an edit button on every row.
 * You must provide a callback, which will be called when the user clicks the edit button. You'll be passed the row object.
 
-### sortable
+### sortable (Online mode only)
 Allow rows to be sorted. When provided, this will cause datatable to add clickable table headers (to apply sorting for the selected header).
 
 **Note:** Only useful when combined with `resource` or `repository`.
@@ -142,7 +157,7 @@ Allow rows to be sorted. When provided, this will cause datatable to add clickab
 <datatable sortable></datatable>
 ```
 
-### populate
+### populate (Online mode only)
 Which associations to populate for `columns` and `edit`. Defaults to none.
 
 **Note:** Only useful when combined with `resource` or `repository`.
@@ -167,7 +182,7 @@ class ViewModel {
     title : 'My Title', // button title if `icon` is not set
     type  : 'danger',   // bootstrap button type
     action: (record) => {
-      this.customAction(record); 
+      this.customAction(record);
     },
     disabled: record => {
       // disable button where "id" is higher than 5
@@ -210,7 +225,7 @@ export class Details {
 }
 ```
 
-### criteria
+### criteria (Online mode only)
 Full criteria object used to talk to the API. This object contains the `where`, `skip`, `limit`, `sort` and `populate`.
 
 **Note:** Only use this option if you know what you're doing. Only useful when combined with `resource` or `repository`.

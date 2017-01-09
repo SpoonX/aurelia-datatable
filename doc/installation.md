@@ -53,6 +53,18 @@ jspm inspect --forks
 jspm resolve --only registry:package-name@version
 ```
 
+Add the plugin to your application:
+```js
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .developmentLogging()
+    .plugin('aurelia-datatable');
+
+  aurelia.start().then(() => aurelia.setRoot());
+}
+```
+
 ## Webpack
 
 Run `npm i aurelia-datatable --save` from your project root.

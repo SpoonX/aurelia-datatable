@@ -197,7 +197,7 @@ export class DataTable {
   showActions() {
     let show = this.destroy !== null || this.edit !== null || this.actions.length > 0;
 
-    this.hasVisibleActions = show ? true : false;
+    this.hasVisibleActions = !!show;
 
     return show;
   }
