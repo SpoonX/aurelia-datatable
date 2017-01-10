@@ -1,18 +1,30 @@
+'use strict';
+
+exports.__esModule = true;
+exports.ConvertManagerValueConverter = undefined;
+
 var _dec, _class;
 
+var _aureliaDependencyInjection = require('aurelia-dependency-injection');
+
+var _aureliaTemplating = require('aurelia-templating');
+
+var _aureliaLogging = require('aurelia-logging');
+
+var _typer = require('typer');
+
+var _typer2 = _interopRequireDefault(_typer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 
-import { inject } from 'aurelia-dependency-injection';
-import { ViewResources } from 'aurelia-templating';
-import { getLogger } from 'aurelia-logging';
-import typer from 'typer';
 
-export var ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_class = function () {
+var ConvertManagerValueConverter = exports.ConvertManagerValueConverter = (_dec = (0, _aureliaDependencyInjection.inject)(_aureliaTemplating.ViewResources), _dec(_class = function () {
   function ConvertManagerValueConverter(viewResources) {
     
 
     this.viewResources = viewResources;
-    this.logger = getLogger('aurelia-datatable');
+    this.logger = (0, _aureliaLogging.getLogger)('aurelia-datatable');
   }
 
   ConvertManagerValueConverter.prototype.runConverter = function runConverter(value, converter, convertParams) {
@@ -72,11 +84,11 @@ export var ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
       return null;
     }
 
-    if (typer.detect(str) === 'string' && str[0] !== '{') {
+    if (_typer2.default.detect(str) === 'string' && str[0] !== '{') {
       return str.substr(1, str.length - 2);
     }
 
-    return typer.cast(str);
+    return _typer2.default.cast(str);
   };
 
   return ConvertManagerValueConverter;

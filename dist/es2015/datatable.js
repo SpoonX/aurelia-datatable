@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -51,7 +51,7 @@ import { EntityManager } from 'aurelia-orm';
 import { Router } from 'aurelia-router';
 import { Homefront } from 'homefront';
 
-export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
+export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columnLabels', 'hasVisibleActions', 'detailView'), _dec7 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class DataTable {
 
   constructor(router, element, entityManager) {
     _initDefineProp(this, 'criteria', _descriptor, this);
@@ -80,22 +80,25 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     _initDefineProp(this, 'populate', _descriptor13, this);
 
-    _initDefineProp(this, 'select', _descriptor14, this);
+    _initDefineProp(this, 'detailView', _descriptor14, this);
 
-    _initDefineProp(this, 'repository', _descriptor15, this);
+    _initDefineProp(this, 'select', _descriptor15, this);
 
-    _initDefineProp(this, 'resource', _descriptor16, this);
+    _initDefineProp(this, 'repository', _descriptor16, this);
 
-    _initDefineProp(this, 'data', _descriptor17, this);
+    _initDefineProp(this, 'resource', _descriptor17, this);
 
-    _initDefineProp(this, 'route', _descriptor18, this);
+    _initDefineProp(this, 'data', _descriptor18, this);
 
-    _initDefineProp(this, 'pages', _descriptor19, this);
+    _initDefineProp(this, 'route', _descriptor19, this);
 
-    _initDefineProp(this, 'footer', _descriptor20, this);
+    _initDefineProp(this, 'pages', _descriptor20, this);
+
+    _initDefineProp(this, 'footer', _descriptor21, this);
 
     this.loading = false;
     this.hasVisibleActions = false;
+    this.offlineMode = false;
 
     this.router = router;
     this.element = element;
@@ -135,6 +138,12 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   load() {
+    if (this.offlineMode || !this.repository && this.data) {
+      this.offlineMode = true;
+
+      return;
+    }
+
     this.loading = true;
 
     this.criteria.skip = this.page * this.limit - this.limit;
@@ -158,18 +167,32 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   gatherData(criteria = {}) {
+    if (this.offlineMode || !this.repository && this.data) {
+      this.offlineMode = true;
+
+      return this.data;
+    }
+
     return this.repository.find(criteria, true).catch(error => {
       this.triggerEvent('exception', { on: 'load', error: error });
     });
   }
 
   populateEntity(row) {
-    return this.repository.getPopulatedEntity(row);
+    if (!this.offlineMode) {
+      return this.repository.getPopulatedEntity(row);
+    }
   }
 
-  doDestroy(row) {
+  doDestroy(row, index) {
     if (typeof this.destroy === 'function') {
-      return this.destroy(row);
+      return this.destroy(row, index);
+    }
+
+    if (this.offlineMode) {
+      this.data.splice(index, 1);
+
+      return this.triggerEvent('destroyed', row);
     }
 
     this.populateEntity(row).destroy().then(() => {
@@ -180,19 +203,19 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     });
   }
 
-  doEdit(row) {
+  doEdit(row, index) {
     if (typeof this.edit === 'function') {
-      return this.edit(row);
+      return this.edit(row, index);
     }
   }
 
-  doCustomAction(action, row) {
+  doCustomAction(action, row, index) {
     if (!action) {
       return false;
     }
 
     if (typeof action.action === 'function') {
-      return action.action(row);
+      return action.action(row, index);
     }
   }
 
@@ -229,10 +252,18 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   showActions() {
-    return this.destroy !== null || this.edit !== null || this.actions.length > 0;
+    let show = this.destroy !== null || this.edit !== null || this.actions.length > 0;
+
+    this.hasVisibleActions = !!show;
+
+    return show;
   }
 
   doSort(columnLabel) {
+    if (this.offlineMode) {
+      return;
+    }
+
     let column = columnLabel.column;
 
     if (this.sortable === null || !this.isSortable(column)) {
@@ -257,6 +288,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   doSearch() {
+    if (this.offlineMode) {
+      return;
+    }
+
     if (!this.ready) {
       return;
     }
@@ -284,6 +319,10 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     }
 
     this.page = 1;
+  }
+
+  get colspan() {
+    return this.columnLabels.length + (this.hasVisibleActions ? 1 : 0) + (this.detailView ? 1 : 0);
   }
 
   get columnLabels() {
@@ -382,7 +421,11 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   }
 
   displayValue(row, propertyName) {
-    return new Homefront(row, Homefront.MODE_NESTED).fetch(propertyName);
+    return new Homefront(row, Homefront.MODE_FLAT).fetch(propertyName, '');
+  }
+
+  collapseRow(row) {
+    row._collapsed = !row._collapsed;
   }
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'criteria', [_dec4], {
   enumerable: true,
@@ -449,25 +492,30 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   initializer: function () {
     return false;
   }
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'detailView', [bindable], {
+  enumerable: true,
+  initializer: function () {
+    return false;
+  }
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
+}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+}), _descriptor20 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor20 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [bindable], {
+}), _descriptor21 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [bindable], {
   enumerable: true,
   initializer: null
-}), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
+}), _applyDecoratedDescriptor(_class2.prototype, 'colspan', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'colspan'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec7], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);

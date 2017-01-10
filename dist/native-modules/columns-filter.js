@@ -1,6 +1,10 @@
+'use strict';
+
+exports.__esModule = true;
 
 
-export var ColumnsFilterValueConverter = function () {
+
+var ColumnsFilterValueConverter = exports.ColumnsFilterValueConverter = function () {
   function ColumnsFilterValueConverter() {
     
   }

@@ -1,13 +1,20 @@
-import { Config } from 'aurelia-view-manager';
+'use strict';
 
-import { Datatable } from './datatable';
-import { ColumnsFilterValueConverter } from './columns-filter';
-import { ConvertManagerValueConverter } from './convert-manager';
+exports.__esModule = true;
+exports.configure = configure;
 
-export function configure(aurelia) {
+var _aureliaViewManager = require('aurelia-view-manager');
+
+var _datatable = require('./datatable');
+
+var _columnsFilter = require('./columns-filter');
+
+var _convertManager = require('./convert-manager');
+
+function configure(aurelia) {
   aurelia.plugin('aurelia-pager');
 
-  aurelia.container.get(Config).configureNamespace('spoonx/datatable', {
+  aurelia.container.get(_aureliaViewManager.Config).configureNamespace('spoonx/datatable', {
     location: './{{framework}}/{{view}}.html'
   });
 

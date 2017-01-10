@@ -1,8 +1,27 @@
+'use strict';
+
+exports.__esModule = true;
+exports.DataTable = undefined;
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21;
+
+var _aureliaDependencyInjection = require('aurelia-dependency-injection');
+
+var _aureliaBinding = require('aurelia-binding');
+
+var _aureliaTemplating = require('aurelia-templating');
+
+var _aureliaViewManager = require('aurelia-view-manager');
+
+var _aureliaOrm = require('aurelia-orm');
+
+var _aureliaRouter = require('aurelia-router');
+
+var _homefront = require('homefront');
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -49,15 +68,7 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { inject } from 'aurelia-dependency-injection';
-import { bindingMode, computedFrom } from 'aurelia-binding';
-import { bindable, customElement } from 'aurelia-templating';
-import { resolvedView } from 'aurelia-view-manager';
-import { EntityManager } from 'aurelia-orm';
-import { Router } from 'aurelia-router';
-import { Homefront } from 'homefront';
-
-export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView('spoonx/datatable', 'datatable'), _dec3 = inject(Router, Element, EntityManager), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec5 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec6 = computedFrom('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement)('datatable'), _dec2 = (0, _aureliaViewManager.resolvedView)('spoonx/datatable', 'datatable'), _dec3 = (0, _aureliaDependencyInjection.inject)(_aureliaRouter.Router, Element, _aureliaOrm.EntityManager), _dec4 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec5 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec6 = (0, _aureliaBinding.computedFrom)('columnLabels', 'hasVisibleActions', 'detailView'), _dec7 = (0, _aureliaBinding.computedFrom)('columns'), _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
   function DataTable(router, element, entityManager) {
     
 
@@ -87,22 +98,25 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     _initDefineProp(this, 'populate', _descriptor13, this);
 
-    _initDefineProp(this, 'select', _descriptor14, this);
+    _initDefineProp(this, 'detailView', _descriptor14, this);
 
-    _initDefineProp(this, 'repository', _descriptor15, this);
+    _initDefineProp(this, 'select', _descriptor15, this);
 
-    _initDefineProp(this, 'resource', _descriptor16, this);
+    _initDefineProp(this, 'repository', _descriptor16, this);
 
-    _initDefineProp(this, 'data', _descriptor17, this);
+    _initDefineProp(this, 'resource', _descriptor17, this);
 
-    _initDefineProp(this, 'route', _descriptor18, this);
+    _initDefineProp(this, 'data', _descriptor18, this);
 
-    _initDefineProp(this, 'pages', _descriptor19, this);
+    _initDefineProp(this, 'route', _descriptor19, this);
 
-    _initDefineProp(this, 'footer', _descriptor20, this);
+    _initDefineProp(this, 'pages', _descriptor20, this);
+
+    _initDefineProp(this, 'footer', _descriptor21, this);
 
     this.loading = false;
     this.hasVisibleActions = false;
+    this.offlineMode = false;
 
     this.router = router;
     this.element = element;
@@ -144,6 +158,12 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   DataTable.prototype.load = function load() {
     var _this = this;
 
+    if (this.offlineMode || !this.repository && this.data) {
+      this.offlineMode = true;
+
+      return;
+    }
+
     this.loading = true;
 
     this.criteria.skip = this.page * this.limit - this.limit;
@@ -171,20 +191,34 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
 
     var criteria = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
+    if (this.offlineMode || !this.repository && this.data) {
+      this.offlineMode = true;
+
+      return this.data;
+    }
+
     return this.repository.find(criteria, true).catch(function (error) {
       _this2.triggerEvent('exception', { on: 'load', error: error });
     });
   };
 
   DataTable.prototype.populateEntity = function populateEntity(row) {
-    return this.repository.getPopulatedEntity(row);
+    if (!this.offlineMode) {
+      return this.repository.getPopulatedEntity(row);
+    }
   };
 
-  DataTable.prototype.doDestroy = function doDestroy(row) {
+  DataTable.prototype.doDestroy = function doDestroy(row, index) {
     var _this3 = this;
 
     if (typeof this.destroy === 'function') {
-      return this.destroy(row);
+      return this.destroy(row, index);
+    }
+
+    if (this.offlineMode) {
+      this.data.splice(index, 1);
+
+      return this.triggerEvent('destroyed', row);
     }
 
     this.populateEntity(row).destroy().then(function () {
@@ -195,19 +229,19 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
     });
   };
 
-  DataTable.prototype.doEdit = function doEdit(row) {
+  DataTable.prototype.doEdit = function doEdit(row, index) {
     if (typeof this.edit === 'function') {
-      return this.edit(row);
+      return this.edit(row, index);
     }
   };
 
-  DataTable.prototype.doCustomAction = function doCustomAction(action, row) {
+  DataTable.prototype.doCustomAction = function doCustomAction(action, row, index) {
     if (!action) {
       return false;
     }
 
     if (typeof action.action === 'function') {
-      return action.action(row);
+      return action.action(row, index);
     }
   };
 
@@ -244,11 +278,19 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   };
 
   DataTable.prototype.showActions = function showActions() {
-    return this.destroy !== null || this.edit !== null || this.actions.length > 0;
+    var show = this.destroy !== null || this.edit !== null || this.actions.length > 0;
+
+    this.hasVisibleActions = !!show;
+
+    return show;
   };
 
   DataTable.prototype.doSort = function doSort(columnLabel) {
     var _criteria$sort;
+
+    if (this.offlineMode) {
+      return;
+    }
 
     var column = columnLabel.column;
 
@@ -272,6 +314,10 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   };
 
   DataTable.prototype.doSearch = function doSearch() {
+    if (this.offlineMode) {
+      return;
+    }
+
     if (!this.ready) {
       return;
     }
@@ -358,10 +404,19 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   };
 
   DataTable.prototype.displayValue = function displayValue(row, propertyName) {
-    return new Homefront(row, Homefront.MODE_NESTED).fetch(propertyName);
+    return new _homefront.Homefront(row, _homefront.Homefront.MODE_FLAT).fetch(propertyName, '');
+  };
+
+  DataTable.prototype.collapseRow = function collapseRow(row) {
+    row._collapsed = !row._collapsed;
   };
 
   _createClass(DataTable, [{
+    key: 'colspan',
+    get: function get() {
+      return this.columnLabels.length + (this.hasVisibleActions ? 1 : 0) + (this.detailView ? 1 : 0);
+    }
+  }, {
     key: 'columnLabels',
     get: function get() {
       var _this5 = this;
@@ -426,80 +481,85 @@ export var DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
   initializer: function initializer() {
     return {};
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [bindable], {
+}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'limit', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return 30;
   }
-}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [bindable], {
+}), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'columns', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'searchColumn', [bindable], {
+}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'searchColumn', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return 'name';
   }
-}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'actions', [bindable], {
+}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'actions', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return [];
   }
-}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [bindable], {
+}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, 'searchable', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return null;
   }
-}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [bindable], {
+}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, 'sortable', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return null;
   }
-}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'edit', [bindable], {
+}), _descriptor9 = _applyDecoratedDescriptor(_class2.prototype, 'edit', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return null;
   }
-}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [bindable], {
+}), _descriptor10 = _applyDecoratedDescriptor(_class2.prototype, 'destroy', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return null;
   }
-}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'page', [bindable], {
+}), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, 'page', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'loadingIndicator', [bindable], {
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, 'loadingIndicator', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return '<center>Loading...</center>';
   }
-}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [bindable], {
+}), _descriptor13 = _applyDecoratedDescriptor(_class2.prototype, 'populate', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'select', [bindable], {
+}), _descriptor14 = _applyDecoratedDescriptor(_class2.prototype, 'detailView', [_aureliaTemplating.bindable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'select', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor15 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [bindable], {
+}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'repository', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor16 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [bindable], {
+}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'resource', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor17 = _applyDecoratedDescriptor(_class2.prototype, 'data', [bindable], {
+}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'data', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor18 = _applyDecoratedDescriptor(_class2.prototype, 'route', [bindable], {
+}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'route', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor19 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [bindable], {
+}), _descriptor20 = _applyDecoratedDescriptor(_class2.prototype, 'pages', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _descriptor20 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [bindable], {
+}), _descriptor21 = _applyDecoratedDescriptor(_class2.prototype, 'footer', [_aureliaTemplating.bindable], {
   enumerable: true,
   initializer: null
-}), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);
+}), _applyDecoratedDescriptor(_class2.prototype, 'colspan', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'colspan'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'columnLabels', [_dec7], Object.getOwnPropertyDescriptor(_class2.prototype, 'columnLabels'), _class2.prototype)), _class2)) || _class) || _class) || _class);

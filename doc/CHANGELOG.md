@@ -1,3 +1,19 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.5.1...v0.6.0) (2017-01-10)
+
+
+### Bug Fixes
+
+* **datatable:** avoid throwing an error when fetching nested prop of undefined ([26dfd8d](https://github.com/SpoonX/aurelia-datatable/commit/26dfd8d))
+
+
+### Features
+
+* **details:** add functionality to collapse row data ([6417151](https://github.com/SpoonX/aurelia-datatable/commit/6417151))
+* **project:** add support for offline mode ([c7c4fea](https://github.com/SpoonX/aurelia-datatable/commit/c7c4fea))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.5.0...v0.5.1) (2016-12-19)
 

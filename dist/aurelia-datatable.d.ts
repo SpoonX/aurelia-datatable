@@ -35,6 +35,7 @@ export declare class DataTable {
   page: any;
   loadingIndicator: any;
   populate: any;
+  detailView: any;
   select: any;
   repository: any;
   resource: any;
@@ -44,6 +45,7 @@ export declare class DataTable {
   footer: any;
   loading: any;
   hasVisibleActions: any;
+  offlineMode: any;
   constructor(router?: any, element?: any, entityManager?: any);
   attached(): any;
   detached(): any;
@@ -52,9 +54,9 @@ export declare class DataTable {
   load(): any;
   gatherData(criteria?: any): any;
   populateEntity(row?: any): any;
-  doDestroy(row?: any): any;
-  doEdit(row?: any): any;
-  doCustomAction(action?: any, row?: any): any;
+  doDestroy(row?: any, index?: any): any;
+  doEdit(row?: any, index?: any): any;
+  doCustomAction(action?: any, row?: any, index?: any): any;
   checkDisabled(action?: any, row?: any): any;
   checkVisibility(action?: any, row?: any): any;
   showActions(): any;
@@ -62,9 +64,11 @@ export declare class DataTable {
   searchColumnChanged(newValue?: any, oldValue?: any): any;
   doSearch(): any;
   reload(): any;
+  colspan: any;
   columnLabels: any;
   triggerEvent(event?: any, payload?: any): any;
   selected(row?: any, columnOptions?: any): any;
   isSortable(column?: any): any;
   displayValue(row?: any, propertyName?: any): any;
+  collapseRow(row?: any): any;
 }

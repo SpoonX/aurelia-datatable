@@ -3,7 +3,7 @@
   <require from="../convert-manager"></require>
 
   <!-- Search bar -->
-  <div if.bind="searchable !== null" class="row">
+  <div if.bind="searchable !== null && !offlineMode" class="row">
     <div class="col-xs-2">
       <select value.bind="searchColumn" class="form-control" id="columnSelect">
         <option
@@ -30,13 +30,15 @@
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
+        <th if.bind="detailView" style="width: 50px;"></th>
+
         <!-- Labels -->
         <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
           <!-- Just show the label -->
-          <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
+          <span if.bind="sortable === null || columnLabel.nested || offlineMode" t="${columnLabel.label}">${columnLabel.label}</span>
 
           <!-- Show label and make it sortable (click) -->
-          <a if.bind="sortable !== null && !columnLabel.nested">
+          <a if.bind="sortable !== null && !columnLabel.nested && !offlineMode">
             <span t="${columnLabel.label}">${columnLabel.label}</span>
             <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
             </i>
@@ -50,38 +52,50 @@
     <tbody>
 
       <tr if.bind="loadingIndicator && loading">
-        <td colspan="${columnLabels.length + (showActions() ? 1 : 0)}" innerhtml.bind="loadingIndicator"></td>
+        <td colspan.bind="colspan" innerhtml.bind="loadingIndicator"></td>
       </tr>
 
-      <tr repeat.for="row of data" if.bind="!loading">
+      <template containerless repeat.for="row of data" if.bind="!loading">
+        <tr>
+          <td style="text-align: center;" if.bind="detailView" click.delegate="collapseRow(row)"><i class="fa fa-${row._collapsed ? 'chevron-down' : 'chevron-right'}"></i></td>
 
-        <!-- Columns -->
-        <td repeat.for="columnLabel of columnLabels">
-          <span if.bind="!columnLabel.route && !route && !select" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></span>
-          <a if.bind="route || select || columnLabel.route" click.delegate="selected(row, columnLabel)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></a>
-        </td>
+          <!-- Columns -->
+          <td repeat.for="columnLabel of columnLabels">
+            <span if.bind="!columnLabel.route && !route && !select" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></span>
+            <a if.bind="route || select || columnLabel.route" click.delegate="selected(row, columnLabel)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter"></a>
+          </td>
 
-        <!-- Actions -->
-        <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
-          <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row)">
-            <i class="fa fa-pencil"></i>
-          </button>
+          <!-- Actions -->
+          <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
+            <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row, $index)">
+              <i class="fa fa-pencil"></i>
+            </button>
 
-          <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row)">
-            <i class="fa fa-trash"></i>
-          </button>
+            <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row, $index)">
+              <i class="fa fa-trash"></i>
+            </button>
 
-          <button repeat.for="action of actions" if.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row)">
-            <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
-            <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
-          </button>
-        </td>
-      </tr>
+            <button repeat.for="action of actions" if.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
+              <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
+              <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
+            </button>
+          </td>
+        </tr>
+
+        <!-- Needed for table-striped -->
+        <tr if.bind="detailView && row._collapsed" style="display: none;"></tr>
+
+        <tr if.bind="detailView && row._collapsed">
+          <td colspan.bind="colspan" style="padding: 0;margin: 0;">
+            <compose view-model.bind="detailView" model.bind="row"></compose>
+          </td>
+        </tr>
+      </template>
     </tbody>
     <tfoot if.bind="footer" innerhtml.bind="footer"></tfoot>
   </table>
 
-  <div show.bind="pages > 1">
+  <div if.bind="!offlineMode" show.bind="pages > 1">
     <pager
       resource.bind="repository"
       criteria.bind="criteria.where"
