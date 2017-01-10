@@ -32,9 +32,8 @@ You can find usage examples and the documentation [here](http://aurelia-datatabl
 The [changelog](doc/changelog.md) provides you with information about important changes.
 
 ## Example
-
 Here's a snippet to give you an idea of what this module supports.
-
+### Online mode
 ```js
 this.repository = entityManager.getRepository('users');
 ```
@@ -54,6 +53,22 @@ this.repository = entityManager.getRepository('users');
   ></datatable>
 ```
 
+### Offline mode
+```js
+this.data = [{id: 1, name: 'Pipo'}, {id: 2, name: 'Mario'}];
+```
+
+```html
+  <datatable
+      destroy
+      edit.delegate="myEditImplementation($event)"
+      columns="id,name as 'username'"
+      actions.bind="actions"
+      footer.bind="footer"
+      detail-view="./details"
+      data.bind="data"
+  ></datatable>
+```
 ## Installation
 
 ### Aureli-Cli

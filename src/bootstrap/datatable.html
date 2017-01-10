@@ -3,7 +3,7 @@
   <require from="../convert-manager"></require>
 
   <!-- Search bar -->
-  <div if.bind="searchable !== null" class="row">
+  <div if.bind="searchable !== null && !offlineMode" class="row">
     <div class="col-xs-2">
       <select value.bind="searchColumn" class="form-control" id="columnSelect">
         <option
@@ -35,10 +35,10 @@
         <!-- Labels -->
         <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
           <!-- Just show the label -->
-          <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
+          <span if.bind="sortable === null || columnLabel.nested || offlineMode" t="${columnLabel.label}">${columnLabel.label}</span>
 
           <!-- Show label and make it sortable (click) -->
-          <a if.bind="sortable !== null && !columnLabel.nested">
+          <a if.bind="sortable !== null && !columnLabel.nested && !offlineMode">
             <span t="${columnLabel.label}">${columnLabel.label}</span>
             <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
             </i>
@@ -67,15 +67,15 @@
 
           <!-- Actions -->
           <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
-            <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row)">
+            <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row, $index)">
               <i class="fa fa-pencil"></i>
             </button>
 
-            <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row)">
+            <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row, $index)">
               <i class="fa fa-trash"></i>
             </button>
 
-            <button repeat.for="action of actions" if.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row)">
+            <button repeat.for="action of actions" if.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
               <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
               <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
             </button>
@@ -95,7 +95,7 @@
     <tfoot if.bind="footer" innerhtml.bind="footer"></tfoot>
   </table>
 
-  <div show.bind="pages > 1">
+  <div if.bind="!offlineMode" show.bind="pages > 1">
     <pager
       resource.bind="repository"
       criteria.bind="criteria.where"

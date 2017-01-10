@@ -38,6 +38,7 @@ export class DataTable {
 
   loading           = false;
   hasVisibleActions = false;
+  offlineMode       = false;
 
   constructor(router, element, entityManager) {
     this.router        = router;
@@ -78,6 +79,10 @@ export class DataTable {
   }
 
   load() {
+    if (this.offlineMode || (!this.repository && this.data)) {
+      return this.offlineMode = true;
+    }
+
     this.loading = true;
 
     this.criteria.skip  = (this.page * this.limit) - this.limit;
@@ -103,18 +108,32 @@ export class DataTable {
   }
 
   gatherData(criteria = {}) {
+    if (this.offlineMode || (!this.repository && this.data)) {
+      this.offlineMode = true;
+
+      return this.data;
+    }
+
     return this.repository.find(criteria, true).catch(error => {
       this.triggerEvent('exception', {on: 'load', error: error});
     });
   }
 
   populateEntity(row) {
-    return this.repository.getPopulatedEntity(row);
+    if (!this.offlineMode) {
+      return this.repository.getPopulatedEntity(row);
+    }
   }
 
-  doDestroy(row) {
+  doDestroy(row, index) {
     if (typeof this.destroy === 'function') {
-      return this.destroy(row);
+      return this.destroy(row, index);
+    }
+
+    if (this.offlineMode) {
+      this.data.splice(index, 1);
+
+      return this.triggerEvent('destroyed', row);
     }
 
     this.populateEntity(row).destroy()
@@ -127,19 +146,19 @@ export class DataTable {
       });
   }
 
-  doEdit(row) {
+  doEdit(row, index) {
     if (typeof this.edit === 'function') {
-      return this.edit(row);
+      return this.edit(row, index);
     }
   }
 
-  doCustomAction(action, row) {
+  doCustomAction(action, row, index) {
     if (!action) {
       return false;
     }
 
     if (typeof action.action === 'function') {
-      return action.action(row);
+      return action.action(row, index);
     }
   }
 
@@ -176,10 +195,18 @@ export class DataTable {
   }
 
   showActions() {
-    return this.destroy !== null || this.edit !== null || this.actions.length > 0;
+    let show = this.destroy !== null || this.edit !== null || this.actions.length > 0;
+
+    this.hasVisibleActions = !!show;
+
+    return show;
   }
 
   doSort(columnLabel) {
+    if (this.offlineMode) {
+      return;
+    }
+
     let column = columnLabel.column;
 
     if (this.sortable === null || !this.isSortable(column)) {
@@ -204,6 +231,10 @@ export class DataTable {
   }
 
   doSearch() {
+    if (this.offlineMode) {
+      return;
+    }
+
     if (!this.ready) {
       return;
     }
