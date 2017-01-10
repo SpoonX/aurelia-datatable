@@ -80,7 +80,9 @@ export class DataTable {
 
   load() {
     if (this.offlineMode || (!this.repository && this.data)) {
-      return this.offlineMode = true;
+      this.offlineMode = true;
+
+      return;
     }
 
     this.loading = true;
@@ -373,6 +375,6 @@ export class DataTable {
   }
 
   collapseRow(row) {
-    row._collapsed = (row._collapsed) ? false : true;
+    row._collapsed = !row._collapsed;
   }
 }
