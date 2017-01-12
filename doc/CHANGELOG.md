@@ -1,3 +1,13 @@
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.0...v0.6.1) (2017-01-12)
+
+
+### Bug Fixes
+
+* **cell:** fetch values nested ([e3199c6](https://github.com/SpoonX/aurelia-datatable/commit/e3199c6))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.5.1...v0.6.0) (2017-01-10)
 

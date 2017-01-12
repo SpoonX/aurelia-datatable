@@ -429,7 +429,11 @@ System.register(['aurelia-dependency-injection', 'aurelia-binding', 'aurelia-tem
         };
 
         DataTable.prototype.displayValue = function displayValue(row, propertyName) {
-          return new Homefront(row, Homefront.MODE_FLAT).fetch(propertyName, '');
+          var flattened = new Homefront(row, Homefront.MODE_NESTED);
+
+          flattened.flatten();
+
+          return flattened.fetch(propertyName, '');
         };
 
         DataTable.prototype.collapseRow = function collapseRow(row) {

@@ -406,7 +406,11 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   };
 
   DataTable.prototype.displayValue = function displayValue(row, propertyName) {
-    return new _homefront.Homefront(row, _homefront.Homefront.MODE_FLAT).fetch(propertyName, '');
+    var flattened = new _homefront.Homefront(row, _homefront.Homefront.MODE_NESTED);
+
+    flattened.flatten();
+
+    return flattened.fetch(propertyName, '');
   };
 
   DataTable.prototype.collapseRow = function collapseRow(row) {
