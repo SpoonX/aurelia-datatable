@@ -51,6 +51,10 @@ export class DataTable {
       this.repository = this.entityManager.getRepository(this.resource);
     }
 
+    if (this.offlineMode || (!this.repository && this.data)) {
+      this.originalData = this.data;
+    }
+
     this.ready          = true;
     this.criteria.where = this.where || {};
     this.criteria.sort  = this.criteria.sort || {};
@@ -80,6 +84,7 @@ export class DataTable {
 
   load() {
     if (this.offlineMode || (!this.repository && this.data)) {
+      this.data = this.originalData.slice((this.page * this.limit) - this.limit, this.limit * this.page);
       this.offlineMode = true;
 
       return;
@@ -134,6 +139,7 @@ export class DataTable {
 
     if (this.offlineMode) {
       this.data.splice(index, 1);
+      this.originalData.splice(index + (this.page - 1) * this.limit, 1);
 
       return this.triggerEvent('destroyed', row);
     }
@@ -205,14 +211,22 @@ export class DataTable {
   }
 
   doSort(columnLabel) {
-    if (this.offlineMode) {
-      return;
-    }
-
     let column = columnLabel.column;
 
     if (this.sortable === null || !this.isSortable(column)) {
       return;
+    }
+
+    if (this.offlineMode) {
+      this.originalData = this.originalData.sort((a, b) => {
+        let sortingValue = (a[column] > b[column]) ? 1 : ((b[column] > a[column]) ? -1 : 0);
+
+        if (this.criteria.sort[column] && this.criteria.sort[column] === 'asc') {
+          sortingValue = (a[column] < b[column]) ? 1 : ((b[column] < a[column]) ? -1 : 0)
+        }
+
+        return sortingValue;
+      });
     }
 
     this.criteria.sort = {
