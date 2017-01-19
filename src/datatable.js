@@ -371,6 +371,10 @@ export class DataTable {
   }
 
   displayValue(row, propertyName) {
+    if (typeof row !== 'object' || row === null) {
+      return '';
+    }
+
     let flattened = new Homefront(row, Homefront.MODE_NESTED);
 
     flattened.flatten();
