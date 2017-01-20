@@ -413,6 +413,10 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
     };
 
     DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+      if ((typeof row === 'undefined' ? 'undefined' : _typeof(row)) !== 'object' || row === null) {
+        return '';
+      }
+
       var flattened = new _homefront.Homefront(row, _homefront.Homefront.MODE_NESTED);
 
       flattened.flatten();

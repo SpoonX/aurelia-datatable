@@ -1,3 +1,13 @@
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.1...v0.6.2) (2017-01-20)
+
+
+### Bug Fixes
+
+* **display-name:** add check to return empty string when row is not an object ([d1c3402](https://github.com/SpoonX/aurelia-datatable/commit/d1c3402))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.0...v0.6.1) (2017-01-12)
 

@@ -429,6 +429,10 @@ System.register(['aurelia-dependency-injection', 'aurelia-binding', 'aurelia-tem
         };
 
         DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+          if ((typeof row === 'undefined' ? 'undefined' : _typeof(row)) !== 'object' || row === null) {
+            return '';
+          }
+
           var flattened = new Homefront(row, Homefront.MODE_NESTED);
 
           flattened.flatten();

@@ -404,6 +404,10 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   };
 
   DataTable.prototype.displayValue = function displayValue(row, propertyName) {
+    if ((typeof row === 'undefined' ? 'undefined' : _typeof(row)) !== 'object' || row === null) {
+      return '';
+    }
+
     var flattened = new _homefront.Homefront(row, _homefront.Homefront.MODE_NESTED);
 
     flattened.flatten();
