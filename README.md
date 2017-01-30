@@ -125,3 +125,22 @@ And add `aurelia-datatable` in the `coreBundles.aurelia` section of your `webpac
 ### Typescript
 
 Npm-based installations pick up the typings automatically. For Jspm-based installations, run `typings i github:spoonx/aurelia-datatable` or add `"aurelia-datatable": "github:spoonx/aurelia-datatable",` to your `typings.json` and run `typings i`.
+
+## Configuration
+
+### Activate
+Activate the plugin in `main.js`:
+
+```js
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .developmentLogging()
+    .plugin('aurelia-datatable');
+
+  aurelia.start().then(() => aurelia.setRoot());
+}
+```
+
+### ORM
+Follow the steps in the [aurelia-orm documentation](https://aurelia-orm.spoonx.org/quick-start.html) to configure your api endpoints.
