@@ -27,6 +27,7 @@ this.data = [{id: 1, name: 'Pipo'}, {id: 2, name: 'Mario'}];
   <datatable
       destroy
       sortable
+      searchable
       edit.delegate="myEditImplementation($event)"
       columns="id,name as 'username'"
       actions.bind="actions"
@@ -132,18 +133,18 @@ this.where = {group: 5, price: {'>': 10}};
 <datatable resource="product" where.bind="where" columns="name,price"></datatable>
 ```
 
-### searchable (Online mode only)
+### searchable
 Allow the user to search through the datatable. This will display a dropdown (`<select />`, for you to choose a column) and a simple input field. The value from the input field is used to search using `contains`.
 
 **Note:** Only useful when combined with `resource` or `repository`.
 
-### search-column (Online mode only)
+### search-column
 The initial search field, defaults to `name`. This value changes when another value has been selected from the dropdown.
 
 ### destroy
 * Using this attribute will cause datatable to add a delete button on every row.
 * When given a callback, datatable will call it when the user clicks the destroy action in the datatable.
-* When provided without a function, datatable will call `.destroy()` on the entity (only useful when combined with `resource` or `repository`).
+* **[Online mode only]** When provided without a function, datatable will call `.destroy()` on the entity (only useful when combined with `resource` or `repository`).
 
 ### edit
 * Using this attribute will cause datatable to add an edit button on every row.

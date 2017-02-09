@@ -62,6 +62,7 @@ this.data = [{id: 1, name: 'Pipo'}, {id: 2, name: 'Mario'}];
   <datatable
       destroy
       sortable
+      searchable
       edit.delegate="myEditImplementation($event)"
       columns="id,name as 'username'"
       actions.bind="actions"

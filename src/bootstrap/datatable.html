@@ -3,7 +3,7 @@
   <require from="../convert-manager"></require>
 
   <!-- Search bar -->
-  <div if.bind="searchable !== null && !offlineMode" class="row">
+  <div if.bind="searchable !== null" class="row">
     <div class="col-xs-2">
       <select value.bind="searchColumn" class="form-control" id="columnSelect">
         <option
@@ -21,8 +21,7 @@
         id="search"
         t="[placeholder]Search"
         placeholder="Search"
-        value.bind="search"
-        keyup.delegate="doSearch() & debounce:500">
+        value.bind="search">
     </div>
     <br/>
   </div>
