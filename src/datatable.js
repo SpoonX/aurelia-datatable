@@ -35,10 +35,12 @@ export class DataTable {
   @bindable route;
   @bindable pages;
   @bindable footer;
+  @bindable search;
 
-  loading           = false;
-  hasVisibleActions = false;
-  offlineMode       = false;
+  loading             = false;
+  hasVisibleActions   = false;
+  offlineMode         = false;
+  currentSortedColumn = null;
 
   constructor(router, element, entityManager) {
     this.router        = router;
@@ -49,6 +51,11 @@ export class DataTable {
   attached() {
     if (!this.repository && this.resource) {
       this.repository = this.entityManager.getRepository(this.resource);
+    }
+
+    if (this.offlineMode || (!this.repository && this.data)) {
+      this.originalData     = this.data;
+      this.fullOriginalData = this.data;
     }
 
     this.ready          = true;
@@ -78,8 +85,13 @@ export class DataTable {
     this.load();
   }
 
+  searchChanged() {
+    this.doSearch();
+  }
+
   load() {
     if (this.offlineMode || (!this.repository && this.data)) {
+      this.data = this.originalData.slice((this.page * this.limit) - this.limit, this.limit * this.page);
       this.offlineMode = true;
 
       return;
@@ -133,9 +145,9 @@ export class DataTable {
     }
 
     if (this.offlineMode) {
-      this.data.splice(index, 1);
+      this.triggerEvent('destroyed', row);
 
-      return this.triggerEvent('destroyed', row);
+      return;
     }
 
     this.populateEntity(row).destroy()
@@ -204,19 +216,46 @@ export class DataTable {
     return show;
   }
 
-  doSort(columnLabel) {
-    if (this.offlineMode) {
-      return;
-    }
-
+  doSort(columnLabel, forcedValue) {
     let column = columnLabel.column;
 
     if (this.sortable === null || !this.isSortable(column)) {
       return;
     }
 
-    this.criteria.sort = {
-      [column]: this.criteria.sort[column] === 'asc' ? 'desc' : 'asc'
+    if (this.offlineMode) {
+      this.originalData = this.originalData.sort((a, b) => {
+        let sortingValue;
+
+        if (a[column] > b[column]) {
+          sortingValue = 1;
+        } else {
+          sortingValue = (b[column] > a[column]) ? -1 : 0;
+        }
+
+        if (forcedValue === 'desc' || (!forcedValue && this.criteria.sort[column] && this.criteria.sort[column] === 'asc')) {
+          if (a[column] < b[column]) {
+            sortingValue = 1;
+          } else {
+            sortingValue = (b[column] < a[column]) ? -1 : 0;
+          }
+        }
+
+        return sortingValue;
+      });
+    }
+
+    let value;
+
+    if (forcedValue) {
+      value = forcedValue;
+    } else {
+      value = this.criteria.sort[column] === 'asc' ? 'desc' : 'asc';
+    }
+
+    this.currentSortedColumn = columnLabel;
+    this.criteria.sort       = {
+      [column]: value
     };
 
     this.load();
@@ -234,7 +273,22 @@ export class DataTable {
 
   doSearch() {
     if (this.offlineMode) {
-      return;
+      this.originalData = this.fullOriginalData.filter(row => {
+        if (!row[this.searchColumn]) {
+          return false;
+        }
+
+        return row[this.searchColumn]
+            .toString()
+            .toLowerCase()
+            .indexOf(this.search.toLowerCase()) !== -1;
+      });
+
+      this.pager.resource = this.originalData;
+
+      if (this.currentSortedColumn) {
+        this.doSort(this.currentSortedColumn, this.criteria.sort[this.currentSortedColumn.column]);
+      }
     }
 
     if (!this.ready) {

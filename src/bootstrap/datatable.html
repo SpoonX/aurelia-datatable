@@ -3,7 +3,7 @@
   <require from="../convert-manager"></require>
 
   <!-- Search bar -->
-  <div if.bind="searchable !== null && !offlineMode" class="row">
+  <div if.bind="searchable !== null" class="row">
     <div class="col-xs-2">
       <select value.bind="searchColumn" class="form-control" id="columnSelect">
         <option
@@ -21,8 +21,7 @@
         id="search"
         t="[placeholder]Search"
         placeholder="Search"
-        value.bind="search"
-        keyup.delegate="doSearch() & debounce:500">
+        value.bind="search">
     </div>
     <br/>
   </div>
@@ -35,10 +34,10 @@
         <!-- Labels -->
         <th click.delegate="doSort(columnLabel)" repeat.for="columnLabel of columnLabels">
           <!-- Just show the label -->
-          <span if.bind="sortable === null || columnLabel.nested || offlineMode" t="${columnLabel.label}">${columnLabel.label}</span>
+          <span if.bind="sortable === null || columnLabel.nested" t="${columnLabel.label}">${columnLabel.label}</span>
 
           <!-- Show label and make it sortable (click) -->
-          <a if.bind="sortable !== null && !columnLabel.nested && !offlineMode">
+          <a if.bind="sortable !== null && !columnLabel.nested">
             <span t="${columnLabel.label}">${columnLabel.label}</span>
             <i class="fa fa-${criteria.sort[columnLabel.column] ? (criteria.sort[columnLabel.column] === 'desc' ? 'caret-down' : 'caret-up') : 'sort'}">
             </i>
@@ -95,14 +94,21 @@
     <tfoot if.bind="footer" innerhtml.bind="footer"></tfoot>
   </table>
 
-  <div if.bind="!offlineMode" show.bind="pages > 1">
-    <pager
+  <div show.bind="pages > 1">
+    <pager if.bind="!offlineMode"
       resource.bind="repository"
       criteria.bind="criteria.where"
       page.bind="page"
       pages.two-way="pages"
       view-model.ref="pager"
       limit.bind="limit"
+    ></pager>
+    <pager if.bind="offlineMode"
+     resource.bind="originalData"
+     page.bind="page"
+     pages.two-way="pages"
+     view-model.ref="pager"
+     limit.bind="limit"
     ></pager>
   </div>
 </template>
