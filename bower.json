@@ -1,6 +1,6 @@
 {
   "name": "aurelia-datatable",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Aurelia-only data tables",
   "keywords": [
     "aurelia",
@@ -26,7 +26,7 @@
     "aurelia-binding": "^1.0.0",
     "aurelia-dependency-injection": "^1.0.0",
     "aurelia-logging": "^1.0.0",
-    "aurelia-orm": "^3.0.0",
+    "aurelia-orm": "^4.1.1",
     "aurelia-pager": "^0.1.0",
     "aurelia-router": "^1.0.0",
     "aurelia-templating": "^1.0.0",

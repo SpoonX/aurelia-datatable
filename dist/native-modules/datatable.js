@@ -359,23 +359,17 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
     var _this4 = this;
 
     if (columnOptions.route) {
-      var _ret = function () {
-        var params = {};
+      var params = {};
 
-        if (columnOptions.route.params) {
-          Object.keys(columnOptions.route.params).forEach(function (param) {
-            var property = columnOptions.route.params[param];
+      if (columnOptions.route.params) {
+        Object.keys(columnOptions.route.params).forEach(function (param) {
+          var property = columnOptions.route.params[param];
 
-            params[param] = _this4.displayValue(row, property);
-          });
-        }
+          params[param] = _this4.displayValue(row, property);
+        });
+      }
 
-        return {
-          v: _this4.router.navigateToRoute(columnOptions.route.name, params)
-        };
-      }();
-
-      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+      return this.router.navigateToRoute(columnOptions.route.name, params);
     }
 
     if (this.route) {

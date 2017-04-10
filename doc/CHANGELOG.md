@@ -1,3 +1,14 @@
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.2...v0.6.3) (2017-04-10)
+
+
+### Bug Fixes
+
+* **datatable:** fix viewing template in IE edge ([5eadb16](https://github.com/SpoonX/aurelia-datatable/commit/5eadb16))
+* **datatable:** move if statement to tr ([4738837](https://github.com/SpoonX/aurelia-datatable/commit/4738837))
+
+
+
 <a name="0.6.2"></a>
 ## [0.6.2](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.1...v0.6.2) (2017-01-20)
 
