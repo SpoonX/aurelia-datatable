@@ -36,6 +36,7 @@ export declare class DataTable {
   loadingIndicator: any;
   populate: any;
   detailView: any;
+  sortNested: any;
   select: any;
   repository: any;
   resource: any;

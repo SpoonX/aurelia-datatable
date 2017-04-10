@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.3...v0.7.0) (2017-04-10)
+
+
+### Features
+
+* **sorting:** make nested sorting configurable ([df50018](https://github.com/SpoonX/aurelia-datatable/commit/df50018))
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.2...v0.6.3) (2017-04-10)
 
