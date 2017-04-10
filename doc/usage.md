@@ -170,6 +170,11 @@ Or
 <datatable populate.bind="['user','group']"></datatable>
 ```
 
+### sortNested (Online mode only)
+This allows you to sort on associations.
+
+By default this is set to `false` because some back-ends don't support this.
+
 ### actions
 Allow the user to add custom action buttons in case he needs more than just `edit` and/or `destroy` on the rows.
 

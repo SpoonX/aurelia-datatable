@@ -28,6 +28,7 @@ export class DataTable {
   @bindable loadingIndicator = '<center>Loading...</center>';
   @bindable populate         = false; // Which columns to populate. True for all, string for specific.
   @bindable detailView       = false; // Detail viewmodel
+  @bindable sortNested       = false; // Sort on nested properties (should be available server-side)
   @bindable select;                   // User provided callback, called upon clicking on a row.
   @bindable repository;
   @bindable resource;
@@ -211,7 +212,7 @@ export class DataTable {
 
     let column = columnLabel.column;
 
-    if (this.sortable === null || !this.isSortable(column)) {
+    if (this.sortable === null || (!this.isSortable(column) && !this.sortNested)) {
       return;
     }
 
