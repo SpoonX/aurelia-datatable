@@ -84,6 +84,8 @@ This is used for table content, but also the table headers. There's support for 
 #### valueConverters
 You can give every colum one or more `valueConverter`s (`|` seperated). You need to define the converters in your `main.js` as a global resource. *[More information](http://eisenbergeffect.bluespire.com/binding-with-value-converters-in-aurelia/)()
 
+Note: In the `toView()` of the valueConverter there is a 3rd parameter that includes the data of the row. This can be useful if you want to convert something based on a other column. For example price and currency.
+
 Example:
 
 ```js
