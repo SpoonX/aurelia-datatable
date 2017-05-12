@@ -1,3 +1,13 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.7.0...v0.8.0) (2017-05-12)
+
+
+### Features
+
+* **convert-manager:** return rowdata as argument ([550ab75](https://github.com/SpoonX/aurelia-datatable/commit/550ab75))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.6.3...v0.7.0) (2017-04-10)
 

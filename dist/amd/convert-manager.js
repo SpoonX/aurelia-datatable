@@ -26,11 +26,11 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', 'aureli
       this.logger = (0, _aureliaLogging.getLogger)('aurelia-datatable');
     }
 
-    ConvertManagerValueConverter.prototype.runConverter = function runConverter(value, converter, convertParams) {
+    ConvertManagerValueConverter.prototype.runConverter = function runConverter(value, converter, convertParams, rowData) {
       var valueConverter = this.viewResources.getValueConverter(converter);
 
       if (valueConverter) {
-        return valueConverter.toView(value, convertParams);
+        return valueConverter.toView(value, convertParams, rowData);
       }
 
       this.logger.error('No ValueConverter named "' + converter + '" was found!');
@@ -38,7 +38,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', 'aureli
       return value;
     };
 
-    ConvertManagerValueConverter.prototype.toView = function toView(value, converters) {
+    ConvertManagerValueConverter.prototype.toView = function toView(value, converters, rowData) {
       if (!converters) {
         return value;
       }
@@ -64,7 +64,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', 'aureli
         var index = converter.indexOf(':');
 
         if (index < 0) {
-          value = this.runConverter(value, converter);
+          value = this.runConverter(value, converter, null, rowData);
 
           continue;
         }
@@ -72,7 +72,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', 'aureli
         var name = converter.slice(0, index);
         var param = this.parseParams(converter.slice(index + 1).trim());
 
-        value = this.runConverter(value, name, param);
+        value = this.runConverter(value, name, param, rowData);
       }
 
       return value;

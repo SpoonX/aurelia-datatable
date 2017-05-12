@@ -17,8 +17,8 @@ export declare class ColumnsFilterValueConverter {
 }
 export declare class ConvertManagerValueConverter {
   constructor(viewResources?: any);
-  runConverter(value?: any, converter?: any, convertParams?: any): any;
-  toView(value?: any, converters?: any): any;
+  runConverter(value?: any, converter?: any, convertParams?: any, rowData?: any): any;
+  toView(value?: any, converters?: any, rowData?: any): any;
   parseParams(str?: any): any;
 }
 export declare class DataTable {

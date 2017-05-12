@@ -11,11 +11,11 @@ export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
     this.logger = getLogger('aurelia-datatable');
   }
 
-  runConverter(value, converter, convertParams) {
+  runConverter(value, converter, convertParams, rowData) {
     let valueConverter = this.viewResources.getValueConverter(converter);
 
     if (valueConverter) {
-      return valueConverter.toView(value, convertParams);
+      return valueConverter.toView(value, convertParams, rowData);
     }
 
     this.logger.error('No ValueConverter named "' + converter + '" was found!');
@@ -23,7 +23,7 @@ export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
     return value;
   }
 
-  toView(value, converters) {
+  toView(value, converters, rowData) {
     if (!converters) {
       return value;
     }
@@ -36,7 +36,7 @@ export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
       let index = converter.indexOf(':');
 
       if (index < 0) {
-        value = this.runConverter(value, converter);
+        value = this.runConverter(value, converter, null, rowData);
 
         continue;
       }
@@ -44,7 +44,7 @@ export let ConvertManagerValueConverter = (_dec = inject(ViewResources), _dec(_c
       let name = converter.slice(0, index);
       let param = this.parseParams(converter.slice(index + 1).trim());
 
-      value = this.runConverter(value, name, param);
+      value = this.runConverter(value, name, param, rowData);
     }
 
     return value;
