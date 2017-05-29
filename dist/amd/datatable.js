@@ -163,6 +163,8 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
         return;
       }
 
+      this.pager.reloadCount();
+
       this.load();
     };
 

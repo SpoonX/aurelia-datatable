@@ -76,6 +76,8 @@ export class DataTable {
       return;
     }
 
+    this.pager.reloadCount();
+
     this.load();
   }
 

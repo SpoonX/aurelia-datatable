@@ -156,6 +156,8 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
       return;
     }
 
+    this.pager.reloadCount();
+
     this.load();
   };
 

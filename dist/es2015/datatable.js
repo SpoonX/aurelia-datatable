@@ -136,6 +136,8 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       return;
     }
 
+    this.pager.reloadCount();
+
     this.load();
   }
 

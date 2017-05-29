@@ -179,6 +179,8 @@ System.register(['aurelia-dependency-injection', 'aurelia-binding', 'aurelia-tem
             return;
           }
 
+          this.pager.reloadCount();
+
           this.load();
         };
 

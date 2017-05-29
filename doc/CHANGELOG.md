@@ -1,3 +1,13 @@
+<a name="0.8.1"></a>
+## [0.8.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.8.0...v0.8.1) (2017-05-29)
+
+
+### Bug Fixes
+
+* **datatable:** reload count when limit changed ([4511e80](https://github.com/SpoonX/aurelia-datatable/commit/4511e80))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.7.0...v0.8.0) (2017-05-12)
 
