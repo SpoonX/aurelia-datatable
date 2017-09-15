@@ -1,3 +1,4 @@
+import {PLATFORM} from 'aurelia-pal';
 import {inject} from 'aurelia-dependency-injection';
 import {bindingMode, computedFrom} from 'aurelia-binding';
 import {bindable, customElement} from 'aurelia-templating';
@@ -254,9 +255,18 @@ export class DataTable {
       return;
     }
 
-    this.pager.reloadCount();
+    // reset page without trigerring unnecessary load
+    this.ready = false;
+    this.page = 1;
 
-    this.load();
+    // wait for next tick to load data
+    PLATFORM.global.setTimeout(() => {
+      this.ready = true;
+
+      this.pager.reloadCount();
+
+      this.load();
+    }, 1);
   }
 
   reload() {

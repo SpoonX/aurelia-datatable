@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'homefront'], function (exports, _aureliaDependencyInjection, _aureliaBinding, _aureliaTemplating, _aureliaViewManager, _aureliaOrm, _aureliaRouter, _homefront) {
+define(['exports', 'aurelia-pal', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', 'aurelia-view-manager', 'aurelia-orm', 'aurelia-router', 'homefront'], function (exports, _aureliaPal, _aureliaDependencyInjection, _aureliaBinding, _aureliaTemplating, _aureliaViewManager, _aureliaOrm, _aureliaRouter, _homefront) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -327,6 +327,8 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
     };
 
     DataTable.prototype.doSearch = function doSearch() {
+      var _this4 = this;
+
       if (this.offlineMode) {
         return;
       }
@@ -345,9 +347,16 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
         return;
       }
 
-      this.pager.reloadCount();
+      this.ready = false;
+      this.page = 1;
 
-      this.load();
+      _aureliaPal.PLATFORM.global.setTimeout(function () {
+        _this4.ready = true;
+
+        _this4.pager.reloadCount();
+
+        _this4.load();
+      }, 1);
     };
 
     DataTable.prototype.reload = function reload() {
@@ -369,7 +378,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
     };
 
     DataTable.prototype.selected = function selected(row, columnOptions) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (columnOptions.route) {
         var params = {};
@@ -378,7 +387,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
           Object.keys(columnOptions.route.params).forEach(function (param) {
             var property = columnOptions.route.params[param];
 
-            params[param] = _this4.displayValue(row, property);
+            params[param] = _this5.displayValue(row, property);
           });
         }
 
@@ -434,7 +443,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
     }, {
       key: 'columnLabels',
       get: function get() {
-        var _this5 = this;
+        var _this6 = this;
 
         function clean(str) {
           return str.replace(/^'?\s*|\s*'$/g, '');
@@ -447,7 +456,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
         if (Array.isArray(this.columns)) {
           return this.columns.map(function (column) {
             return {
-              nested: !_this5.isSortable(column.property),
+              nested: !_this6.isSortable(column.property),
               column: column.property,
               label: ucfirst(clean(column.label || column.property)),
               route: column.route || false,
@@ -474,7 +483,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-t
           }
 
           labels.push({
-            nested: !_this5.isSortable(cleanedColumn),
+            nested: !_this6.isSortable(cleanedColumn),
             column: cleanedColumn,
             label: ucfirst(clean(aliased[1] || aliased[0])),
             converter: converter.length > 1 ? converter.slice(1).join(' | ') : false

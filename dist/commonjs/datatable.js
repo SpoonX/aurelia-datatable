@@ -11,6 +11,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22;
 
+var _aureliaPal = require('aurelia-pal');
+
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 var _aureliaBinding = require('aurelia-binding');
@@ -320,6 +322,8 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   };
 
   DataTable.prototype.doSearch = function doSearch() {
+    var _this4 = this;
+
     if (this.offlineMode) {
       return;
     }
@@ -338,9 +342,16 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
       return;
     }
 
-    this.pager.reloadCount();
+    this.ready = false;
+    this.page = 1;
 
-    this.load();
+    _aureliaPal.PLATFORM.global.setTimeout(function () {
+      _this4.ready = true;
+
+      _this4.pager.reloadCount();
+
+      _this4.load();
+    }, 1);
   };
 
   DataTable.prototype.reload = function reload() {
@@ -362,7 +373,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   };
 
   DataTable.prototype.selected = function selected(row, columnOptions) {
-    var _this4 = this;
+    var _this5 = this;
 
     if (columnOptions.route) {
       var params = {};
@@ -371,7 +382,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
         Object.keys(columnOptions.route.params).forEach(function (param) {
           var property = columnOptions.route.params[param];
 
-          params[param] = _this4.displayValue(row, property);
+          params[param] = _this5.displayValue(row, property);
         });
       }
 
@@ -427,7 +438,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
   }, {
     key: 'columnLabels',
     get: function get() {
-      var _this5 = this;
+      var _this6 = this;
 
       function clean(str) {
         return str.replace(/^'?\s*|\s*'$/g, '');
@@ -440,7 +451,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
       if (Array.isArray(this.columns)) {
         return this.columns.map(function (column) {
           return {
-            nested: !_this5.isSortable(column.property),
+            nested: !_this6.isSortable(column.property),
             column: column.property,
             label: ucfirst(clean(column.label || column.property)),
             route: column.route || false,
@@ -467,7 +478,7 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
         }
 
         labels.push({
-          nested: !_this5.isSortable(cleanedColumn),
+          nested: !_this6.isSortable(cleanedColumn),
           column: cleanedColumn,
           label: ucfirst(clean(aliased[1] || aliased[0])),
           converter: converter.length > 1 ? converter.slice(1).join(' | ') : false

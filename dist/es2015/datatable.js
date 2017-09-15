@@ -43,6 +43,7 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
+import { PLATFORM } from 'aurelia-pal';
 import { inject } from 'aurelia-dependency-injection';
 import { bindingMode, computedFrom } from 'aurelia-binding';
 import { bindable, customElement } from 'aurelia-templating';
@@ -310,9 +311,16 @@ export let DataTable = (_dec = customElement('datatable'), _dec2 = resolvedView(
       return;
     }
 
-    this.pager.reloadCount();
+    this.ready = false;
+    this.page = 1;
 
-    this.load();
+    PLATFORM.global.setTimeout(() => {
+      this.ready = true;
+
+      this.pager.reloadCount();
+
+      this.load();
+    }, 1);
   }
 
   reload() {

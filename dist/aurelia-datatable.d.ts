@@ -2,6 +2,7 @@ import {Config,resolvedView} from 'aurelia-view-manager';
 import {inject} from 'aurelia-dependency-injection';
 import {ViewResources,bindable,customElement} from 'aurelia-templating';
 import {getLogger} from 'aurelia-logging';
+import {PLATFORM} from 'aurelia-pal';
 import {bindingMode,computedFrom} from 'aurelia-binding';
 import {EntityManager} from 'aurelia-orm';
 import {Router} from 'aurelia-router';
