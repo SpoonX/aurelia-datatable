@@ -40,8 +40,8 @@ this.repository = entityManager.getRepository('users');
 
 ```html
   <datatable
-      destroy.delegate="myEventCallback($event)"
-      edit.delegate="myEditImplementation($event)"
+      destroy.call="myEventCallback($event)"
+      edit.call="myEditImplementation($event)"
       columns="id,name as 'username', user.id as 'User id'"
       repository.bind="repository"
       searchable
@@ -61,7 +61,7 @@ this.data = [{id: 1, name: 'Pipo'}, {id: 2, name: 'Mario'}];
 ```html
   <datatable
       destroy
-      edit.delegate="myEditImplementation($event)"
+      edit.call="myEditImplementation($event)"
       columns="id,name as 'username'"
       actions.bind="actions"
       footer.bind="footer"
