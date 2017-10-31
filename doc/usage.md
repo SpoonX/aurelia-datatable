@@ -72,8 +72,6 @@ export class List {
 
 By default, searchable for each column will be true. If you dont want to search on that column, set `searchable` to `false`
 
-So the search dropdown should be show `name, email`
-
 This is used for table content, but also the table headers. There's support for nested objects, as well as aliases. Example:
 
 #### Simple
