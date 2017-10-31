@@ -37,7 +37,6 @@ export class DataTable {
   @bindable route;
   @bindable pages;
   @bindable footer;
-  @bindable searchColumns   = 'name';
 
   loading           = false;
   hasVisibleActions = false;
