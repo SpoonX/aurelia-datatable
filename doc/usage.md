@@ -70,7 +70,7 @@ export class List {
 }
 ```
 
-By default, searchable for each column will be true. If you dont want to search on that column, set `searchable` to `false`
+By default, searchable for each column will be set `true`. If you dont want to search on that column, let set `searchable` to `false`
 
 This is used for table content, but also the table headers. There's support for nested objects, as well as aliases. Example:
 
