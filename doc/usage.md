@@ -60,10 +60,20 @@ export class List {
     route          : {
       name  : 'groups',      // The name of your route in your application
       params: {group: 'id'}  // Optional. Paramaters required for the given route. ({name: 'value'})
+    },
+    {
+      property: 'created_at',
+      label   : 'created_at',
+      searchable: false
     }
   }];
 }
 ```
+
+By default, searchable for each column will be true. If you dont want to search on that column, set `searchable` to `false`
+
+So the search dropdown should be show `name, email`
+
 This is used for table content, but also the table headers. There's support for nested objects, as well as aliases. Example:
 
 #### Simple
