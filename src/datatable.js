@@ -297,12 +297,12 @@ export class DataTable {
     if (Array.isArray(this.columns)) {
       return this.columns.map(column => {
         return {
-          nested     : !this.isSortable(column.property),
-          column     : column.property,
-          label      : ucfirst(clean(column.label || column.property)),
-          route      : column.route || false,
-          converter  : column.valueConverters || false,
-          searchable : typeof column.searchable === 'boolean' ? column.searchable : true
+          nested    : !this.isSortable(column.property),
+          column    : column.property,
+          label     : ucfirst(clean(column.label || column.property)),
+          route     : column.route || false,
+          converter : column.valueConverters || false,
+          searchable: typeof column.searchable === 'boolean' ? column.searchable : true
         };
       });
     }
