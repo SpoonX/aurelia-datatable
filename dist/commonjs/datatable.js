@@ -455,7 +455,8 @@ var DataTable = exports.DataTable = (_dec = (0, _aureliaTemplating.customElement
             column: column.property,
             label: ucfirst(clean(column.label || column.property)),
             route: column.route || false,
-            converter: column.valueConverters || false
+            converter: column.valueConverters || false,
+            searchable: typeof column.searchable === 'boolean' ? column.searchable : true
           };
         });
       }

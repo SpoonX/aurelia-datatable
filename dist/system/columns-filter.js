@@ -17,7 +17,7 @@ System.register([], function (_export, _context) {
 
         ColumnsFilterValueConverter.prototype.toView = function toView(array) {
           return array.filter(function (item) {
-            return item.column.indexOf('.') === -1;
+            return item.column.indexOf('.') === -1 && item.searchable;
           });
         };
 

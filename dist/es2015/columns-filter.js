@@ -1,5 +1,5 @@
 export let ColumnsFilterValueConverter = class ColumnsFilterValueConverter {
   toView(array) {
-    return array.filter(item => item.column.indexOf('.') === -1);
+    return array.filter(item => item.column.indexOf('.') === -1 && item.searchable);
   }
 };

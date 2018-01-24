@@ -1,3 +1,13 @@
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.8.2...v0.9.0) (2018-01-24)
+
+
+### Features
+
+* **datatable:** Add searchable for each columns on table ([6b4d830](https://github.com/SpoonX/aurelia-datatable/commit/6b4d830))
+
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/SpoonX/aurelia-datatable/compare/v0.8.1...v0.8.2) (2017-09-15)
 

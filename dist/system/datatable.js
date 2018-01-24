@@ -478,7 +478,8 @@ System.register(['aurelia-pal', 'aurelia-dependency-injection', 'aurelia-binding
                   column: column.property,
                   label: ucfirst(clean(column.label || column.property)),
                   route: column.route || false,
-                  converter: column.valueConverters || false
+                  converter: column.valueConverters || false,
+                  searchable: typeof column.searchable === 'boolean' ? column.searchable : true
                 };
               });
             }
