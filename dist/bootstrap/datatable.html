@@ -75,7 +75,7 @@
               <i class="fa fa-trash"></i>
             </button>
 
-            <button repeat.for="action of actions" if.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
+            <button repeat.for="action of actions" show.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
               <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
               <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
             </button>

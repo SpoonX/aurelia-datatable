@@ -1,3 +1,13 @@
+<a name="0.9.1"></a>
+## [0.9.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.9.0...v0.9.1) (2018-01-26)
+
+
+### Bug Fixes
+
+* **datatable:** datatable row action buttons are visible for IE now ([7fdef73](https://github.com/SpoonX/aurelia-datatable/commit/7fdef73))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/SpoonX/aurelia-datatable/compare/v0.8.2...v0.9.0) (2018-01-24)
 
