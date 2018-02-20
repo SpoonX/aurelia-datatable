@@ -54,8 +54,8 @@
       <tr if.bind="loadingIndicator && loading">
         <td colspan.bind="colspan" innerhtml.bind="loadingIndicator"></td>
       </tr>
-      
-      <tr if.bind="!loading" containerless repeat.for="row of data">
+
+      <tr if.bind="!loading" repeat.for="row of data">
         <td style="text-align: center;" if.bind="detailView" click.delegate="collapseRow(row)"><i class="fa fa-${row._collapsed ? 'chevron-down' : 'chevron-right'}"></i></td>
 
         <!-- Columns -->
