@@ -1,3 +1,14 @@
+<a name="0.9.2"></a>
+## [0.9.2](https://github.com/SpoonX/aurelia-datatable/compare/v0.9.1...v0.9.2) (2018-02-21)
+
+
+### Bug Fixes
+
+* **datatable:** datatable rows displayed and not empty on IE11 ([e86f8f7](https://github.com/SpoonX/aurelia-datatable/commit/e86f8f7))
+* **datatable:** datatable rows displayed and not empty on IE11 ([d719745](https://github.com/SpoonX/aurelia-datatable/commit/d719745))
+
+
+
 <a name="0.9.1"></a>
 ## [0.9.1](https://github.com/SpoonX/aurelia-datatable/compare/v0.9.0...v0.9.1) (2018-01-26)
 

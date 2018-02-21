@@ -55,42 +55,41 @@
         <td colspan.bind="colspan" innerhtml.bind="loadingIndicator"></td>
       </tr>
 
-      <template containerless repeat.for="row of data">
-        <tr if.bind="!loading">
-          <td style="text-align: center;" if.bind="detailView" click.delegate="collapseRow(row)"><i class="fa fa-${row._collapsed ? 'chevron-down' : 'chevron-right'}"></i></td>
+      <tr if.bind="!loading" repeat.for="row of data">
+        <td style="text-align: center;" if.bind="detailView" click.delegate="collapseRow(row)"><i class="fa fa-${row._collapsed ? 'chevron-down' : 'chevron-right'}"></i></td>
 
-          <!-- Columns -->
-          <td repeat.for="columnLabel of columnLabels">
-            <span if.bind="!columnLabel.route && !route && !select" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter : row"></span>
-            <a if.bind="route || select || columnLabel.route" click.delegate="selected(row, columnLabel)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter : row"></a>
-          </td>
+        <!-- Columns -->
+        <td repeat.for="columnLabel of columnLabels">
+          <span if.bind="!columnLabel.route && !route && !select" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter : row"></span>
+          <a if.bind="route || select || columnLabel.route" click.delegate="selected(row, columnLabel)" innerhtml.bind="displayValue(row, columnLabel.column) | convertManager: columnLabel.converter : row"></a>
+        </td>
 
-          <!-- Actions -->
-          <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
-            <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row, $index)">
-              <i class="fa fa-pencil"></i>
-            </button>
+        <!-- Actions -->
+        <td style="white-space: nowrap; width: 1px;" show.bind="showActions() && hasVisibleActions">
+          <button if.bind="edit !== null" class="btn btn-sm btn-white" click.delegate="doEdit(row, $index)">
+            <i class="fa fa-pencil"></i>
+          </button>
 
-            <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row, $index)">
-              <i class="fa fa-trash"></i>
-            </button>
+          <button if.bind="destroy !== null" class="btn btn-sm btn-danger" click.delegate="doDestroy(row, $index)">
+            <i class="fa fa-trash"></i>
+          </button>
 
-            <button repeat.for="action of actions" show.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
-              <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
-              <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
-            </button>
-          </td>
-        </tr>
+          <button repeat.for="action of actions" show.bind="checkVisibility(action, row)" t="[title]${action.title}" title.bind="action.title || ''" disabled.bind="checkDisabled(action, row)" class="btn btn-sm btn-${action.type || 'default'}" click.trigger="doCustomAction(action, row, $parent.$index)">
+            <i if.bind="action.icon" class="fa fa-${action.icon}"></i>
+            <span if.bind="!action.icon && action.title" t="${action.title}">${action.title}</span>
+          </button>
+        </td>
+      </tr>
 
-        <!-- Needed for table-striped -->
-        <tr if.bind="detailView && row._collapsed" style="display: none;"></tr>
+      <!-- Needed for table-striped -->
+      <tr if.bind="detailView && row._collapsed" style="display: none;"></tr>
 
-        <tr if.bind="detailView && row._collapsed">
-          <td colspan.bind="colspan" style="padding: 0;margin: 0;">
-            <compose view-model.bind="detailView" model.bind="row"></compose>
-          </td>
-        </tr>
-      </template>
+      <tr if.bind="detailView && row._collapsed">
+        <td colspan.bind="colspan" style="padding: 0;margin: 0;">
+          <compose view-model.bind="detailView" model.bind="row"></compose>
+        </td>
+      </tr>
+
     </tbody>
     <tfoot if.bind="footer" innerhtml.bind="footer"></tfoot>
   </table>
